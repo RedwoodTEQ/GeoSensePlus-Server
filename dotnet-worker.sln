@@ -1,0 +1,89 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Server", "GeoSensePlus.Server\GeoSensePlus.Server.csproj", "{16B58C53-4115-4535-ABBC-285A90E82910}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F19750A6-FB35-4DE9-AB26-7227867F78DD}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		publish-geosenseplus-server.bat = publish-geosenseplus-server.bat
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Firestore", "GeoSensePlus.Firestore\GeoSensePlus.Firestore.csproj", "{1A659629-0922-448F-ABE9-7269214D4864}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Firestore.UnitTest", "GeoSensePlus.Firestore.UnitTest\GeoSensePlus.Firestore.UnitTest.csproj", "{3072427D-EBA6-4339-9F79-5E171A980817}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Cli", "GeoSensePlus.Cli\GeoSensePlus.Cli.csproj", "{FDA22185-3BC9-4BA5-890E-3BF1B2DB87C3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Core", "GeoSensePlus.Core\GeoSensePlus.Core.csproj", "{820EB7F6-3906-4621-A8C3-9325FBF5F063}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Core.UnitTest", "GeoSensePlus.Core.UnitTest\GeoSensePlus.Core.UnitTest.csproj", "{0DEE4BDB-E5F8-4510-A16D-9946DFB0275A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", "{EDDFBC91-EAD4-439B-81F3-F2649B21B3D3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{624D3C4F-1AA4-4E18-9E07-982063D22F28}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.App.AssetTracking", "GeoSensePlus.App.AssetTracking\GeoSensePlus.App.AssetTracking.csproj", "{837B0DB8-C7CA-45CB-8647-516CBF1EA210}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.App.ProgressTracking", "GeoSensePlus.App.ProgressTracking\GeoSensePlus.App.ProgressTracking.csproj", "{ACFC9993-7B3E-4D6B-8D14-EC4E95B3473E}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{ABE47D86-D381-489A-83DB-2599DFD94EE4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16B58C53-4115-4535-ABBC-285A90E82910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16B58C53-4115-4535-ABBC-285A90E82910}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16B58C53-4115-4535-ABBC-285A90E82910}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16B58C53-4115-4535-ABBC-285A90E82910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A659629-0922-448F-ABE9-7269214D4864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A659629-0922-448F-ABE9-7269214D4864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A659629-0922-448F-ABE9-7269214D4864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A659629-0922-448F-ABE9-7269214D4864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3072427D-EBA6-4339-9F79-5E171A980817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3072427D-EBA6-4339-9F79-5E171A980817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3072427D-EBA6-4339-9F79-5E171A980817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3072427D-EBA6-4339-9F79-5E171A980817}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDA22185-3BC9-4BA5-890E-3BF1B2DB87C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDA22185-3BC9-4BA5-890E-3BF1B2DB87C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDA22185-3BC9-4BA5-890E-3BF1B2DB87C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDA22185-3BC9-4BA5-890E-3BF1B2DB87C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{820EB7F6-3906-4621-A8C3-9325FBF5F063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{820EB7F6-3906-4621-A8C3-9325FBF5F063}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{820EB7F6-3906-4621-A8C3-9325FBF5F063}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{820EB7F6-3906-4621-A8C3-9325FBF5F063}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DEE4BDB-E5F8-4510-A16D-9946DFB0275A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DEE4BDB-E5F8-4510-A16D-9946DFB0275A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DEE4BDB-E5F8-4510-A16D-9946DFB0275A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DEE4BDB-E5F8-4510-A16D-9946DFB0275A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{837B0DB8-C7CA-45CB-8647-516CBF1EA210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{837B0DB8-C7CA-45CB-8647-516CBF1EA210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{837B0DB8-C7CA-45CB-8647-516CBF1EA210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{837B0DB8-C7CA-45CB-8647-516CBF1EA210}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACFC9993-7B3E-4D6B-8D14-EC4E95B3473E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACFC9993-7B3E-4D6B-8D14-EC4E95B3473E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACFC9993-7B3E-4D6B-8D14-EC4E95B3473E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACFC9993-7B3E-4D6B-8D14-EC4E95B3473E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABE47D86-D381-489A-83DB-2599DFD94EE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABE47D86-D381-489A-83DB-2599DFD94EE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABE47D86-D381-489A-83DB-2599DFD94EE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABE47D86-D381-489A-83DB-2599DFD94EE4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3072427D-EBA6-4339-9F79-5E171A980817} = {EDDFBC91-EAD4-439B-81F3-F2649B21B3D3}
+		{0DEE4BDB-E5F8-4510-A16D-9946DFB0275A} = {EDDFBC91-EAD4-439B-81F3-F2649B21B3D3}
+		{837B0DB8-C7CA-45CB-8647-516CBF1EA210} = {624D3C4F-1AA4-4E18-9E07-982063D22F28}
+		{ACFC9993-7B3E-4D6B-8D14-EC4E95B3473E} = {624D3C4F-1AA4-4E18-9E07-982063D22F28}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7D8758EF-BDF4-4FDB-AC5B-92D1ABC71E89}
+	EndGlobalSection
+EndGlobal

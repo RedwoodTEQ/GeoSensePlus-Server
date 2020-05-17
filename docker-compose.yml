@@ -1,0 +1,37 @@
+version: '3.4'
+
+services:
+  gsv:
+    image: redwoodteq/geosenseplusserver:latest
+    build:
+      context: .
+      dockerfile: GeoSensePlus.Server/Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:5000;https://+:5001
+      TARGET_PATH: /root
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    volumes:
+      - ${USERPROFILE}/GeoSensePlus:/root/GeoSensePlus
+    networks:
+      - geosenseplusnetwork
+
+  gsttn:
+    image: redwoodteq/gsttn:latest
+    depends_on:
+      - "gsv"
+    build:
+      context: ../node-worker
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+      TTN_APP_ID: asset_tracking_test1
+      TTN_ACCESS_KEY: ttn-account-v2.JUe8XYeQ5iUF0-vaixucygKEez0raRzWq5uI9WdQA9c
+      API_HOST: "gsv"
+      API_PORT: "5000"
+    networks:
+      - geosenseplusnetwork
+
+networks:
+  geosenseplusnetwork:

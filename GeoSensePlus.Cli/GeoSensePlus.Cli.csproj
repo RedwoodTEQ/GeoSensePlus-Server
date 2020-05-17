@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>gs</ToolCommandName>
+    <PackageOutputPath>./bin/NuPkg</PackageOutputPath>
+    <Version>1.2-working</Version>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CoreCmd" Version="1.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeoSensePlus.Firestore\GeoSensePlus.Firestore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="do.bat">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

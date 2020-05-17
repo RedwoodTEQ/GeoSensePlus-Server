@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeoSensePlus.Core\GeoSensePlus.Core.csproj" />
+    <ProjectReference Include="..\GeoSensePlus.Firestore\GeoSensePlus.Firestore.csproj" />
+  </ItemGroup>
+
+</Project>
