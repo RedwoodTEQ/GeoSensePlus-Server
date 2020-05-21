@@ -42,7 +42,7 @@ namespace GeoSensePlus.Server
             Console.WriteLine("Read GeoSensePlus directory:");
             Console.WriteLine(EnumerateGeoSensePlusFolderFiles());
 
-            // CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
