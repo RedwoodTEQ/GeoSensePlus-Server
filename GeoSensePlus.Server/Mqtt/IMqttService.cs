@@ -3,6 +3,7 @@ using MQTTnet;
 using MQTTnet.Server;
 using System;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GeoSensePlus.Server.Mqtt
@@ -12,6 +13,7 @@ namespace GeoSensePlus.Server.Mqtt
         int Port { get; }
         Task StartAsync();
         Task StopAsync();
+        Task PublishAsync(string topic, string message);
     }
 
     public class MqttService : IMqttService
@@ -61,9 +63,8 @@ namespace GeoSensePlus.Server.Mqtt
 
         public Task StartAsync()
         {
-            var optionsBuilder = new MqttServerOptionsBuilder()
-                .WithConnectionBacklog(1000)
-                .WithDefaultEndpointPort(_port);
+            var optionsBuilder = new MqttServerOptionsBuilder().WithConnectionBacklog(1000)
+                                                               .WithDefaultEndpointPort(_port);
 
             _mqttServer = new MqttFactory().CreateMqttServer();
             InitEventHandlers(_mqttServer);
@@ -76,6 +77,17 @@ namespace GeoSensePlus.Server.Mqtt
         {
             return _mqttServer.StopAsync();
         }
+
+        public async Task PublishAsync(string topic, string message)
+        {
+            var mqttMsg = new MqttApplicationMessageBuilder().WithTopic(topic)
+                                                             .WithPayload(message)
+                                                             .WithExactlyOnceQoS()
+                                                             .WithRetainFlag()
+                                                             .Build();
+            await _mqttServer.PublishAsync(mqttMsg, CancellationToken.None);
+        }
+
     }
 
 }
