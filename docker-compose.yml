@@ -22,7 +22,7 @@ services:
     depends_on:
       - "gsv"
     build:
-      context: ../node-worker
+      context: ../gsttn
       dockerfile: Dockerfile
     environment:
       NODE_ENV: production
