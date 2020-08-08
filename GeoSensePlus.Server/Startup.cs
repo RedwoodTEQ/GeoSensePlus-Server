@@ -16,6 +16,11 @@ using GeoSensePlus.App.ProgressTracking;
 using GeoSensePlus.Core;
 using GeoSensePlus.Server.Mqtt;
 using GeoSensePlus.Firestore;
+using System.Security.Cryptography.Xml;
+using Swashbuckle.AspNetCore.Swagger;
+using Google.Protobuf.WellKnownTypes;
+using GeoSensePlus.Server.Options;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 
 namespace GeoSensePlus.Server
 {
@@ -50,6 +55,9 @@ namespace GeoSensePlus.Server
             services.AddProgressTracking();
 
             services.AddFirestoreServices();
+            services.AddSwaggerGen(x => {
+                x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "GeoSense+ API", Version = "v1"});
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +67,15 @@ namespace GeoSensePlus.Server
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            var swaggerOptions = new CustomSwaggerOptions();
+            Configuration.GetSection("SwaggerOptions").Bind(swaggerOptions);
+            app.UseSwagger(option => {
+                option.RouteTemplate = swaggerOptions.JsonRoute;
+            });
+            app.UseSwaggerUI(options => {
+                options.SwaggerEndpoint(swaggerOptions.UiEndpoint, swaggerOptions.Description);
+            });
 
             //app.UseHttpsRedirection();
 
