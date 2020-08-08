@@ -1,5 +1,5 @@
 @echo off
-SET DEBUG_PATH=%CD%\bin\Debug\netcoreapp3.0
+SET DEBUG_PATH=%CD%\bin\Debug\netcoreapp3.1
 SET ASPNETCORE_ENVIRONMENT=Development
 
 dotnet watch run %DEBUG_PATH%\GeoSensePlus.Server.dll %*
