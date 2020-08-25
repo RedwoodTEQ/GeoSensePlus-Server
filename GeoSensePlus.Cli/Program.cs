@@ -5,14 +5,15 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using GeoSensePlus.Firestore;
+using NetCoreUtils.Database.MongoDb;
 
 namespace GeoSensePlus.Cli
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            new AssemblyCommandExecutor().Execute(args);
+            await new AssemblyCommandExecutor().ExecuteAsync(args, c => c.AddMongoDb(new MongoDbSetting { DatabaseName = "GeoSensePlus" }) );
         }
 
         public static void ConfigureServices(IServiceCollection services)
