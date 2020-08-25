@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: 'gsp_mongodb'
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb-data:/data/db
+      - mongodb-config:/data/configdb
+    networks:
+      - geosenseplusnetwork
+
+networks:
+  geosenseplusnetwork:
+
+volumes:
+  mongodb-data:
+  mongodb-config:
+
