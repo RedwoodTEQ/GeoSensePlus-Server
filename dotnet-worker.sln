@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.App.ProgressTr
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{ABE47D86-D381-489A-83DB-2599DFD94EE4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoSensePlus.Mongo", "GeoSensePlus.Mongo\GeoSensePlus.Mongo.csproj", "{4123E030-ACAD-470F-8218-9AEC66CD8C3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{ABE47D86-D381-489A-83DB-2599DFD94EE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABE47D86-D381-489A-83DB-2599DFD94EE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABE47D86-D381-489A-83DB-2599DFD94EE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4123E030-ACAD-470F-8218-9AEC66CD8C3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4123E030-ACAD-470F-8218-9AEC66CD8C3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4123E030-ACAD-470F-8218-9AEC66CD8C3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4123E030-ACAD-470F-8218-9AEC66CD8C3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
