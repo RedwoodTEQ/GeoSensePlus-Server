@@ -2,46 +2,54 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GeoSensePlus.Mongo;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using NetCoreUtils.Database.MongoDb;
 
 namespace GeoSensePlus.Server.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ChannelsController : ControllerBase
+    public class MongoController<TDoc> : ControllerBase where TDoc : MongoDoc
     {
-        // GET: api/<ChannelssController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        IMongoDocReader<TDoc> _reader;
+
+        public MongoController(IMongoDocReader<TDoc> reader)
         {
-            return new string[] { "value1", "value2" };
+            _reader = reader;
         }
 
-        // GET api/<ChannelssController>/5
+        [HttpGet]
+        public ActionResult<List<TDoc>> Get()
+        {
+            return _reader.Find(x => true);
+        }
+
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<ChannelssController>
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/<ChannelssController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<ChannelssController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
         }
+    }
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ChannelsController : MongoController<Channel>
+    {
+        public ChannelsController(IMongoDocReader<Channel> reader) : base(reader)
+        { }
     }
 }

@@ -22,5 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\GeoSensePlus.App.AssetTracking\GeoSensePlus.App.AssetTracking.csproj" />
     <ProjectReference Include="..\GeoSensePlus.App.ProgressTracking\GeoSensePlus.App.ProgressTracking.csproj" />
+    <ProjectReference Include="..\GeoSensePlus.Mongo\GeoSensePlus.Mongo.csproj" />
   </ItemGroup>
 </Project>

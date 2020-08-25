@@ -21,6 +21,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Google.Protobuf.WellKnownTypes;
 using GeoSensePlus.Server.Options;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using NetCoreUtils.Database.MongoDb;
 
 namespace GeoSensePlus.Server
 {
@@ -53,6 +54,8 @@ namespace GeoSensePlus.Server
             services.AddGeoSensePlusCore();
             services.AddAssetTracking();
             services.AddProgressTracking();
+
+            services.AddMongoDb(new MongoDbSetting { DatabaseName = "GeoSensePlus" });
 
             services.AddFirestoreServices();
             services.AddSwaggerGen(x => {
