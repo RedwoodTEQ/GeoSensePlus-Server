@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Server", "GeoSensePlus.Server\GeoSensePlus.Server.csproj", "{16B58C53-4115-4535-ABBC-285A90E82910}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F19750A6-FB35-4DE9-AB26-7227867F78DD}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
@@ -31,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.App.ProgressTr
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{ABE47D86-D381-489A-83DB-2599DFD94EE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoSensePlus.Mongo", "GeoSensePlus.Mongo\GeoSensePlus.Mongo.csproj", "{4123E030-ACAD-470F-8218-9AEC66CD8C3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Mongo", "GeoSensePlus.Mongo\GeoSensePlus.Mongo.csproj", "{4123E030-ACAD-470F-8218-9AEC66CD8C3A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{B4D7FFD6-C1FB-4CDC-8DEE-BA644853419A}"
 EndProject
@@ -56,16 +54,14 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "docker-compose", "docker-co
 		SlnRelativePath = "docker-compose\"
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Server", "GeoSensePlus.Server\GeoSensePlus.Server.csproj", "{22300BDF-1E02-4E1F-9F52-88DCA08DA069}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{16B58C53-4115-4535-ABBC-285A90E82910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16B58C53-4115-4535-ABBC-285A90E82910}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16B58C53-4115-4535-ABBC-285A90E82910}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16B58C53-4115-4535-ABBC-285A90E82910}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1A659629-0922-448F-ABE9-7269214D4864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1A659629-0922-448F-ABE9-7269214D4864}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A659629-0922-448F-ABE9-7269214D4864}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -106,6 +102,10 @@ Global
 		{2885071E-EB92-4282-85CB-D02472E533D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2885071E-EB92-4282-85CB-D02472E533D7}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{2885071E-EB92-4282-85CB-D02472E533D7}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{22300BDF-1E02-4E1F-9F52-88DCA08DA069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22300BDF-1E02-4E1F-9F52-88DCA08DA069}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22300BDF-1E02-4E1F-9F52-88DCA08DA069}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22300BDF-1E02-4E1F-9F52-88DCA08DA069}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

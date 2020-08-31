@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,7 @@ using Google.Protobuf.WellKnownTypes;
 using GeoSensePlus.Server.Options;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using NetCoreUtils.Database.MongoDb;
+using GeoSensePlus.Server.Data;
 
 namespace GeoSensePlus.Server
 {
@@ -37,6 +39,9 @@ namespace GeoSensePlus.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
+            services.AddSingleton<WeatherForecastService>();
             // For releasing as a global tool, if the appsettings.json is not at the same directory where
             // the application starts, the logging settings in the appsettings.json won't work
             services.AddLogging(builder =>
@@ -70,7 +75,15 @@ namespace GeoSensePlus.Server
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
             var swaggerOptions = new CustomSwaggerOptions();
             Configuration.GetSection("SwaggerOptions").Bind(swaggerOptions);
             app.UseSwagger(option => {
@@ -80,18 +93,12 @@ namespace GeoSensePlus.Server
                 options.SwaggerEndpoint(swaggerOptions.UiEndpoint, swaggerOptions.Description);
             });
 
-            //app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            app.UseAuthorization();
-
-            //app.UseEndpoints(endpoints => {
-            //    endpoints.MapGrpcService<DataHandlerService>();
-            //});
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapBlazorHub();
+                endpoints.MapFallbackToPage("/_Host");
                 endpoints.MapControllers();
             });
         }
