@@ -11,9 +11,9 @@ namespace GeoSensePlus.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MeasuresController : MongoController<Measure>
+    public class MetricsController : MongoController<Measure>
     {
-        public MeasuresController(IMongoDocReader<Measure> reader, IMongoDocWriter<Measure> writer) : base(reader, writer)
+        public MetricsController(IMongoDocReader<Measure> reader, IMongoDocWriter<Measure> writer) : base(reader, writer)
         { }
     }
 }
