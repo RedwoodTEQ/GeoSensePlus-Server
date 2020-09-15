@@ -1,5 +1,9 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+button:focus {
+    outline: 0 !important;
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -47,7 +51,7 @@ app {
 }
 
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    background-image: linear-gradient(180deg, rgb(15, 139, 103) 0%, #3a0647 70%);
 }
 
     .sidebar .top-row {
@@ -180,4 +184,9 @@ app {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+}
+
+#top-toolbar .nav-item a:hover {
+    background-color: rgba(255,255,255,0.9);
+    /*color: white;*/
 }
