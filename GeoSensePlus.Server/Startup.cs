@@ -39,7 +39,7 @@ namespace GeoSensePlus.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             // For releasing as a global tool, if the appsettings.json is not at the same directory where
