@@ -24,6 +24,7 @@ using GeoSensePlus.Server.Options;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using NetCoreUtils.Database.MongoDb;
 using GeoSensePlus.Server.Data;
+using Westwind.AspNetCore.LiveReload;
 
 namespace GeoSensePlus.Server
 {
@@ -66,6 +67,7 @@ namespace GeoSensePlus.Server
             services.AddSwaggerGen(x => {
                 x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "GeoSense+ API", Version = "v1"});
             });
+            services.AddLiveReload();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +76,7 @@ namespace GeoSensePlus.Server
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseLiveReload();
             }
             else
             {
