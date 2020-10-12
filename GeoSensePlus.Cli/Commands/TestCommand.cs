@@ -20,7 +20,7 @@ namespace GeoSensePlus.Cli.Commands
         /// <summary>
         /// Attach asset between 2 edges to mimic moving asset between 2 edges
         /// </summary>
-        public void WaggleEdges(string assetId, string edgeId1, string edgeId2)
+        public void ChangeAssetEdges(string assetId, string edgeId1, string edgeId2)
         {
             this.Execute(() => {
                 var assetSvc = sp.GetService<IAssetService>();
