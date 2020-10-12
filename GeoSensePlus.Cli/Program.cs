@@ -13,9 +13,14 @@ namespace GeoSensePlus.Cli
     {
         static async Task Main(string[] args)
         {
-            await new AssemblyCommandExecutor().ExecuteAsync(args, c => c.AddMongoDb(new MongoDbSetting { DatabaseName = "GeoSensePlus" }) );
+            await new AssemblyCommandExecutor().ExecuteAsync(args, c =>
+            {
+                c.AddMongoDb(new MongoDbSetting { DatabaseName = "GeoSensePlus" });
+                c.AddFirestoreServices();
+            });
         }
 
+        // TODO: remove this method
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddFirestoreServices();

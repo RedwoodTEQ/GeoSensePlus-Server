@@ -21,7 +21,8 @@ namespace GeoSensePlus.Cli.Commands
 
         public void Display(string docId)
         {
-            this.Execute(() => {
+            this.Execute(() =>
+            {
                 var obj = _repo.RetrieveAsync(docId).Result;
                 Console.WriteLine($"MAC Address     : {obj.MacAddress}");
                 Console.WriteLine($"Report Time     : {obj.LastReportTime}");
@@ -33,7 +34,8 @@ namespace GeoSensePlus.Cli.Commands
 
         public void GetEdge(string assetId)
         {
-            this.Execute(() => {
+            this.Execute(() =>
+            {
                 var asset = _repo.RetrieveAsync(assetId).Result;
                 Console.WriteLine(asset.EdgeRef.Id);
             });
@@ -41,36 +43,14 @@ namespace GeoSensePlus.Cli.Commands
 
         public void SetEdge(string assetId, string targetEdgeId)
         {
-            this.Execute(() => {
+            this.Execute(() =>
+            {
                 var assetSvc = sp.GetService<IAssetService>();
                 var edgeRepo = sp.GetService<IRepository<EdgeData>>();
 
                 var batch = sp.GetService<IFirebaseClient>().GetFirestoreDb().StartBatch();
                 assetSvc.UpdateEdgeAsync(batch, _repo.GetDocument(assetId), edgeRepo.GetDocument(targetEdgeId)).Wait();
                 batch.CommitAsync().Wait();
-            });
-        }
-
-        /// <summary>
-        /// Attach asset between 2 edges to mimic moving asset between 2 edges
-        /// </summary>
-        public void WaggleEdges(string assetId, string edgeId1, string edgeId2)
-        {
-            this.Execute(() => {
-                var assetSvc = sp.GetService<IAssetService>();
-                var edgeRepo = sp.GetService<IRepository<EdgeData>>();
-
-                string targetEdgeId = edgeId1;
-                var batch = sp.GetService<IFirebaseClient>().GetFirestoreDb().StartBatch();
-                do
-                {
-                    Console.WriteLine($"Moving asset ({assetId}) to edge ({targetEdgeId}) ...");
-                    assetSvc.UpdateEdgeAsync(batch, _repo.GetDocument(assetId), edgeRepo.GetDocument(targetEdgeId)).Wait();
-                    batch.CommitAsync().Wait();
-                    targetEdgeId = targetEdgeId == edgeId1 ? edgeId2 : edgeId1;
-                    Console.WriteLine("Input 'q' to quit ...");
-                }
-                while (Console.ReadLine() != "q") ;
             });
         }
     }
