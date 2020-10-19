@@ -2,8 +2,8 @@
 using NetCoreUtils.Database.MongoDb;
 using System;
 
-namespace GeoSensePlus.Mongo
-{ 
+namespace GeoSensePlus.Mongo.Models
+{
     public class ModelBase : MongoDoc
     {
         public string Name { get; set; }
@@ -23,16 +23,21 @@ namespace GeoSensePlus.Mongo
     {
     }
 
-    public class Measure : ModelBase
+    public class Metric : ModelBase
     {
     }
 
-    // non-site services
+    /// <summary>
+    /// non-site services
+    /// </summary>
     public class Service : ModelBase
     {
         public string Type { get; set; }
     }
 
+    /// <summary>
+    /// A remote gsv service
+    /// </summary>
     public class Site : ModelBase
     {
     }

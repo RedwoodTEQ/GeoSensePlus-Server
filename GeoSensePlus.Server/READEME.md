@@ -11,6 +11,7 @@
 ### v1.2.0-working
 
 - Add REST API doc using Swashbuckle
+- Add REST API controllers (not fully implemented)
 - Upgrade all dependent projects to .net core 3.1
 - Add blazer server and razor pages support
 
