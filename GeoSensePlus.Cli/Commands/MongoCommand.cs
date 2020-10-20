@@ -1,4 +1,5 @@
 ﻿using GeoSensePlus.Mongo;
+using GeoSensePlus.Mongo.Models;
 using NetCoreUtils.Database.MongoDb;
 using System;
 using System.Collections.Generic;
