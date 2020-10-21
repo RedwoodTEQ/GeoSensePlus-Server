@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using GeoSensePlus.Mongo.Models;
+using GeoSensePlus.Mongo.Models.Sensing;
 using GeoSensePlus.Server.Controllers.Base;
 using NetCoreUtils.Database.MongoDb;
 

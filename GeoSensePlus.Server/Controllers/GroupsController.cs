@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using GeoSensePlus.Mongo.Models;
+using GeoSensePlus.Mongo.Models.Sensing;
 using GeoSensePlus.Server.Controllers.Base;
+using Microsoft.AspNetCore.Mvc;
 using NetCoreUtils.Database.MongoDb;
 
 namespace GeoSensePlus.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LabelsController : MongoController<Label>
+    public class GroupsController : MongoController<Group>
     {
-        public LabelsController(IMongoDocReader<Label> reader, IMongoDocWriter<Label> writer) : base(reader, writer)
-        {
-        }
+        public GroupsController(IMongoDocReader<Group> reader, IMongoDocWriter<Group> writer) : base(reader, writer)
+        { }
     }
 }

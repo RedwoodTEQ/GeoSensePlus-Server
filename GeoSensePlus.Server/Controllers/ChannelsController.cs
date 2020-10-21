@@ -1,6 +1,5 @@
 ﻿using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using GeoSensePlus.Mongo.Models;
+using GeoSensePlus.Mongo.Models.Platform;
 using GeoSensePlus.Server.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreUtils.Database.MongoDb;
