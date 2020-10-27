@@ -6,6 +6,8 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using GeoSensePlus.Firestore;
 using NetCoreUtils.Database.MongoDb;
+using Microsoft.Extensions.Logging;
+using GeoSensePlus.Mqtt;
 
 namespace GeoSensePlus.Cli
 {
@@ -13,18 +15,21 @@ namespace GeoSensePlus.Cli
     {
         static async Task Main(string[] args)
         {
-            await new AssemblyCommandExecutor().ExecuteAsync(args, c =>
+            await new AssemblyCommandExecutor().ExecuteAsync(args, services =>
             {
-                c.AddHttpClient();
-                c.AddMongoDb(new MongoDbSetting { DatabaseName = "GeoSensePlus" });
-                c.AddFirestoreServices();
+                services.AddHttpClient();
+                services.AddMongoDb(new MongoDbSetting { DatabaseName = "GeoSensePlus" });
+                services.AddFirestoreServices();
+                services.AddLogging(c => c.AddConsole());
+                services.AddTransient<IMqttService, MqttService>();
+                services.AddTransient<IMqttClientService, MqttClientService>();
             });
         }
 
         // TODO: remove this method
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddFirestoreServices();
+            //services.AddFirestoreServices();
         }
     }
 }

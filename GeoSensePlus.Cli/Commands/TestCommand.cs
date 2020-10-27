@@ -5,16 +5,25 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using GeoSensePlus.Firestore;
 using GeoSensePlus.Firestore.Services;
+using GeoSensePlus.Mqtt;
+using System.Threading.Tasks;
 
 namespace GeoSensePlus.Cli.Commands
 {
     public class TestCommand : CommandBase
     { 
         readonly IRepository<AssetData> _repo;
+        readonly IMqttService _mqttService;
+        readonly IMqttClientService _mqttClient;
 
-        public TestCommand(IRepository<AssetData> repo)
-        {
+        public TestCommand(
+            IRepository<AssetData> repo
+            , IMqttService mqttService
+            , IMqttClientService mqttClient
+        ){
             _repo = repo;
+            _mqttService = mqttService;
+            _mqttClient = mqttClient;
         }
 
         /// <summary>
@@ -43,6 +52,26 @@ namespace GeoSensePlus.Cli.Commands
         public void UpdateTemperature()
         {
 
+        }
+
+        public async Task MqttService()
+        {
+            await _mqttService.StartAsync();
+
+            int count = 1;
+            do
+            {
+                await _mqttService.PublishAsync("hello", $"test message {count++}");
+            }
+            while (Console.ReadKey().KeyChar != 'q');
+            //while (Console.KeyAvailable);
+        }
+
+        public async Task MqttClient()
+        {
+            await _mqttClient.ConnectAsync();
+            await _mqttClient.SubscribeTopic("hello");
+            Console.ReadLine();
         }
     }
 }

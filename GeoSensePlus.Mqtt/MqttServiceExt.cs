@@ -11,6 +11,7 @@ namespace GeoSensePlus.Mqtt
         public static void AddMqtt(this IServiceCollection services)
         {
             services.AddSingleton<IMqttService, MqttService>();
+            services.AddTransient<IMqttClientService, MqttClientService>();
             services.AddHostedService<MqttHostedService>();
         }
     }
