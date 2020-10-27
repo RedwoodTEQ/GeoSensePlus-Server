@@ -87,7 +87,5 @@ namespace GeoSensePlus.Mqtt
                                                              .Build();
             await _mqttServer.PublishAsync(mqttMsg, CancellationToken.None);
         }
-
     }
-
 }

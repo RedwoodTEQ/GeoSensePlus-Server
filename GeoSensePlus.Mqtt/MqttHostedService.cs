@@ -1,9 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using MQTTnet;
 using MQTTnet.Client.Receiving;
-using MQTTnet.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
