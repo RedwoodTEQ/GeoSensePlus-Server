@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 using GeoSensePlus.App.AssetTracking;
 using GeoSensePlus.App.ProgressTracking;
 using GeoSensePlus.Core;
-using GeoSensePlus.Server.Mqtt;
+using GeoSensePlus.Mqtt;
 using GeoSensePlus.Firestore;
 using System.Security.Cryptography.Xml;
 using Swashbuckle.AspNetCore.Swagger;

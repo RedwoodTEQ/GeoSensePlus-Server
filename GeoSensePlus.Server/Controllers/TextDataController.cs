@@ -1,5 +1,5 @@
 ﻿using GeoSensePlus.Core.MessageProcessing;
-using GeoSensePlus.Server.Mqtt;
+using GeoSensePlus.Mqtt;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

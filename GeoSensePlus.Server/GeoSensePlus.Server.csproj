@@ -17,7 +17,6 @@
     <PackageReference Include="MatBlazor" Version="2.6.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.8" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
-    <PackageReference Include="mqttnet" Version="3.0.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
     <PackageReference Include="Westwind.AspnetCore.LiveReload" Version="0.2.8" />
   </ItemGroup>
@@ -26,5 +25,6 @@
     <ProjectReference Include="..\GeoSensePlus.App.AssetTracking\GeoSensePlus.App.AssetTracking.csproj" />
     <ProjectReference Include="..\GeoSensePlus.App.ProgressTracking\GeoSensePlus.App.ProgressTracking.csproj" />
     <ProjectReference Include="..\GeoSensePlus.Mongo\GeoSensePlus.Mongo.csproj" />
+    <ProjectReference Include="..\GeoSensePlus.Mqtt\GeoSensePlus.Mqtt.csproj" />
   </ItemGroup>
 </Project>
