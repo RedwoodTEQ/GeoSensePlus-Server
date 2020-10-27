@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace GeoSensePlus.Firestore.ConfigUtils
 {
@@ -55,15 +56,11 @@ namespace GeoSensePlus.Firestore.ConfigUtils
 
         static public string GetConfigFile()
         {
-            if (_configFile != null)
-            {
-                return _configFile;
-            }
-            else
+            if (_configFile == null)
             {
                 _configFile = $"{GetConfigDirPath()}/{Variables.configFile}";
-                return _configFile;
             }
+            return Path.GetFullPath(_configFile);   // normalize '/' or '\' according to OS
         }
     }
 }
