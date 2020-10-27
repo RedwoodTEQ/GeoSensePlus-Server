@@ -15,6 +15,7 @@ namespace GeoSensePlus.Cli
         {
             await new AssemblyCommandExecutor().ExecuteAsync(args, c =>
             {
+                c.AddHttpClient();
                 c.AddMongoDb(new MongoDbSetting { DatabaseName = "GeoSensePlus" });
                 c.AddFirestoreServices();
             });
