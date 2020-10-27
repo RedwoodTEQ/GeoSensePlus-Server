@@ -39,5 +39,10 @@ namespace GeoSensePlus.Cli.Commands
                 while (Console.ReadLine() != "q") ;
             });
         }
+
+        public void UpdateTemperature()
+        {
+
+        }
     }
 }
