@@ -16,6 +16,7 @@
   - /system/info
   - /system/firebase-key
 - Upgrade all dependent projects to .net core 3.1
+- Upgrade MqttNet package
 - Add blazer server and razor pages support
 
 ### v1.1.1
