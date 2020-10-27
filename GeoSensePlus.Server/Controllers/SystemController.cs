@@ -12,23 +12,25 @@ namespace GeoSensePlus.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class HealthzController: Controller
+    public class SystemController: Controller
     {
         IConfigOperator _configOperator;
 
-        public HealthzController(IConfigOperator configOperator)
+        public SystemController(IConfigOperator configOperator)
         {
             _configOperator = configOperator;
         }
 
-        [HttpGet]
-        public string Get()
+        [HttpGet("firebase-key")]
+        public string FirebaseKey()
         {
-            return $@"
-Healthz responds correctly
+            return _configOperator.GetFirebaseKey();
+        }
 
-Current key file: {_configOperator.GetFirebaseKey()}
-";
+        [HttpGet("version")]
+        public string Version()
+        {
+            return new SystemInfo().GetInfo();
         }
     }
 }

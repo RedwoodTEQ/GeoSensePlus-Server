@@ -12,6 +12,9 @@
 
 - Add REST API doc using Swashbuckle
 - Add REST API controllers (not fully implemented)
+- Implement API: 
+  - /system/info
+  - /system/firebase-key
 - Upgrade all dependent projects to .net core 3.1
 - Add blazer server and razor pages support
 
