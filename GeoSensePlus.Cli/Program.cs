@@ -8,6 +8,7 @@ using GeoSensePlus.Firestore;
 using NetCoreUtils.Database.MongoDb;
 using Microsoft.Extensions.Logging;
 using GeoSensePlus.Mqtt;
+using NetCoreUtils.Database.InfluxDb;
 
 namespace GeoSensePlus.Cli
 {
@@ -23,6 +24,10 @@ namespace GeoSensePlus.Cli
                 services.AddLogging(c => c.AddConsole());
                 services.AddTransient<IMqttService, MqttService>();
                 services.AddTransient<IMqttClientService, MqttClientService>();
+                services.AddInfluxDb(new InfluxDbSetting
+                {
+                    Token = "4R1aL7t1hZolnMQezXQxkhhMGlqYUBy7g5Ue8RQAQ9wHn_XIHJN_2EpFqaYcD9F2wv_lt-kHqP8Ym99c7Gv5pw=="
+                });
             });
         }
 

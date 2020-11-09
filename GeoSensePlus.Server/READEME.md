@@ -13,11 +13,13 @@
 - Add REST API doc using Swashbuckle
 - Add REST API controllers (not fully implemented)
 - Implement API: 
-  - /system/info
-  - /system/firebase-key
+  - get /system/info
+  - get /system/firebase-key
+  - post /metrics
 - Upgrade all dependent projects to .net core 3.1
 - Upgrade MqttNet package
 - Add blazer server and razor pages support
+- Add support for InfluxDB
 
 ### v1.1.1
 

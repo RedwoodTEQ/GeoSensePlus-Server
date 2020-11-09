@@ -7,6 +7,11 @@ using GeoSensePlus.Firestore;
 using GeoSensePlus.Firestore.Services;
 using GeoSensePlus.Mqtt;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using NetCoreUtils.Database.InfluxDb;
+using System.Text.Json;
+using System.Text;
 
 namespace GeoSensePlus.Cli.Commands
 {
@@ -49,9 +54,35 @@ namespace GeoSensePlus.Cli.Commands
             });
         }
 
-        public void UpdateTemperature()
+        public async Task UpdateTemperature()
         {
+            const string urlRoot = "https://localhost:5001/api/metrics";
+            HttpClient _httpClient;
 
+            // bypass the certificate
+            _httpClient = new HttpClient(
+                new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true }
+            );
+
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
+            _httpClient.DefaultRequestHeaders.Add("User-Agent", "GeoSense+ CLI");
+
+            // data
+            Random value = new Random();
+            PointModel<double> model = new PointModel<double>();
+            model.Measurement = "TestMeasurement";
+            model.Tags["TestTag1"] = "SomeTag1";
+            model.Tags["TestTag2"] = "SomeTag2";
+            model.Tags["TestTag3"] = "SomeTag3";
+            model.Fields["TestValu1"] = value.NextDouble() * 100;
+            model.Fields["TestValu2"] = value.NextDouble() * 100;
+
+            string json = JsonSerializer.Serialize(model);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // post
+            await _httpClient.PostAsync(urlRoot, data);
         }
 
         public async Task MqttService()

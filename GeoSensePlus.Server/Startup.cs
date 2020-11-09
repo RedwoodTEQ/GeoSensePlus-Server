@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using NetCoreUtils.Database.MongoDb;
 using GeoSensePlus.Server.Data;
 using Westwind.AspNetCore.LiveReload;
+using NetCoreUtils.Database.InfluxDb;
 
 namespace GeoSensePlus.Server
 {
@@ -62,6 +63,10 @@ namespace GeoSensePlus.Server
             services.AddProgressTracking();
 
             services.AddMongoDb(new MongoDbSetting { DatabaseName = "GeoSensePlus" });
+            services.AddInfluxDb(new InfluxDbSetting
+            {
+                Token = "4R1aL7t1hZolnMQezXQxkhhMGlqYUBy7g5Ue8RQAQ9wHn_XIHJN_2EpFqaYcD9F2wv_lt-kHqP8Ym99c7Gv5pw=="
+            });
 
             services.AddFirestoreServices();
             services.AddSwaggerGen(x => {
