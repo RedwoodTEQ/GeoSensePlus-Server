@@ -11,6 +11,13 @@ services:
       - mongodb-config:/data/configdb
     networks:
       - geosenseplusnetwork
+  
+  influxdb:
+    image: quay.io/influxdb/influxdb:v2.0.1
+    ports:
+      - 9999:8086
+    networks:
+      - geosenseplusnetwork
 
 networks:
   geosenseplusnetwork:
@@ -18,4 +25,5 @@ networks:
 volumes:
   mongodb-data:
   mongodb-config:
-
+  postgresqldata:
+  redisdata:
