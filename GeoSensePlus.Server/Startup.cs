@@ -65,7 +65,7 @@ namespace GeoSensePlus.Server
             services.AddMongoDb(new MongoDbSetting { DatabaseName = "GeoSensePlus" });
             services.AddInfluxDb(new InfluxDbSetting
             {
-                Token = "4R1aL7t1hZolnMQezXQxkhhMGlqYUBy7g5Ue8RQAQ9wHn_XIHJN_2EpFqaYcD9F2wv_lt-kHqP8Ym99c7Gv5pw=="
+                Token = "ky6JucdlHoiCsDta7BxaagInhk33L9D52sK63CzAYB3S5Ptvvxpqdmn133eq-bWQ31uhH06Kkk7mmwFyhFKfuQ=="
             });
 
             services.AddFirestoreServices();
