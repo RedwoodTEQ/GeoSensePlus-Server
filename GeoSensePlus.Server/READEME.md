@@ -8,7 +8,7 @@
 
 ## Release Notes
 
-### v1.2.0-working
+### v1.2.0-dev
 
 - Add REST API doc using Swashbuckle
 - Add REST API controllers (not fully implemented)
@@ -17,6 +17,7 @@
   - get /system/firebase-key
   - post /metrics
   - get /metrics/metric/unit/range
+- rename api /textdata to /api/data
 - Upgrade all dependent projects to .net core 3.1
 - Upgrade MqttNet package
 - Add blazer server and razor pages support
