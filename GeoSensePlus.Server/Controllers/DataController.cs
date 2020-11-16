@@ -24,13 +24,13 @@ namespace GeoSensePlus.Server.Controllers
     }
 
     [ApiController]
-    [Route("[controller]")]
-    public class TextDataController : Controller
+    [Route("api/[controller]")]
+    public class DataController : Controller
     {
         private readonly IMessageEngine _messageEngine;
         private IMqttService _mqttSvc;
 
-        public TextDataController(IMessageEngine messageEngine, IMqttService mqttSvc)
+        public DataController(IMessageEngine messageEngine, IMqttService mqttSvc)
         {
             _messageEngine = messageEngine;
             _mqttSvc = mqttSvc;
