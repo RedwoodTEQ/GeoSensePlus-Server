@@ -17,7 +17,7 @@
   - get /system/firebase-key
   - post /metrics
   - get /metrics/metric/unit/range
-- rename api /textdata to /api/data
+- rename api /textdata to /api/message
 - Upgrade all dependent projects to .net core 3.1
 - Upgrade MqttNet package
 - Add blazer server and razor pages support
