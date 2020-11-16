@@ -11,6 +11,7 @@ namespace GeoSensePlus.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Produces("application/json")]
     public class MetricsController : Controller
     {
         IInfluxWriter _writer;
@@ -59,7 +60,7 @@ namespace GeoSensePlus.Server.Controllers
             }
             var data = await _reader.QueryAsync(metric, queryRange);
             if (data != null)
-                return Json(data.ToJson());
+                return Json(data);
             else
                 return NotFound();
         }
