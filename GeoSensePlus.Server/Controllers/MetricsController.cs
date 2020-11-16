@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreUtils.Database.InfluxDb;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
 
 namespace GeoSensePlus.Server.Controllers
 {
@@ -13,10 +14,14 @@ namespace GeoSensePlus.Server.Controllers
     public class MetricsController : Controller
     {
         IInfluxWriter _writer;
+        IInfluxReader _reader;
+        ILogger<MetricsController> _logger;
 
-        public MetricsController(IInfluxWriter writer)
+        public MetricsController(IInfluxWriter writer, IInfluxReader reader, ILogger<MetricsController> logger)
         {
             _writer = writer;
+            _reader = reader;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -33,6 +38,30 @@ namespace GeoSensePlus.Server.Controllers
                 Console.WriteLine("data == null");
             }
             return Ok("ok");
+        }
+
+        [HttpGet("{metric}/{unit}/{range}")]
+        public async Task<IActionResult> Get(string metric, string unit, int range)
+        {
+            _logger.LogInformation($"metric: {metric}; unit: {unit}; range: {range}");
+            QueryRange queryRange;
+            switch (unit)
+            {
+                case "hour":
+                    queryRange = new QueryRange(range, RangeUnit.hour);
+                    break;
+                case "day":
+                    queryRange = new QueryRange(range, RangeUnit.day);
+                    break;
+                default:
+                    queryRange = new QueryRange(range, RangeUnit.minute);
+                    break;
+            }
+            var data = await _reader.QueryAsync(metric, queryRange);
+            if (data != null)
+                return Json(data.ToJson());
+            else
+                return NotFound();
         }
     }
 }
