@@ -16,6 +16,7 @@
   - get /system/info
   - get /system/firebase-key
   - post /metrics
+  - get /metrics/metric/unit/range
 - Upgrade all dependent projects to .net core 3.1
 - Upgrade MqttNet package
 - Add blazer server and razor pages support
