@@ -14,7 +14,6 @@
 
 ### v1.2.0-dev
 
-- Add OpenAPI support
 - Add REST API controllers (not fully implemented)
 - Implement API: 
   - get /system/info
@@ -26,6 +25,7 @@
 - Upgrade all dependent projects to .net core 3.1
 - Upgrade MqttNet package
 - Add support for InfluxDB
+- Add support for OpenAPI
 
 **Non-CLI part**
 
