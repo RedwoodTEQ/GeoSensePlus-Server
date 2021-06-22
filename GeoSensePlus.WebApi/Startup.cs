@@ -1,3 +1,8 @@
+using GeoSensePlus.App.AssetTracking;
+using GeoSensePlus.App.ProgressTracking;
+using GeoSensePlus.Core;
+using GeoSensePlus.Firestore;
+using GeoSensePlus.Mqtt;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -7,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using NetCoreUtils.Database.InfluxDb;
+using NetCoreUtils.Database.MongoDb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +35,22 @@ namespace GeoSensePlus.WebApi
         {
 
             services.AddControllers();
+            
+            //services.AddGrpc();
+            services.AddMqtt();
+
+            services.AddGeoSensePlusCore();
+            services.AddAssetTracking();
+            services.AddProgressTracking();
+
+            services.AddMongoDb(new MongoDbSetting { DatabaseName = "GeoSensePlus" });
+            services.AddInfluxDb(new InfluxDbSetting
+            {
+                Token = "ky6JucdlHoiCsDta7BxaagInhk33L9D52sK63CzAYB3S5Ptvvxpqdmn133eq-bWQ31uhH06Kkk7mmwFyhFKfuQ=="
+            });
+
+            services.AddFirestoreServices();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeoSensePlus.WebApi", Version = "v1" });
