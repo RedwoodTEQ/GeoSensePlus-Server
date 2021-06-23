@@ -9,6 +9,8 @@
 ## TODOs
 
 - test Dockerfile
+- test controllers
+- may need to remove mogondb dependency
 
 ## Release Notes
 
