@@ -1,6 +1,7 @@
 using GeoSensePlus.App.AssetTracking;
 using GeoSensePlus.App.ProgressTracking;
 using GeoSensePlus.Core;
+using GeoSensePlus.Data;
 using GeoSensePlus.Firestore;
 using GeoSensePlus.Mqtt;
 using Microsoft.AspNetCore.Builder;
@@ -43,6 +44,7 @@ namespace GeoSensePlus.WebApi
             services.AddAssetTracking();
             services.AddProgressTracking();
 
+            services.AddPostgres(Configuration);
             services.AddMongoDb(new MongoDbSetting { DatabaseName = "GeoSensePlus" });
             services.AddInfluxDb(new InfluxDbSetting
             {

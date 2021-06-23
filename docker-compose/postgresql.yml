@@ -9,7 +9,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=open
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=JwtTestDb
+      - POSTGRES_DB=GeoSensePlus
       - POSTGRES_PORT=5432
       # - PGDATA="/data/postgres"  # PGDATA: /data/postgres
     volumes:
