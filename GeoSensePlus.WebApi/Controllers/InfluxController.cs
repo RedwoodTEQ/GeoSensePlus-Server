@@ -12,13 +12,13 @@ namespace GeoSensePlus.WebApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Produces("application/json")]
-    public class MetricsController : Controller
+    public class InfluxController : Controller
     {
         IInfluxWriter _writer;
         IInfluxReader _reader;
-        ILogger<MetricsController> _logger;
+        ILogger<InfluxController> _logger;
 
-        public MetricsController(IInfluxWriter writer, IInfluxReader reader, ILogger<MetricsController> logger)
+        public InfluxController(IInfluxWriter writer, IInfluxReader reader, ILogger<InfluxController> logger)
         {
             _writer = writer;
             _reader = reader;
@@ -60,7 +60,10 @@ namespace GeoSensePlus.WebApi.Controllers
             }
             var data = await _reader.QueryAsync(metric, queryRange);
             if (data != null)
+            {
                 return Json(data);
+                //return new JsonResult(data.ToJson());  // TODO: test when change parent class to ControllerBase
+            }    
             else
                 return NotFound();
         }
