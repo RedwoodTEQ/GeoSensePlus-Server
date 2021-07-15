@@ -12,8 +12,9 @@ services:
       - POSTGRES_DB=GeoSensePlus
       - POSTGRES_PORT=5432
       # - PGDATA="/data/postgres"  # PGDATA: /data/postgres
-    volumes:
-      - postgresql-data-11.12:/var/lib/postgresql/data
+
+    #volumes:
+      #- postgresql-data-11.12:/var/lib/postgresql/data
     networks:
       - geosenseplusnetwork
     # restart: unless-stopped
@@ -21,5 +22,5 @@ services:
 networks:
   geosenseplusnetwork:
 
-volumes:
-  postgresql-data-11.12:
+#volumes:
+#  postgresql-data-11.12:
