@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels
 {
-    public class MeasureEntity
+    public class TopicEntity
     {
-        public int MetricId { get; set; }
+        public int TopicId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }
 
-    public class Measure : MeasureEntity
+    /// <summary>
+    /// Subscription topic
+    /// Used by MQTT or any other notification engines
+    /// </summary>
+    public class Topic : TopicEntity
     {
-        //public Area CachedArea { get; set; }
-        public List<Sensor> Sensors { get; set; } = new List<Sensor>();
     }
 }
