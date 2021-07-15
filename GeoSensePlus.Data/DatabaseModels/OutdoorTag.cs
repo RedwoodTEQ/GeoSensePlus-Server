@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels
 {
-    public class GeofenceEntity
+    public class OutdoorTagEntity
     {
-        public int GeofenceId { get; set; }
+        public int OutdoorTagId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }
 
-    public class Geofence : GeofenceEntity
+    public class OutdoorTag : OutdoorTagEntity
     {
+        public Target Target { get; set; }
     }
 }

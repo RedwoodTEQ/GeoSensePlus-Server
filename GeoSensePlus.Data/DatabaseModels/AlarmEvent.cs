@@ -8,8 +8,6 @@ namespace GeoSensePlus.Data.DatabaseModels
 {
     public class AlarmEventEntity
     {
-        public int Id { get; set; }
-
         /// <summary>
         /// Values:
         /// 4: fatal
@@ -30,7 +28,8 @@ namespace GeoSensePlus.Data.DatabaseModels
         public string Description { get; set; }
     }
 
-    public class AlarmEvent
+    public class AlarmEvent : AlarmEventEntity
     {
+        public int AlarmEventId { get; set; }
     }
 }

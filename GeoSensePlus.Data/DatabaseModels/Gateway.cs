@@ -8,12 +8,13 @@ namespace GeoSensePlus.Data.DatabaseModels
 {
     public class GatewayEntity
     {
-        public int Id { get; set; }
+        public int GatewayId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }
 
-    public class Gateway
+    public class Gateway : GatewayEntity
     {
+        public List<Edge> Edges { get; set; } = new List<Edge>();
     }
 }

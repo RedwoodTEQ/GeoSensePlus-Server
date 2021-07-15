@@ -8,12 +8,16 @@ namespace GeoSensePlus.Data.DatabaseModels
 {
     public class TargetEntity
     {
-        public int Id { get; set; }
+        public int TargetId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }
 
     public class Target : TargetEntity
     {
+        //public Area CacheArea { get; set; }
+
+        public List<IndoorTag> BleTags { get; set; } = new List<IndoorTag>();
+        public List<OutdoorTag> GpsTags { get; set; } = new List<OutdoorTag>();
     }
 }
