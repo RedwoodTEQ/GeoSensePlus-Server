@@ -8,7 +8,7 @@ namespace GeoSensePlus.Data.DatabaseModels
 {
     public class MeasureEntity
     {
-        public int MetricId { get; set; }
+        public int MeasureId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }

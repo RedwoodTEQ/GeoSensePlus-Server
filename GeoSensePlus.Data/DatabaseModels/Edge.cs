@@ -17,6 +17,6 @@ namespace GeoSensePlus.Data.DatabaseModels
     {
         public Area Area { get; set; }
         public Gateway Gateway { get; set; }
-        public List<IndoorTag> BleTags { get; set; } = new List<IndoorTag>();
+        public List<CellTag> BleTags { get; set; } = new List<CellTag>();
     }
 }

@@ -16,6 +16,8 @@ namespace GeoSensePlus.Data.DatabaseModels
     public class Area : AreaEntity
     {
         public Floorplan Floorplan { get; set; }
+
+        public int EdgeId { get; set; }
         public Edge Edge { get; set; }
 
         //public List<Target> CacheTargets { get; set; } = new List<Target>();
