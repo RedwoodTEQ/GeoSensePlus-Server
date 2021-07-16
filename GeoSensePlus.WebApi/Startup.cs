@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using NetCoreUtils.Database;
 using NetCoreUtils.Database.InfluxDb;
 using NetCoreUtils.Database.MongoDb;
 using System;
@@ -36,7 +37,8 @@ namespace GeoSensePlus.WebApi
         {
 
             services.AddControllers();
-            
+            services.AddRepositories<ApplicationDbContext>();
+
             //services.AddGrpc();
             services.AddMqtt();
 
