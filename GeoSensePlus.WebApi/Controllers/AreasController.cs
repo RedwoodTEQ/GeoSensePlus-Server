@@ -15,50 +15,43 @@ namespace GeoSensePlus.WebApi.Controllers
     [ApiController]
     public class AreasController : ControllerBase
     {
-        IRepository<Area> _repo;
-        IRepositoryController<Area> _controller;
+        IControllerUtil<Area> _controllerUtil;
 
-        public AreasController(IRepository<Area> repoArea)
+        public AreasController(IControllerUtil<Area> controllerUtil)
         {
-            _repo = repoArea;
-            _controller = new RepositoryController<Area>(_repo);
+            _controllerUtil = controllerUtil;
         }
 
-        // GET: api/Areas
         [HttpGet]
         public IEnumerable<Area> Get()
         {
-            return _controller.Get();
+            return _controllerUtil.Get();
         }
 
-        // GET api/Areas/5
         [HttpGet("{id}")]
         public ActionResult<Area> Get(int id)
         {
-            return _controller.Get(id);
+            return _controllerUtil.Get(id);
         }
 
-        // POST api/Areas
         [HttpPost]
         public ActionResult<AreaEntity> Post([FromBody] AreaEntity value)
         {
             var area = new Area { Name = value.Name, Description = value.Description, EdgeId = value.EdgeId};
-            return _controller.Post(area);
+            return _controllerUtil.Post(area);
         }
 
-        // PUT api/Areas/5
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] AreaEntity value)
         {
             var area = new Area {AreaId = id, Name = value.Name, Description = value.Description, EdgeId = value.EdgeId};
-            return _controller.Put(area);
+            return _controllerUtil.Put(area);
         }
 
-        // DELETE api/Areas/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            return _controller.Delete(id);
+            return _controllerUtil.Delete(id);
         }
     }
 }

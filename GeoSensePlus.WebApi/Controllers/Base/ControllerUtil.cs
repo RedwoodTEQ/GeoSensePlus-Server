@@ -1,5 +1,6 @@
 ﻿using GeoSensePlus.Data.DatabaseModels.Base;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using NetCoreUtils.Database;
 using System.Collections.Generic;
 
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 
 namespace GeoSensePlus.WebApi.Controllers.Base
 {
-    public interface IRepositoryController<TEntity> where TEntity : class, IIdAvailable<int>
+    public interface IControllerUtil<TEntity> where TEntity : class, IIdAvailable<int>
     {
         ActionResult Delete(int id);
         IEnumerable<TEntity> Get();
@@ -16,11 +17,11 @@ namespace GeoSensePlus.WebApi.Controllers.Base
         ActionResult Put(TEntity entity);
     }
 
-    public class RepositoryController<TEntity> : ControllerBase, IRepositoryController<TEntity> where TEntity : class, IIdAvailable<int>
+    public class ControllerUtil<TEntity> : ControllerBase, IControllerUtil<TEntity> where TEntity : class, IIdAvailable<int>
     {
         private readonly IRepository<TEntity> _repo;
 
-        public RepositoryController(IRepository<TEntity> repo)
+        public ControllerUtil(IRepository<TEntity> repo)
         {
             _repo = repo;
         }
@@ -67,6 +68,14 @@ namespace GeoSensePlus.WebApi.Controllers.Base
             _repo.Commit();
 
             return NoContent();
+        }
+    }
+
+    public static class RepositoryControllerExt
+    {
+        public static void AddControllerUtil(this IServiceCollection services)
+        {
+            services.AddTransient(typeof(IControllerUtil<>), typeof(ControllerUtil<>));
         }
     }
 }

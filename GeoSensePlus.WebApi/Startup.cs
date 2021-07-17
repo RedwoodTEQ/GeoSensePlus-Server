@@ -4,6 +4,7 @@ using GeoSensePlus.Core;
 using GeoSensePlus.Data;
 using GeoSensePlus.Firestore;
 using GeoSensePlus.Mqtt;
+using GeoSensePlus.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -52,6 +53,7 @@ namespace GeoSensePlus.WebApi
                 Token = "ky6JucdlHoiCsDta7BxaagInhk33L9D52sK63CzAYB3S5Ptvvxpqdmn133eq-bWQ31uhH06Kkk7mmwFyhFKfuQ=="
             });
             services.AddRepositories<ApplicationDbContext>();
+            services.AddControllerUtil();
 
             services.AddFirestoreServices();
 
