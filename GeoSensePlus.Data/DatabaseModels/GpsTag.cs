@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeoSensePlus.Data.DatabaseModels.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels
 {
-    public class GpsTagEntity
+    public class GpsTagEntity : IIdAvailable<int>
     {
         public int GpsTagId { get; set; }
         public string Name { get; set; }
@@ -16,6 +17,11 @@ namespace GeoSensePlus.Data.DatabaseModels
         public double Latitude { get; set; }
         public double Altitude { get; set; }
         public DateTime TimeStamp { get; set; }
+
+        public int GetId()
+        {
+            return GpsTagId;
+        }
     }
 
     public class GpsTag : GpsTagEntity

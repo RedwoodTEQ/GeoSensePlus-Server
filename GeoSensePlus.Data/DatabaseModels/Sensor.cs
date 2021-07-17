@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeoSensePlus.Data.DatabaseModels.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels
 {
-    public class SensorEntity
+    public class SensorEntity : IIdAvailable<int>
     {
         public int SensorId { get; set; }
         public string Name { get; set; }
@@ -25,6 +26,11 @@ namespace GeoSensePlus.Data.DatabaseModels
         public string Unit { get; set; }
 
         public DateTime TimeStamp { get; set; }
+
+        public int GetId()
+        {
+            return SensorId;
+        }
     }
 
     public class Sensor : SensorEntity
