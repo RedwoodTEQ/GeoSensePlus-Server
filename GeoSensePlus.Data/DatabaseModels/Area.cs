@@ -11,13 +11,20 @@ namespace GeoSensePlus.Data.DatabaseModels
         public int AreaId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public int EdgeId { get; set; }
     }
 
     public class Area : AreaEntity
     {
-        public Floorplan Floorplan { get; set; }
+        public Area() { }
 
-        public int EdgeId { get; set; }
+        public Area(AreaEntity areaEntity)
+        {
+            this.Name = areaEntity.Name;
+            this.Description = areaEntity.Description;
+        }
+
+        public Floorplan Floorplan { get; set; }
         public Edge Edge { get; set; }
 
         //public List<Target> CacheTargets { get; set; } = new List<Target>();

@@ -14,9 +14,9 @@ namespace GeoSensePlus.WebApi.Controllers
     [ApiController]
     public class AreaController : ControllerBase
     {
-        Repository<Area> _repoArea;
+        IRepository<Area> _repoArea;
 
-        public AreaController(Repository<Area> repoArea)
+        public AreaController(IRepository<Area> repoArea)
         {
             _repoArea = repoArea;
         }
@@ -40,9 +40,9 @@ namespace GeoSensePlus.WebApi.Controllers
 
         // POST api/<AreaController>
         [HttpPost]
-        public ActionResult<Area> Post([FromBody] string value)
+        public ActionResult<AreaEntity> Post([FromBody] AreaEntity areaEntity)
         {
-            var area = new Area { Name = value };
+            var area = new Area(areaEntity);
             _repoArea.Add(area);
             _repoArea.Commit();
 
