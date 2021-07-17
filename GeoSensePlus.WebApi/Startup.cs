@@ -37,7 +37,6 @@ namespace GeoSensePlus.WebApi
         {
 
             services.AddControllers();
-            services.AddRepositories<ApplicationDbContext>();
 
             //services.AddGrpc();
             services.AddMqtt();
@@ -52,6 +51,7 @@ namespace GeoSensePlus.WebApi
             {
                 Token = "ky6JucdlHoiCsDta7BxaagInhk33L9D52sK63CzAYB3S5Ptvvxpqdmn133eq-bWQ31uhH06Kkk7mmwFyhFKfuQ=="
             });
+            services.AddRepositories<ApplicationDbContext>();
 
             services.AddFirestoreServices();
 
