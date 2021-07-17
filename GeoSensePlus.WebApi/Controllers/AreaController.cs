@@ -29,20 +29,24 @@ namespace GeoSensePlus.WebApi.Controllers
         }
 
         // GET api/<AreaController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        [HttpGet("{id}")]
+        public ActionResult<Area> Get(int id)
+        {
+            var result = _repoArea.Get(id);
+            if (result is null)
+                return NotFound();
+            return result;
+        }
 
         // POST api/<AreaController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<Area> Post([FromBody] string value)
         {
-            _repoArea.Add(new Area { Name = value });
+            var area = new Area { Name = value };
+            _repoArea.Add(area);
             _repoArea.Commit();
 
-            //return CreatedAtAction(nameof(GetItem), new { id = item.Id }, item.AsDto());
+            return CreatedAtAction(nameof(Get), new { id = area.AreaId }, area);
         }
 
         //// PUT api/<AreaController>/5
@@ -52,9 +56,12 @@ namespace GeoSensePlus.WebApi.Controllers
         //}
 
         //// DELETE api/<AreaController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+            _repoArea.Remove(a => a.AreaId == id);
+            _repoArea.Commit();
+            return NoContent();
+        }
     }
 }
