@@ -1,4 +1,5 @@
 ﻿using GeoSensePlus.Data.DatabaseModels;
+using GeoSensePlus.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreUtils.Database;
 using System;
@@ -14,54 +15,43 @@ namespace GeoSensePlus.WebApi.Controllers
     [ApiController]
     public class EdgesController : ControllerBase
     {
-        IRepository<Edge> _repo;
+        IControllerUtil<Edge> _controllerUtil;
 
-        public EdgesController(IRepository<Edge> repoEdge)
+        public EdgesController(IControllerUtil<Edge> controllerUtil)
         {
-            _repo = repoEdge;
+            _controllerUtil = controllerUtil;
         }
 
-        // GET: api/<EdgeController>
         [HttpGet]
         public IEnumerable<Edge> Get()
         {
-            return _repo.GetAllNoTracking();
+            return _controllerUtil.Get();
         }
 
-        // GET api/<EdgeController>/5
         [HttpGet("{id}")]
         public ActionResult<Edge> Get(int id)
         {
-            var result = _repo.Get(id);
-            if (result is null)
-                return NotFound();
-            return result;
+            return _controllerUtil.Get(id);
         }
 
-        // POST api/<EdgeController>
         [HttpPost]
         public ActionResult<EdgeEntity> Post([FromBody] EdgeEntity value)
         {
-            var edge = new Edge { Name = value.Name, Description = value.Description};
-            _repo.Add(edge);
-            _repo.Commit();
-
-            return CreatedAtAction(nameof(Get), new { id = edge.EdgeId }, edge);
+            var area = new Edge{ Name = value.Name, Description = value.Description };
+            return _controllerUtil.Post(area);
         }
 
-        // PUT api/<EdgeController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
+        [HttpPut("{id}")]
+        public ActionResult Put(int id, [FromBody] EdgeEntity value)
+        {
+            var edge = new Edge { EdgeId = id, Name = value.Name, Description = value.Description };
+            return _controllerUtil.Put(edge);
+        }
 
-        // DELETE api/<EdgeController>/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            _repo.Remove(i => i.EdgeId == id);
-            _repo.Commit();
-            return NoContent();
+            return _controllerUtil.Delete(id);
         }
     }
 }
