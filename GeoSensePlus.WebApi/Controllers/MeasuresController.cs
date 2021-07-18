@@ -9,39 +9,39 @@ namespace GeoSensePlus.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GpsTagsController : ControllerBase
+    public class MeasuresController : ControllerBase
     {
-        IControllerUtil<GpsTag> _controllerUtil;
+        IControllerUtil<Measure> _controllerUtil;
 
-        public GpsTagsController(IControllerUtil<GpsTag> controllerUtil)
+        public MeasuresController(IControllerUtil<Measure> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }
 
         [HttpGet]
-        public IEnumerable<GpsTag> Get()
+        public IEnumerable<Measure> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<GpsTag> Get(int id)
+        public ActionResult<Measure> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<GpsTagEntity> Post([FromBody] GpsTagEntity value)
+        public ActionResult<MeasureEntity> Post([FromBody] MeasureEntity value)
         {
-            var tag = new GpsTag { Name = value.Name, Description = value.Description };
-            return _controllerUtil.Post(tag);
+            var measure = new Measure { Name = value.Name, Description = value.Description, Labels = value.Labels };
+            return _controllerUtil.Post(measure);
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] GpsTagEntity value)
+        public ActionResult Put(int id, [FromBody] MeasureEntity value)
         {
-            var tag = new GpsTag {GpsTagId = id, Name = value.Name, Description = value.Description };
-            return _controllerUtil.Put(tag);
+            var measure = new Measure {MeasureId = id, Name = value.Name, Description = value.Description, Labels = value.Labels };
+            return _controllerUtil.Put(measure);
         }
 
         [HttpDelete("{id}")]
