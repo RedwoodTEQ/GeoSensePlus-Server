@@ -9,39 +9,39 @@ namespace GeoSensePlus.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CellTagsController : ControllerBase
+    public class GpsTagsController: ControllerBase
     {
-        IControllerUtil<CellTag> _controllerUtil;
+        IControllerUtil<GpsTag> _controllerUtil;
 
-        public CellTagsController(IControllerUtil<CellTag> controllerUtil)
+        public GpsTagsController(IControllerUtil<GpsTag> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }
 
         [HttpGet]
-        public IEnumerable<CellTag> Get()
+        public IEnumerable<GpsTag> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CellTag> Get(int id)
+        public ActionResult<GpsTag> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<CellTagEntity> Post([FromBody] CellTagEntity value)
+        public ActionResult<GpsTagEntity> Post([FromBody] GpsTagEntity value)
         {
-            var celltag = new CellTag { Name = value.Name, Description = value.Description };
-            return _controllerUtil.Post(celltag);
+            var tag = new GpsTag { Name = value.Name, Description = value.Description };
+            return _controllerUtil.Post(tag);
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] CellTagEntity value)
+        public ActionResult Put(int id, [FromBody] GpsTagEntity value)
         {
-            var celltag = new CellTag { CellTagId = id, Name = value.Name, Description = value.Description };
-            return _controllerUtil.Put(celltag);
+            var tag = new GpsTag {GpsTagId = id, Name = value.Name, Description = value.Description };
+            return _controllerUtil.Put(tag);
         }
 
         [HttpDelete("{id}")]
@@ -49,5 +49,6 @@ namespace GeoSensePlus.WebApi.Controllers
         {
             return _controllerUtil.Delete(id);
         }
+
     }
 }

@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels
 {
-    public class GpsTagEntity : IIdAvailable<int>
+    public class GpsTagEntity
     {
-        public int GpsTagId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -17,15 +16,17 @@ namespace GeoSensePlus.Data.DatabaseModels
         public double Latitude { get; set; }
         public double Altitude { get; set; }
         public DateTime TimeStamp { get; set; }
+    }
+
+    public class GpsTag : GpsTagEntity, IIdAvailable<int>
+    {
+        public Target Target { get; set; }
+
+        public int GpsTagId { get; set; }
 
         public int GetId()
         {
             return GpsTagId;
         }
-    }
-
-    public class GpsTag : GpsTagEntity
-    {
-        public Target Target { get; set; }
     }
 }
