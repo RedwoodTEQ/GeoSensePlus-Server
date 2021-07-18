@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels
 {
-    public class SensorEntity : IIdAvailable<int>
+    /// <summary>
+    /// Represent a "field" in influxdb
+    /// </summary>
+    public class SensorEntity
     {
-        public int SensorId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -19,6 +21,12 @@ namespace GeoSensePlus.Data.DatabaseModels
         public string Type { get; set; }
 
         /// <summary>
+        /// Multiple lables are separated by ';'
+        /// Used as influxdb tags
+        /// </summary>
+        public string Labels { get; set; }
+
+        /// <summary>
         /// The latest reported value
         /// </summary>
         public double Value { get; set; }
@@ -26,17 +34,19 @@ namespace GeoSensePlus.Data.DatabaseModels
         public string Unit { get; set; }
 
         public DateTime TimeStamp { get; set; }
+    }
+
+    public class Sensor : SensorEntity, IIdAvailable<int>
+    {
+        //public Area CachedArea { get; set; }
+        public Measure Measure { get; set; }
+        public Edge Edge { get; set; }
+
+        public int SensorId { get; set; }
 
         public int GetId()
         {
             return SensorId;
         }
-    }
-
-    public class Sensor : SensorEntity
-    {
-        //public Area CachedArea { get; set; }
-        public Measure Measure { get; set; }
-        public Edge Edge { get; set; }
     }
 }
