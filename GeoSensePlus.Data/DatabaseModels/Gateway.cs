@@ -7,20 +7,21 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels
 {
-    public class GatewayEntity : IIdAvailable<int>
+    public class GatewayEntity
     {
-        public int GatewayId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+    }
+
+    public class Gateway : GatewayEntity, IIdAvailable<int>
+    {
+        public List<Edge> Edges { get; set; } = new List<Edge>();
+
+        public int GatewayId { get; set; }
 
         public int GetId()
         {
             return GatewayId;
         }
-    }
-
-    public class Gateway : GatewayEntity
-    {
-        public List<Edge> Edges { get; set; } = new List<Edge>();
     }
 }
