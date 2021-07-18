@@ -7,20 +7,21 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels
 {
-    public class BuildingEntity : IIdAvailable<int>
+    public class BuildingEntity
     {
-        public int BuildingId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+    }
+
+    public class Building : BuildingEntity, IIdAvailable<int>
+    {
+        public List<Floorplan> Floorplans { get; set; } = new List<Floorplan>();
+
+        public int BuildingId { get; set; }
 
         public int GetId()
         {
             return BuildingId;
         }
-    }
-
-    public class Building : BuildingEntity
-    {
-        public List<Floorplan> Floorplans { get; set; } = new List<Floorplan>();
     }
 }
