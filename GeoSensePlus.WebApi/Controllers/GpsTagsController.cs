@@ -33,14 +33,29 @@ namespace GeoSensePlus.WebApi.Controllers
         [HttpPost]
         public ActionResult<GpsTagEntity> Post([FromBody] GpsTagEntity value)
         {
-            var tag = new GpsTag { Name = value.Name, Description = value.Description };
+            var tag = new GpsTag {
+                Name = value.Name, 
+                Description = value.Description,
+                TimeStamp = value.TimeStamp,
+                Latitude = value.Latitude,
+                Longitude = value.Longitude,
+                Altitude = value.Altitude
+            };
             return _controllerUtil.Post(tag);
         }
 
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] GpsTagEntity value)
         {
-            var tag = new GpsTag {GpsTagId = id, Name = value.Name, Description = value.Description };
+            var tag = new GpsTag {
+                GpsTagId = id,
+                Name = value.Name, 
+                Description = value.Description,
+                TimeStamp = value.TimeStamp,
+                Latitude = value.Latitude,
+                Longitude = value.Longitude,
+                Altitude = value.Altitude
+            };
             return _controllerUtil.Put(tag);
         }
 

@@ -36,14 +36,29 @@ namespace GeoSensePlus.WebApi.Controllers
         [HttpPost]
         public ActionResult<CoordinateTagEntity> Post([FromBody] CoordinateTagEntity value)
         {
-            var tag = new CoordinateTag { Name = value.Name, Description = value.Description };
+            var tag = new CoordinateTag {
+                Name = value.Name, 
+                Description = value.Description,
+                TimeStamp = value.TimeStamp,
+                AxisX = value.AxisX,
+                AxisY = value.AxisY,
+                AxisZ = value.AxisZ
+            };
             return _controllerUtil.Post(tag);
         }
 
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] CoordinateTagEntity value)
         {
-            var tag = new CoordinateTag { CoordinateTagId = id, Name = value.Name, Description = value.Description };
+            var tag = new CoordinateTag {
+                CoordinateTagId = id,
+                Name = value.Name, 
+                Description = value.Description,
+                TimeStamp = value.TimeStamp,
+                AxisX = value.AxisX,
+                AxisY = value.AxisY,
+                AxisZ = value.AxisZ
+            };
             return _controllerUtil.Put(tag);
         }
 

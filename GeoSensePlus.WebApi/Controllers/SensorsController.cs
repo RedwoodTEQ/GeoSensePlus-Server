@@ -33,14 +33,32 @@ namespace GeoSensePlus.WebApi.Controllers
         [HttpPost]
         public ActionResult<SensorEntity> Post([FromBody] SensorEntity value)
         {
-            var sensor = new Sensor { Name = value.Name, Description = value.Description, Labels = value.Labels };
+            var sensor = new Sensor {
+                Name = value.Name, 
+                Description = value.Description, 
+                Labels = value.Labels, 
+                Type = value.Type, 
+                Unit = value.Unit, 
+                Value = value.Value, 
+                TimeStamp = value.TimeStamp
+            };
+
             return _controllerUtil.Post(sensor);
         }
 
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] SensorEntity value)
         {
-            var sensor = new Sensor {SensorId = id, Name = value.Name, Description = value.Description, Labels = value.Labels };
+            var sensor = new Sensor {
+                SensorId = id,
+                Name = value.Name, 
+                Description = value.Description, 
+                Labels = value.Labels, 
+                Type = value.Type, 
+                Unit = value.Unit, 
+                Value = value.Value, 
+                TimeStamp = value.TimeStamp
+            };
             return _controllerUtil.Put(sensor);
         }
 

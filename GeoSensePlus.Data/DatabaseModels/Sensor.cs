@@ -9,6 +9,7 @@ namespace GeoSensePlus.Data.DatabaseModels
 {
     /// <summary>
     /// Represent a "field" in influxdb
+    /// A sensor provides scalar data
     /// </summary>
     public class SensorEntity
     {
