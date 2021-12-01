@@ -8,16 +8,16 @@ namespace GeoSensePlus.Firestore.Models
     public class AssetDataBase
     {
         [FirestoreDocumentId]
-        public string MacAddress { get; protected set; } = null!; // used as asset ID
+        public string MacAddress { get; set; } = null!; // used as asset ID
         
         [FirestoreProperty, ServerTimestamp]
-        public Timestamp LastReportTime { get; protected set; }
+        public Timestamp LastReportTime { get; set; }
 
         [FirestoreProperty]
-        public int SignalStrength { get; protected set; }
+        public int SignalStrength { get; set; }
 
         [FirestoreProperty]
-        public int BatteryLevel { get; protected set; }
+        public int BatteryLevel { get; set; }
 
         [FirestoreProperty]
         public string Name { get; protected set; } = null!;
@@ -30,7 +30,7 @@ namespace GeoSensePlus.Firestore.Models
     public class AssetData : AssetDataBase
     {
         [FirestoreProperty]
-        public DocumentReference EdgeRef { get; protected set; } = null!;
+        public DocumentReference EdgeRef { get; set; } = null!;
     }
     
     public class AssetDataJson : AssetDataBase
