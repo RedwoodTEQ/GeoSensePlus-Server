@@ -37,12 +37,24 @@ namespace GeoSensePlus.Cli.Commands
             });
         }
 
-        //public void List()
-        //{
-        //    this.Execute(() => {
-        //        Console.WriteLine("geofence list");
-        //        _svc.ListAllAsync().Wait();
-        //    });
-        //}
+        public void List()
+        {
+            this.Execute(() => {
+                Console.WriteLine("geofence list");
+                var documents = _svc.ListAllAsync();
+                
+                if (documents.Result.Count == 0)
+                {
+                    Console.WriteLine($"No geofence.");
+                }
+                else
+                {
+                    foreach (var snapshot in documents.Result)
+                    {
+                        Console.WriteLine($"Geofence id: {snapshot.Id}");
+                    }
+                }
+            });
+        }
     }
 }

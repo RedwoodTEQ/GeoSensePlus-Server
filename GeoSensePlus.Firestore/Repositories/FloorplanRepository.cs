@@ -11,6 +11,6 @@ namespace GeoSensePlus.Firestore.Repositories
     {
         public FloorplanRepository(IFirebaseClient fbClient, IConfigOperator config) : base(fbClient, config) { }
 
-        protected override string SubcollectionName => CollectionName.floorplans;
+        protected override string SubcollectionName => CollectionName.Floorplans;
     }
 }

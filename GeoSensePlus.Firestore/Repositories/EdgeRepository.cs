@@ -14,6 +14,6 @@ namespace GeoSensePlus.Firestore.Repositories
     {
         public EdgeRepository(IFirebaseClient fbClient, IConfigOperator config) : base(fbClient, config) { }
 
-        protected override string SubcollectionName => CollectionName.edges;
+        protected override string SubcollectionName => CollectionName.Edges;
     }
 }

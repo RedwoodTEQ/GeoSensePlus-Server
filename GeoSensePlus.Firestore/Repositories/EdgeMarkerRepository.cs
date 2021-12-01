@@ -28,11 +28,9 @@ namespace GeoSensePlus.Firestore.Repositories
                 throw new InvalidDocumentIdException(Message);
             }
             else
-                return $"{CollectionName.floorplans}/{this.FloorplanId}/{CollectionName.edgeMarks}";
+                return $"{CollectionName.Floorplans}/{this.FloorplanId}/{CollectionName.EdgeMarks}";
         }
 
         public string FloorplanId { get; set; }
     }
-
-
 }

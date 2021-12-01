@@ -19,6 +19,7 @@ namespace GeoSensePlus.Cli.Commands
         public void Default()
         {
             Console.WriteLine("Current firebase key file:");
+            var key = _configOperator.GetFirebaseKey();
             Console.WriteLine(_configOperator.GetFirebaseKey());
         }
 
