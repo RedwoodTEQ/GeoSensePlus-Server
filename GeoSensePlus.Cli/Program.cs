@@ -34,7 +34,7 @@ namespace GeoSensePlus.Cli
         // TODO: remove this method
         public static void ConfigureServices(IServiceCollection services)
         {
-            //services.AddFirestoreServices();
+            services.AddFirestoreServices();
         }
     }
 }
