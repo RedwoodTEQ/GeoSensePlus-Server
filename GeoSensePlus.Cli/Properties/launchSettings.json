@@ -1,8 +1,24 @@
 {
   "profiles": {
-    "GeoSensePlus.Cli": {
+    "floorplan.display": {
       "commandName": "Project",
-      "commandLineArgs": "test mqtt-service"
+      "commandLineArgs": "floorplan display T78m8RpSzrHEI3kLBkQb"
+    },
+    "floorplan.list.edgeMaker": {
+      "commandName": "Project",
+      "commandLineArgs": "floorplan list-edge-markers T78m8RpSzrHEI3kLBkQb"
+    },
+    "edge.display": {
+      "commandName": "Project",
+      "commandLineArgs": "edge display 00E263DFAC508D1A"
+    },
+    "geofence.list": {
+      "commandName": "Project",
+      "commandLineArgs": "geofence list"
+    },
+    "tenant.list-all": {
+      "commandName": "Project",
+      "commandLineArgs": "tenant list-all"
     }
   }
 }
