@@ -2,18 +2,84 @@
 using GeoSensePlus.Firestore.ConfigUtils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using GeoSensePlus.Firestore.Repositories.Common;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace GeoSensePlus.Cli.Commands
 {
     public class FirebaseCommand : CommandBase
     {
         readonly IConfigOperator _configOperator;
+        private readonly IManagerRepository _manageRepository;
 
         public FirebaseCommand()
         {
             _configOperator = sp.GetService<IConfigOperator>();
+            _manageRepository = sp.GetService<IManagerRepository>();
+        }
+
+        public void Export()
+        {
+            this.Execute(() =>
+            {
+               var result = _manageRepository.ExportDatabaseDictionary().Result;
+            });
+        }
+
+        /// <summary>
+        /// Export db as json file. Store it by given absolute file path.
+        /// </summary>
+        /// <param name="outputPath">Absolute output file path</param>
+        public void ExportJson(string outputPath)
+        {
+            this.Execute(() =>
+            {
+               var outputExt = Path.GetExtension(outputPath);
+               
+               if (outputExt != ".json" && outputExt != ".txt")
+               {
+                   Console.ForegroundColor = ConsoleColor.Red;
+                   Console.WriteLine($"ERROR: Output path must contains file name, and file extension must be either .json or .txt");
+                   Console.ResetColor();
+                   return;
+               }
+               else if (!Directory.Exists(Path.GetDirectoryName(outputPath)))
+               {
+                   Console.ForegroundColor = ConsoleColor.Red;
+                   Console.WriteLine($"ERROR: Output path directory is not exist. Ensure to set an absolute path.");
+                   Console.ResetColor();
+                   return;
+               }
+               else if (File.Exists(outputPath))
+               {
+                   Console.ForegroundColor = ConsoleColor.Red;
+                   Console.WriteLine($"ERROR: Output file is exist.");
+                   Console.ResetColor();
+                   return;
+               }
+                
+               var result = _manageRepository.ExportDatabaseJsonDictionary().Result;
+               
+               if ( result == null)
+               {
+                   Console.ForegroundColor = ConsoleColor.Red;
+                   Console.WriteLine($"No data.");
+                   Console.ResetColor();
+               }
+               else
+               {
+                   var json = JsonConvert.SerializeObject(result, Formatting.Indented);
+                   System.IO.File.WriteAllText(outputPath, json);
+                   
+                   Console.ForegroundColor = ConsoleColor.DarkGreen;
+                   Console.WriteLine($"\nExported to {outputPath}.");
+                   Console.ResetColor();
+               }
+            });
         }
 
         public void Default()

@@ -26,6 +26,8 @@ namespace GeoSensePlus.Firestore
 
             services.AddTransient<IConfigOperator, ConfigOperator>();
             services.AddTransient<IConfigUtil, ConfigUtil>();
+            
+            services.AddTransient<IManagerRepository, FirestoreManageRepository>();
 
             services.AddScoped<IFirebaseClient, FirebaseClient>();
         }
