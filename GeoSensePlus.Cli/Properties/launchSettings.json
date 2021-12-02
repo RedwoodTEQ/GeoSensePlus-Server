@@ -19,6 +19,18 @@
     "tenant.list-all": {
       "commandName": "Project",
       "commandLineArgs": "tenant list-all"
+    },
+    "manager.export": {
+      "commandName": "Project",
+      "commandLineArgs": "firebase export"
+    },
+    "manager.export-json": {
+      "commandName": "Project",
+      "commandLineArgs": "firebase export-json  /Users/forrrest/projects/GeoSensePlus-Server/GeoSensePlus.Cli/db.json"
+    },
+    "manager.key": {
+      "commandName": "Project",
+      "commandLineArgs": "firebase"
     }
   }
 }
