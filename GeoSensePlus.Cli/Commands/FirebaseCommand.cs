@@ -35,7 +35,7 @@ namespace GeoSensePlus.Cli.Commands
         {
             this.Execute(() =>
             {
-               var outputExt = Path.GetExtension(outputPath);
+               var outputExt = Path.GetExtension(@outputPath);
                
                if (outputExt != ".json" && outputExt != ".txt")
                {
@@ -44,17 +44,17 @@ namespace GeoSensePlus.Cli.Commands
                    Console.ResetColor();
                    return;
                }
-               else if (!Directory.Exists(Path.GetDirectoryName(outputPath)))
+               else if (!Directory.Exists(Path.GetDirectoryName(@outputPath)))
                {
                    Console.ForegroundColor = ConsoleColor.Red;
                    Console.WriteLine($"ERROR: Output path directory is not exist. Ensure to set an absolute path.");
                    Console.ResetColor();
                    return;
                }
-               else if (File.Exists(outputPath))
+               else if (File.Exists(@outputPath))
                {
                    Console.ForegroundColor = ConsoleColor.Red;
-                   Console.WriteLine($"ERROR: Output file is exist.");
+                   Console.WriteLine($"ERROR: Output file is exist: {outputPath}");
                    Console.ResetColor();
                    return;
                }
