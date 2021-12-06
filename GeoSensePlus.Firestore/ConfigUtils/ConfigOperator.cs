@@ -13,6 +13,7 @@ namespace GeoSensePlus.Firestore.ConfigUtils
         string GetFirebaseProjectId();
         string GetTenant();
         void ListFirebaseKey();
+        void DisplayActivateFirebaseKey();
         void RegisterFirebaseKey(string name, string keyFilePath);
         void SetFirebaseKey(string keyFilePath);
         void SetTenant(string tenantName);
@@ -106,7 +107,17 @@ namespace GeoSensePlus.Firestore.ConfigUtils
 
         public void ListFirebaseKey()
         {
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("Registered firebase keys:");
             _configUtil.ListJsonConfig(_configFile, Variables.JSON_FIREBASE_KEY_REGISTRY);
+            Console.ResetColor();
+        }
+        public void DisplayActivateFirebaseKey()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("\nActivate firebase key:");
+            _configUtil.ListJsonConfig(_configFile, Variables.JSON_FIREBASE_KEY);
+            Console.ResetColor();
         }
 
         public string GetTenant()

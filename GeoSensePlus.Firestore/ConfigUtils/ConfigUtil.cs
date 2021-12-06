@@ -112,9 +112,16 @@ namespace GeoSensePlus.Firestore.ConfigUtils
             dynamic jsonObj = this.GetCreateConfigJson(configFile);
             if (this.IsJsonKeyAvailable(jsonObj, registryKey))
             {
-                var list = jsonObj[registryKey];
-                foreach (var item in list)
-                    Console.WriteLine(item);
+                var obj = jsonObj[registryKey];
+                if (obj is List<object> list)
+                {
+                    foreach (var item in obj)
+                        Console.WriteLine(item);
+                }
+                else
+                {
+                     Console.WriteLine(obj);
+                }
             }
         }
 
