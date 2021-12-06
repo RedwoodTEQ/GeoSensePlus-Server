@@ -8,5 +8,6 @@ namespace GeoSensePlus.Firestore.Repositories.Common
     {
         Task<Dictionary<string, object>> ExportDatabaseDictionary();
         Task<Dictionary<string, object>> ExportDatabaseJsonDictionary();
+        Task<bool> ImportJson(string inputPath);
     }
 }

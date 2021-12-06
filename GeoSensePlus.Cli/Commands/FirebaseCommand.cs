@@ -1,13 +1,10 @@
 ﻿using GeoSensePlus.Cli.Commands.Shared;
 using GeoSensePlus.Firestore.ConfigUtils;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using GeoSensePlus.Firestore.Repositories.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace GeoSensePlus.Cli.Commands
 {
@@ -73,12 +70,20 @@ namespace GeoSensePlus.Cli.Commands
                else
                {
                    var json = JsonConvert.SerializeObject(result, Formatting.Indented);
-                   System.IO.File.WriteAllText(outputPath, json);
+                   System.IO.File.WriteAllText(@outputPath, json);
                    
                    Console.ForegroundColor = ConsoleColor.DarkGreen;
                    Console.WriteLine($"\nExported to {outputPath}.");
                    Console.ResetColor();
                }
+            });
+        }
+
+        public void ImportJson(string inputPath)
+        {
+            this.Execute(() =>
+            {
+                bool result = _manageRepository.ImportJson(inputPath).Result;
             });
         }
 
@@ -150,6 +155,7 @@ namespace GeoSensePlus.Cli.Commands
             try
             {
                 _configOperator.ListFirebaseKey();
+                _configOperator.DisplayActivateFirebaseKey();
             }
             catch(Exception ex)
             {
