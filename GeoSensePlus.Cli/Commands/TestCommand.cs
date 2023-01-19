@@ -12,23 +12,17 @@ using System.Net.Http.Headers;
 using NetCoreUtils.Database.InfluxDb;
 using System.Text.Json;
 using System.Text;
+using CoreCmd.Attributes;
 
 namespace GeoSensePlus.Cli.Commands
 {
     public class TestCommand : CommandBase
-    { 
+    {
         readonly IRepository<AssetData> _repo;
-        readonly IMqttService _mqttService;
-        readonly IMqttClientService _mqttClient;
 
-        public TestCommand(
-            IRepository<AssetData> repo
-            , IMqttService mqttService
-            , IMqttClientService mqttClient
-        ){
+        public TestCommand(IRepository<AssetData> repo)
+        {
             _repo = repo;
-            _mqttService = mqttService;
-            _mqttClient = mqttClient;
         }
 
         /// <summary>
@@ -50,7 +44,7 @@ namespace GeoSensePlus.Cli.Commands
                     targetEdgeId = targetEdgeId == edgeId1 ? edgeId2 : edgeId1;
                     Console.WriteLine("Input 'q' to quit ...");
                 }
-                while (Console.ReadLine() != "q") ;
+                while (Console.ReadLine() != "q");
             });
         }
 
@@ -84,8 +78,21 @@ namespace GeoSensePlus.Cli.Commands
             // post
             await _httpClient.PostAsync(urlRoot, data);
         }
+    }
+    
+    [Help("MQTT test")]
+    public class MqttCommand
+    { 
+        readonly IMqttService _mqttService;
+        readonly IMqttClientService _mqttClient;
 
-        public async Task MqttService()
+        public MqttCommand(IMqttService mqttService, IMqttClientService mqttClient)
+        {
+            _mqttService = mqttService;
+            _mqttClient = mqttClient;
+        }
+
+        public async Task Server()
         {
             await _mqttService.StartAsync();
 
@@ -98,7 +105,7 @@ namespace GeoSensePlus.Cli.Commands
             //while (Console.KeyAvailable);
         }
 
-        public async Task MqttClient()
+        public async Task Client()
         {
             await _mqttClient.ConnectAsync();
             await _mqttClient.SubscribeTopic("hello");

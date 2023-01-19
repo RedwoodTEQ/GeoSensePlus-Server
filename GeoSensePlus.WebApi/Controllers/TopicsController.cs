@@ -1,7 +1,9 @@
 ﻿using GeoSensePlus.Data.DatabaseModels;
+using GeoSensePlus.Mqtt;
 using GeoSensePlus.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,10 +14,12 @@ namespace GeoSensePlus.WebApi.Controllers
     public class TopicsController : ControllerBase
     {
         IControllerUtil<Topic> _controllerUtil;
+        IMqttService _mqttSvc;
 
-        public TopicsController(IControllerUtil<Topic> controllerUtil)
+        public TopicsController(IControllerUtil<Topic> controllerUtil, IMqttService mqttSvc)
         {
             _controllerUtil = controllerUtil;
+            _mqttSvc = mqttSvc;
         }
 
         [HttpGet]
@@ -35,6 +39,13 @@ namespace GeoSensePlus.WebApi.Controllers
         {
             var topic = new Topic { Name = value.Name, Description = value.Description };
             return _controllerUtil.Post(topic);
+        }
+
+        [HttpPost("data")]
+        public async Task<IActionResult> Test(int data)
+        {
+            await _mqttSvc.PublishAsync("RawMessage", data.ToString());
+            return NoContent();
         }
 
         [HttpPut("{id}")]

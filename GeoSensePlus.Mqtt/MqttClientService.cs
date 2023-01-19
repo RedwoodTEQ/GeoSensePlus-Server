@@ -57,7 +57,8 @@ namespace GeoSensePlus.Mqtt
         public async Task SubscribeTopic(string topic)
         {
             Console.WriteLine(mqttClient != null);
-            var subscribeResult = await mqttClient.SubscribeAsync(new TopicFilterBuilder()
+            //var subscribeResult = await mqttClient.SubscribeAsync(new TopicFilterBuilder()
+            var subscribeResult = await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder()
                .WithTopic(topic)
                //.WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce)
                .Build());
