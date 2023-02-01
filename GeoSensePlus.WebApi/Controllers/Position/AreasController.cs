@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace GeoSensePlus.WebApi.Controllers
+namespace GeoSensePlus.WebApi.Controllers.Position
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -37,14 +37,14 @@ namespace GeoSensePlus.WebApi.Controllers
         [HttpPost]
         public ActionResult<AreaEntity> Post([FromBody] AreaEntity value)
         {
-            var area = new Area { Name = value.Name, Description = value.Description, EdgeId = value.EdgeId};
+            var area = new Area { Name = value.Name, Description = value.Description, EdgeId = value.EdgeId };
             return _controllerUtil.Post(area);
         }
 
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] AreaEntity value)
         {
-            var area = new Area {AreaId = id, Name = value.Name, Description = value.Description, EdgeId = value.EdgeId};
+            var area = new Area { AreaId = id, Name = value.Name, Description = value.Description, EdgeId = value.EdgeId };
             return _controllerUtil.Put(area);
         }
 

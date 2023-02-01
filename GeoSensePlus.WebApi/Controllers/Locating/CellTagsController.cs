@@ -5,43 +5,43 @@ using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace GeoSensePlus.WebApi.Controllers
+namespace GeoSensePlus.WebApi.Controllers.Locating
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BuildingsController : ControllerBase
+    public class CellTagsController : ControllerBase
     {
-        IControllerUtil<Building> _controllerUtil;
+        IControllerUtil<CellTag> _controllerUtil;
 
-        public BuildingsController(IControllerUtil<Building> controllerUtil)
+        public CellTagsController(IControllerUtil<CellTag> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }
 
         [HttpGet]
-        public IEnumerable<Building> Get()
+        public IEnumerable<CellTag> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Building> Get(int id)
+        public ActionResult<CellTag> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<BuildingEntity> Post([FromBody] BuildingEntity value)
+        public ActionResult<CellTagEntity> Post([FromBody] CellTagEntity value)
         {
-            var building = new Building { Name = value.Name, Description = value.Description };
-            return _controllerUtil.Post(building);
+            var celltag = new CellTag { Name = value.Name, Description = value.Description };
+            return _controllerUtil.Post(celltag);
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] BuildingEntity value)
+        public ActionResult Put(int id, [FromBody] CellTagEntity value)
         {
-            var building = new Building { BuildingId = id, Name = value.Name, Description = value.Description };
-            return _controllerUtil.Put(building);
+            var celltag = new CellTag { CellTagId = id, Name = value.Name, Description = value.Description };
+            return _controllerUtil.Put(celltag);
         }
 
         [HttpDelete("{id}")]

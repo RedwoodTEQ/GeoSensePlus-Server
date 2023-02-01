@@ -7,7 +7,7 @@ using NetCoreUtils.Database.InfluxDb;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 
-namespace GeoSensePlus.WebApi.Controllers
+namespace GeoSensePlus.WebApi.Controllers.Sensing
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -63,7 +63,7 @@ namespace GeoSensePlus.WebApi.Controllers
             {
                 return Json(data);
                 //return new JsonResult(data.ToJson());  // TODO: test when change parent class to ControllerBase
-            }    
+            }
             else
                 return NotFound();
         }

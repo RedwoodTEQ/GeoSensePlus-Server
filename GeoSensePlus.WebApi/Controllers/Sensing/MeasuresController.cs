@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace GeoSensePlus.WebApi.Controllers
+namespace GeoSensePlus.WebApi.Controllers.Sensing
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -40,7 +40,7 @@ namespace GeoSensePlus.WebApi.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] MeasureEntity value)
         {
-            var measure = new Measure {MeasureId = id, Name = value.Name, Description = value.Description, Labels = value.Labels };
+            var measure = new Measure { MeasureId = id, Name = value.Name, Description = value.Description, Labels = value.Labels };
             return _controllerUtil.Put(measure);
         }
 

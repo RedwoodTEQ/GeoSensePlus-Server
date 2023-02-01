@@ -5,43 +5,43 @@ using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace GeoSensePlus.WebApi.Controllers
+namespace GeoSensePlus.WebApi.Controllers.Locating
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TargetsController : ControllerBase
+    public class GatewaysController : ControllerBase
     {
-        IControllerUtil<Target> _controllerUtil;
+        IControllerUtil<Gateway> _controllerUtil;
 
-        public TargetsController(IControllerUtil<Target> controllerUtil)
+        public GatewaysController(IControllerUtil<Gateway> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }
 
         [HttpGet]
-        public IEnumerable<Target> Get()
+        public IEnumerable<Gateway> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Target> Get(int id)
+        public ActionResult<Gateway> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<TargetEntity> Post([FromBody] TargetEntity value)
+        public ActionResult<GatewayEntity> Post([FromBody] GatewayEntity value)
         {
-            var target = new Target { Name = value.Name, Description = value.Description };
-            return _controllerUtil.Post(target);
+            var gateway = new Gateway { Name = value.Name, Description = value.Description };
+            return _controllerUtil.Post(gateway);
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] TargetEntity value)
+        public ActionResult Put(int id, [FromBody] GatewayEntity value)
         {
-            var target = new Target { TargetId = id, Name = value.Name, Description = value.Description };
-            return _controllerUtil.Put(target);
+            var gateway = new Gateway { GatewayId = id, Name = value.Name, Description = value.Description };
+            return _controllerUtil.Put(gateway);
         }
 
         [HttpDelete("{id}")]

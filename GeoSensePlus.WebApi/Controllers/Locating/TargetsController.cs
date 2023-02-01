@@ -5,43 +5,43 @@ using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace GeoSensePlus.WebApi.Controllers
+namespace GeoSensePlus.WebApi.Controllers.Locating
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GeofencesController : ControllerBase
+    public class TargetsController : ControllerBase
     {
-        IControllerUtil<Geofence> _controllerUtil;
+        IControllerUtil<Target> _controllerUtil;
 
-        public GeofencesController(IControllerUtil<Geofence> controllerUtil)
+        public TargetsController(IControllerUtil<Target> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }
 
         [HttpGet]
-        public IEnumerable<Geofence> Get()
+        public IEnumerable<Target> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Geofence> Get(int id)
+        public ActionResult<Target> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<GeofenceEntity> Post([FromBody] GeofenceEntity value)
+        public ActionResult<TargetEntity> Post([FromBody] TargetEntity value)
         {
-            var geofence = new Geofence { Name = value.Name, Description = value.Description };
-            return _controllerUtil.Post(geofence);
+            var target = new Target { Name = value.Name, Description = value.Description };
+            return _controllerUtil.Post(target);
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] GeofenceEntity value)
+        public ActionResult Put(int id, [FromBody] TargetEntity value)
         {
-            var geofence = new Geofence { GeofenceId = id, Name = value.Name, Description = value.Description };
-            return _controllerUtil.Put(geofence);
+            var target = new Target { TargetId = id, Name = value.Name, Description = value.Description };
+            return _controllerUtil.Put(target);
         }
 
         [HttpDelete("{id}")]

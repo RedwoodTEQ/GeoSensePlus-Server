@@ -5,43 +5,43 @@ using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace GeoSensePlus.WebApi.Controllers
+namespace GeoSensePlus.WebApi.Controllers.Position
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GatewaysController : ControllerBase
+    public class BuildingsController : ControllerBase
     {
-        IControllerUtil<Gateway> _controllerUtil;
+        IControllerUtil<Building> _controllerUtil;
 
-        public GatewaysController(IControllerUtil<Gateway> controllerUtil)
+        public BuildingsController(IControllerUtil<Building> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }
 
         [HttpGet]
-        public IEnumerable<Gateway> Get()
+        public IEnumerable<Building> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Gateway> Get(int id)
+        public ActionResult<Building> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<GatewayEntity> Post([FromBody] GatewayEntity value)
+        public ActionResult<BuildingEntity> Post([FromBody] BuildingEntity value)
         {
-            var gateway = new Gateway{ Name = value.Name, Description = value.Description };
-            return _controllerUtil.Post(gateway);
+            var building = new Building { Name = value.Name, Description = value.Description };
+            return _controllerUtil.Post(building);
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] GatewayEntity value)
+        public ActionResult Put(int id, [FromBody] BuildingEntity value)
         {
-            var gateway = new Gateway{ GatewayId = id, Name = value.Name, Description = value.Description };
-            return _controllerUtil.Put(gateway);
+            var building = new Building { BuildingId = id, Name = value.Name, Description = value.Description };
+            return _controllerUtil.Put(building);
         }
 
         [HttpDelete("{id}")]

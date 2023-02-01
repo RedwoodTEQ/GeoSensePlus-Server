@@ -4,7 +4,7 @@ using GeoSensePlus.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreUtils.Database.MongoDb;
 
-namespace GeoSensePlus.WebApi.Controllers
+namespace GeoSensePlus.WebApi.Controllers.Messaging
 {
 
     /// <summary>

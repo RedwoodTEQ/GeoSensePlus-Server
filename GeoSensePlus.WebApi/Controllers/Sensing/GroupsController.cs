@@ -8,7 +8,7 @@ using GeoSensePlus.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreUtils.Database.MongoDb;
 
-namespace GeoSensePlus.WebApi.Controllers
+namespace GeoSensePlus.WebApi.Controllers.Sensing
 {
     /// <summary>
     /// A group is similar to an "application" in TTN or ChirpStack, or an organization in influxdb

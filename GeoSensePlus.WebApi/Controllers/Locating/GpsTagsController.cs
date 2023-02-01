@@ -1,63 +1,62 @@
 ﻿using GeoSensePlus.Data.DatabaseModels;
 using GeoSensePlus.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace GeoSensePlus.WebApi.Controllers
+namespace GeoSensePlus.WebApi.Controllers.Locating
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CoordinateTagsController : ControllerBase
+    public class GpsTagsController : ControllerBase
     {
-        IControllerUtil<CoordinateTag> _controllerUtil;
+        IControllerUtil<GpsTag> _controllerUtil;
 
-        public CoordinateTagsController(IControllerUtil<CoordinateTag> controllerUtil)
+        public GpsTagsController(IControllerUtil<GpsTag> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }
 
         [HttpGet]
-        public IEnumerable<CoordinateTag> Get()
+        public IEnumerable<GpsTag> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CoordinateTag> Get(int id)
+        public ActionResult<GpsTag> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<CoordinateTagEntity> Post([FromBody] CoordinateTagEntity value)
+        public ActionResult<GpsTagEntity> Post([FromBody] GpsTagEntity value)
         {
-            var tag = new CoordinateTag {
-                Name = value.Name, 
+            var tag = new GpsTag
+            {
+                Name = value.Name,
                 Description = value.Description,
                 TimeStamp = value.TimeStamp,
-                AxisX = value.AxisX,
-                AxisY = value.AxisY,
-                AxisZ = value.AxisZ
+                Latitude = value.Latitude,
+                Longitude = value.Longitude,
+                Altitude = value.Altitude
             };
             return _controllerUtil.Post(tag);
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] CoordinateTagEntity value)
+        public ActionResult Put(int id, [FromBody] GpsTagEntity value)
         {
-            var tag = new CoordinateTag {
-                CoordinateTagId = id,
-                Name = value.Name, 
+            var tag = new GpsTag
+            {
+                GpsTagId = id,
+                Name = value.Name,
                 Description = value.Description,
                 TimeStamp = value.TimeStamp,
-                AxisX = value.AxisX,
-                AxisY = value.AxisY,
-                AxisZ = value.AxisZ
+                Latitude = value.Latitude,
+                Longitude = value.Longitude,
+                Altitude = value.Altitude
             };
             return _controllerUtil.Put(tag);
         }
@@ -67,5 +66,6 @@ namespace GeoSensePlus.WebApi.Controllers
         {
             return _controllerUtil.Delete(id);
         }
+
     }
 }

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace GeoSensePlus.WebApi.Controllers
+namespace GeoSensePlus.WebApi.Controllers.Messaging
 {
     class RestChannelContext : ChannelContext<string>
     {
@@ -19,7 +19,7 @@ namespace GeoSensePlus.WebApi.Controllers
 
         public RestChannelContext(HttpContext httpContext)
         {
-            this._httpContext = httpContext;
+            _httpContext = httpContext;
         }
     }
 
@@ -37,7 +37,7 @@ namespace GeoSensePlus.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]object data)
+        public async Task<IActionResult> Post([FromBody] object data)
         {
             if (data != null)
             {
