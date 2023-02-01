@@ -4,7 +4,7 @@ using System;
 namespace GeoSensePlus.Data.DatabaseModels
 {
 
-    public class CoordinateTagEntity
+    public class UwbTagEntity
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -15,15 +15,15 @@ namespace GeoSensePlus.Data.DatabaseModels
         public DateTime TimeStamp { get; set; }
     }
 
-    public class CoordinateTag : CoordinateTagEntity, IIdAvailable<int>
+    public class UwbTag : UwbTagEntity, IIdAvailable<int>
     {
         public Target Target { get; set; }
 
-        public int CoordinateTagId { get; set; }
+        public int UwbTagId { get; set; }
 
         public int GetId()
         {
-            return CoordinateTagId;
+            return UwbTagId;
         }
     }
 }

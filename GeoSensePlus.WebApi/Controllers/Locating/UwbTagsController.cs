@@ -12,31 +12,31 @@ namespace GeoSensePlus.WebApi.Controllers.Locating
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CoordinateTagsController : ControllerBase
+    public class UwbTagsController : ControllerBase
     {
-        IControllerUtil<CoordinateTag> _controllerUtil;
+        IControllerUtil<UwbTag> _controllerUtil;
 
-        public CoordinateTagsController(IControllerUtil<CoordinateTag> controllerUtil)
+        public UwbTagsController(IControllerUtil<UwbTag> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }
 
         [HttpGet]
-        public IEnumerable<CoordinateTag> Get()
+        public IEnumerable<UwbTag> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CoordinateTag> Get(int id)
+        public ActionResult<UwbTag> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<CoordinateTagEntity> Post([FromBody] CoordinateTagEntity value)
+        public ActionResult<UwbTagEntity> Post([FromBody] UwbTagEntity value)
         {
-            var tag = new CoordinateTag
+            var tag = new UwbTag
             {
                 Name = value.Name,
                 Description = value.Description,
@@ -49,11 +49,11 @@ namespace GeoSensePlus.WebApi.Controllers.Locating
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] CoordinateTagEntity value)
+        public ActionResult Put(int id, [FromBody] UwbTagEntity value)
         {
-            var tag = new CoordinateTag
+            var tag = new UwbTag
             {
-                CoordinateTagId = id,
+                UwbTagId = id,
                 Name = value.Name,
                 Description = value.Description,
                 TimeStamp = value.TimeStamp,

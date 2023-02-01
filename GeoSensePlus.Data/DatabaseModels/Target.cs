@@ -21,7 +21,7 @@ namespace GeoSensePlus.Data.DatabaseModels
         //public Area CacheArea { get; set; }
 
         public List<CellTag> CellTags { get; set; } = new List<CellTag>();
-        public List<CoordinateTag> CoordinateTags { get; set; } = new List<CoordinateTag>();
+        public List<UwbTag> UwbTags { get; set; } = new List<UwbTag>();
         public List<GpsTag> GpsTags { get; set; } = new List<GpsTag>();
 
         public int TargetId { get; set; }
