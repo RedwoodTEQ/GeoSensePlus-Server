@@ -14,6 +14,9 @@ namespace GeoSensePlus.Data.DatabaseModels
         public DateTime TimeStamp { get; set; }
     }
 
+    /// <summary>
+    /// A cell tag is a BLE tag used for cell id location tracking cases.
+    /// </summary>
     public class CellTag : CellTagEntity, IIdAvailable<int>
     {
         public Target Target { get; set; }

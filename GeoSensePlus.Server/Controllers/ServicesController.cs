@@ -10,7 +10,7 @@ using NetCoreUtils.Database.MongoDb;
 namespace GeoSensePlus.Server.Controllers
 {
     /// <summary>
-    /// Non-site service
+    /// Non-site service behind a reverse proxy, e.g. positioning service, alarm service, analytics service, identity service, database service etc.
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]

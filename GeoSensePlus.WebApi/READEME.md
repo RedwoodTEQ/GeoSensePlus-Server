@@ -8,9 +8,9 @@
 
 ## TODOs
 
-- test Dockerfile
-- test controllers
-- may need to remove mogondb dependency
+- [ ] Test Dockerfile
+- [ ] Test controllers
+- [ ] Change MongoController<> to a util class
 
 ## Release Notes
 

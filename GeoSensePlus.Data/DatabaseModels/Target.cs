@@ -13,6 +13,9 @@ namespace GeoSensePlus.Data.DatabaseModels
         public string Description { get; set; }
     }
 
+    /// <summary>
+    /// A target is a tracking target, which can be an asset or a person.
+    /// </summary>
     public class Target : TargetEntity, IIdAvailable<int>
     {
         //public Area CacheArea { get; set; }

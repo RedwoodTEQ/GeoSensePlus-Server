@@ -7,6 +7,9 @@ using NetCoreUtils.Database.MongoDb;
 namespace GeoSensePlus.Server.Controllers
 {
 
+    /// <summary>
+    /// A channel is a message source/server, e.g. a MQ server, blockchain, ROS, TTN etc.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ChannelsController : MongoController<Channel>

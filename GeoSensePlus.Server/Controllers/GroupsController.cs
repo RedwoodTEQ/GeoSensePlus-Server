@@ -10,6 +10,9 @@ using NetCoreUtils.Database.MongoDb;
 
 namespace GeoSensePlus.Server.Controllers
 {
+    /// <summary>
+    /// A group is similar to an "application" in TTN or ChirpStack, or an organization in influxdb
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class GroupsController : MongoController<Group>
