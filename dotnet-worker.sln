@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29001.49
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F19750A6-FB35-4DE9-AB26-7227867F78DD}"
 	ProjectSection(SolutionItems) = preProject
@@ -33,27 +33,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Mongo", "GeoSe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{B4D7FFD6-C1FB-4CDC-8DEE-BA644853419A}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "docker-compose", "docker-compose\", "{2885071E-EB92-4282-85CB-D02472E533D7}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_7605"
-		Debug.AspNetCompiler.PhysicalPath = "docker-compose\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_7605\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_7605"
-		Release.AspNetCompiler.PhysicalPath = "docker-compose\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_7605\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "7605"
-		SlnRelativePath = "docker-compose\"
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Server", "GeoSensePlus.Server\GeoSensePlus.Server.csproj", "{22300BDF-1E02-4E1F-9F52-88DCA08DA069}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Mqtt", "GeoSensePlus.Mqtt\GeoSensePlus.Mqtt.csproj", "{5A13DFD2-9282-49E6-920C-6216EBC30584}"
@@ -61,6 +40,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.WebApi", "GeoSensePlus.WebApi\GeoSensePlus.WebApi.csproj", "{B3C6482C-6DDA-4801-82C0-F1001B97A4EE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Data", "GeoSensePlus.Data\GeoSensePlus.Data.csproj", "{34E35E61-16EC-4AC8-BC49-1357A018DC03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "docker-compose-more", "docker-compose-more\docker-compose-more.csproj", "{1574E244-5DCF-4AA3-B221-06F5186397B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,10 +85,6 @@ Global
 		{4123E030-ACAD-470F-8218-9AEC66CD8C3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4123E030-ACAD-470F-8218-9AEC66CD8C3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4123E030-ACAD-470F-8218-9AEC66CD8C3A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2885071E-EB92-4282-85CB-D02472E533D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2885071E-EB92-4282-85CB-D02472E533D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2885071E-EB92-4282-85CB-D02472E533D7}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{2885071E-EB92-4282-85CB-D02472E533D7}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{22300BDF-1E02-4E1F-9F52-88DCA08DA069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{22300BDF-1E02-4E1F-9F52-88DCA08DA069}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22300BDF-1E02-4E1F-9F52-88DCA08DA069}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -124,6 +101,10 @@ Global
 		{34E35E61-16EC-4AC8-BC49-1357A018DC03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34E35E61-16EC-4AC8-BC49-1357A018DC03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34E35E61-16EC-4AC8-BC49-1357A018DC03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1574E244-5DCF-4AA3-B221-06F5186397B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1574E244-5DCF-4AA3-B221-06F5186397B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1574E244-5DCF-4AA3-B221-06F5186397B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1574E244-5DCF-4AA3-B221-06F5186397B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
