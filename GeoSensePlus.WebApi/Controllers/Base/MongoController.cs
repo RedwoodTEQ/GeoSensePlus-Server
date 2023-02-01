@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using NetCoreUtils.Database.MongoDb;
 
-namespace GeoSensePlus.Server.Controllers.Base
+namespace GeoSensePlus.WebApi.Controllers.Base
 {
     public class MongoController<TDoc> : ControllerBase where TDoc : MongoDoc
     {

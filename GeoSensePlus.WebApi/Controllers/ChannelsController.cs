@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using GeoSensePlus.Mongo.Models.Platform;
-using GeoSensePlus.Server.Controllers.Base;
+using GeoSensePlus.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreUtils.Database.MongoDb;
 
-namespace GeoSensePlus.Server.Controllers
+namespace GeoSensePlus.WebApi.Controllers
 {
 
     /// <summary>

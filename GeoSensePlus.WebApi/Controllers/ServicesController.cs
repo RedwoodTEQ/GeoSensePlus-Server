@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GeoSensePlus.Mongo.Models.Platform;
-using GeoSensePlus.Server.Controllers.Base;
 using NetCoreUtils.Database.MongoDb;
+using GeoSensePlus.WebApi.Controllers.Base;
 
-namespace GeoSensePlus.Server.Controllers
+namespace GeoSensePlus.WebApi.Controllers
 {
     /// <summary>
     /// Non-site service behind a reverse proxy, e.g. positioning service, alarm service, analytics service, identity service, database service etc.
