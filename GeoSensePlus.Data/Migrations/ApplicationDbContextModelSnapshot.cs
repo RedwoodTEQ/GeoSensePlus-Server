@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
+#nullable disable
+
 namespace GeoSensePlus.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
@@ -15,16 +17,18 @@ namespace GeoSensePlus.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.8")
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.AlarmEvent", b =>
                 {
                     b.Property<int>("AlarmEventId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AlarmEventId"));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -47,8 +51,9 @@ namespace GeoSensePlus.Data.Migrations
                 {
                     b.Property<int>("AreaId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AreaId"));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -76,8 +81,9 @@ namespace GeoSensePlus.Data.Migrations
                 {
                     b.Property<int>("BuildingId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BuildingId"));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -94,8 +100,9 @@ namespace GeoSensePlus.Data.Migrations
                 {
                     b.Property<int>("CellTagId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CellTagId"));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -110,7 +117,7 @@ namespace GeoSensePlus.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("CellTagId");
 
@@ -121,41 +128,13 @@ namespace GeoSensePlus.Data.Migrations
                     b.ToTable("CellTags");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.CoordinateTag", b =>
-                {
-                    b.Property<int>("CoordinateTagId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<double>("AxisX")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("AxisY")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("AxisZ")
-                        .HasColumnType("double precision");
-
-                    b.Property<int?>("TargetId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("CoordinateTagId");
-
-                    b.HasIndex("TargetId");
-
-                    b.ToTable("CoordinateTags");
-                });
-
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Edge", b =>
                 {
                     b.Property<int>("EdgeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("EdgeId"));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -177,8 +156,9 @@ namespace GeoSensePlus.Data.Migrations
                 {
                     b.Property<int>("FloorplanId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FloorplanId"));
 
                     b.Property<int?>("BuildingId")
                         .HasColumnType("integer");
@@ -203,8 +183,9 @@ namespace GeoSensePlus.Data.Migrations
                 {
                     b.Property<int>("GatewayId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("GatewayId"));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -221,8 +202,9 @@ namespace GeoSensePlus.Data.Migrations
                 {
                     b.Property<int>("GeofenceId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("GeofenceId"));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -239,8 +221,9 @@ namespace GeoSensePlus.Data.Migrations
                 {
                     b.Property<int>("GpsTagId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("GpsTagId"));
 
                     b.Property<double>("Altitude")
                         .HasColumnType("double precision");
@@ -261,7 +244,7 @@ namespace GeoSensePlus.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("GpsTagId");
 
@@ -274,10 +257,14 @@ namespace GeoSensePlus.Data.Migrations
                 {
                     b.Property<int>("MeasureId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MeasureId"));
 
                     b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Labels")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -292,14 +279,18 @@ namespace GeoSensePlus.Data.Migrations
                 {
                     b.Property<int>("SensorId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SensorId"));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
                     b.Property<int?>("EdgeId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Labels")
+                        .HasColumnType("text");
 
                     b.Property<int?>("MeasureId")
                         .HasColumnType("integer");
@@ -308,7 +299,7 @@ namespace GeoSensePlus.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Type")
                         .HasColumnType("text");
@@ -332,8 +323,9 @@ namespace GeoSensePlus.Data.Migrations
                 {
                     b.Property<int>("TargetId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TargetId"));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -344,6 +336,42 @@ namespace GeoSensePlus.Data.Migrations
                     b.HasKey("TargetId");
 
                     b.ToTable("Targets");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.UwbTag", b =>
+                {
+                    b.Property<int>("UwbTagId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UwbTagId"));
+
+                    b.Property<double>("AxisX")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("AxisY")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("AxisZ")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("TargetId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("UwbTagId");
+
+                    b.HasIndex("TargetId");
+
+                    b.ToTable("UwbTags");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -369,15 +397,16 @@ namespace GeoSensePlus.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("AspNetRoles");
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -393,7 +422,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims");
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
@@ -457,15 +486,16 @@ namespace GeoSensePlus.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -481,7 +511,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims");
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -505,7 +535,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins");
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -520,7 +550,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles");
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -541,7 +571,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens");
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Area", b =>
@@ -567,15 +597,6 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasOne("GeoSensePlus.Data.DatabaseModels.Target", "Target")
                         .WithMany("CellTags")
-                        .HasForeignKey("TargetId");
-
-                    b.Navigation("Target");
-                });
-
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.CoordinateTag", b =>
-                {
-                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Target", "Target")
-                        .WithMany("CoordinateTags")
                         .HasForeignKey("TargetId");
 
                     b.Navigation("Target");
@@ -621,6 +642,15 @@ namespace GeoSensePlus.Data.Migrations
                     b.Navigation("Edge");
 
                     b.Navigation("Measure");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.UwbTag", b =>
+                {
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Target", "Target")
+                        .WithMany("UwbTags")
+                        .HasForeignKey("TargetId");
+
+                    b.Navigation("Target");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -705,9 +735,9 @@ namespace GeoSensePlus.Data.Migrations
                 {
                     b.Navigation("CellTags");
 
-                    b.Navigation("CoordinateTags");
-
                     b.Navigation("GpsTags");
+
+                    b.Navigation("UwbTags");
                 });
 #pragma warning restore 612, 618
         }

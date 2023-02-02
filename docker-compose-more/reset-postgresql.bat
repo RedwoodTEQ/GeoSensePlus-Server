@@ -1,2 +1,2 @@
-docker rm -f rl_postgresql
+docker rm -f gsp_postgresql
 docker compose -f postgresql.yml up
