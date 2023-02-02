@@ -1,33 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-
+    <TargetFramework>net7.0</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>gs</ToolCommandName>
     <PackageOutputPath>./bin/NuPkg</PackageOutputPath>
     <Version>1.2.0-dev</Version>
-
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="CoreCmd" Version="1.5.0.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.9" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.9" />
     <PackageReference Include="NetCoreUtils.Database.InfluxDb" Version="1.3.0.3" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\GeoSensePlus.Firestore\GeoSensePlus.Firestore.csproj" />
     <ProjectReference Include="..\GeoSensePlus.Mongo\GeoSensePlus.Mongo.csproj" />
     <ProjectReference Include="..\GeoSensePlus.Mqtt\GeoSensePlus.Mqtt.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="do.bat">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>
