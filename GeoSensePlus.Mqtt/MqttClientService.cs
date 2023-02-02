@@ -1,6 +1,5 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
-using MQTTnet.Client.Options;
 using MQTTnet.Implementations;
 using System;
 using System.Collections.Generic;
@@ -35,7 +34,7 @@ namespace GeoSensePlus.Mqtt
                                                         .Build();
 
             // event handlers
-            mqttClient.UseApplicationMessageReceivedHandler(e =>
+            mqttClient.ApplicationMessageReceivedAsync += e =>
             {
                 Console.WriteLine("### RECEIVED APPLICATION MESSAGE ###");
                 Console.WriteLine($"+ Topic = {e.ApplicationMessage.Topic}");
@@ -43,12 +42,14 @@ namespace GeoSensePlus.Mqtt
                 Console.WriteLine($"+ QoS = {e.ApplicationMessage.QualityOfServiceLevel}");
                 Console.WriteLine($"+ Retain = {e.ApplicationMessage.Retain}");
                 Console.WriteLine();
-            });
+                return Task.CompletedTask;
+            };
 
-            mqttClient.UseConnectedHandler(e =>
+            mqttClient.ConnectedAsync += e =>
             {
                 Console.WriteLine("### CONNECTED WITH BROKER ###");
-            });
+                return Task.CompletedTask;
+            };
 
             // connect
             await mqttClient.ConnectAsync(options);

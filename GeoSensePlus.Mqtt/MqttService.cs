@@ -19,7 +19,7 @@ namespace GeoSensePlus.Mqtt
     public class MqttService : IMqttService
     {
         private const int _port = 11883;
-        private IMqttServer _mqttServer;
+        private MqttServer _mqttServer;
         private readonly ILogger _logger;
 
         public MqttService(ILogger<MqttHostedService> logger)
@@ -29,63 +29,72 @@ namespace GeoSensePlus.Mqtt
 
         public int Port => _port;
 
-        private void InitEventHandlers(IMqttServer svr)
+        private void InitEventHandlers(MqttServer svr)
         {
-            svr.UseApplicationMessageReceivedHandler(e =>
-            {
+            svr.InterceptingPublishAsync += e => {
                 var clientId = e.ClientId;
                 var topic = e.ApplicationMessage.Topic;
                 var payload = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+                _logger.LogInformation($"MQTT client [{clientId}] published to topic [{topic}] with payload: [{payload}]");
+                return Task.CompletedTask;
+            };
 
-                _logger.LogInformation($"MQTT client [{e.ClientId}] published to topic [{topic}] with payload: [{payload}]");
-            });
-
-            svr.UseClientConnectedHandler(e =>
-            {
+            svr.ClientConnectedAsync += e => {
                 _logger.LogInformation(e.ClientId + " Connected.");
-            });
+                return Task.CompletedTask;
+            };
 
-            svr.UseClientDisconnectedHandler(e =>
-            {
+            svr.ClientDisconnectedAsync += e=> { 
                 _logger.LogInformation(e.ClientId + " Disonnected.");
-            });
+                return Task.CompletedTask;
+            };
 
-            svr.ClientSubscribedTopicHandler = new MqttServerClientSubscribedHandlerDelegate(e =>
-            {
+            svr.ClientSubscribedTopicAsync += e => {
                 _logger.LogInformation(e.ClientId + " subscribed to " + e.TopicFilter);
-            });
+                return Task.CompletedTask;
+            };
 
-            svr.ClientUnsubscribedTopicHandler = new MqttServerClientUnsubscribedTopicHandlerDelegate(e =>
-            {
+            svr.ClientUnsubscribedTopicAsync += e => { 
                 _logger.LogInformation(e.ClientId + " unsubscribed to " + e.TopicFilter);
-            });
+                return Task.CompletedTask;
+            };
         }
 
         public Task StartAsync()
         {
-            var optionsBuilder = new MqttServerOptionsBuilder().WithConnectionBacklog(1000)
-                                                               .WithDefaultEndpointPort(_port);
+            // The port for the default endpoint is 1883.
+            // The default endpoint is NOT encrypted!
+            var optionsBuilder = new MqttServerOptionsBuilder()
+                .WithConnectionBacklog(1000)
+                .WithDefaultEndpoint()
+                .WithDefaultEndpointPort(_port)
+                .Build();
 
-            _mqttServer = new MqttFactory().CreateMqttServer();
+
+            _mqttServer = new MqttFactory().CreateMqttServer(optionsBuilder);
             InitEventHandlers(_mqttServer);
 
             Console.WriteLine($"MQTT service (over TCP) listening on port {_port}");
-            return _mqttServer.StartAsync(optionsBuilder.Build());
+            return _mqttServer.StartAsync();
         }
 
-        public Task StopAsync()
+        public async Task StopAsync()
         {
-            return _mqttServer.StopAsync();
+            await _mqttServer.StopAsync();
+            _mqttServer.Dispose();
         }
 
         public async Task PublishAsync(string topic, string message)
         {
             var mqttMsg = new MqttApplicationMessageBuilder().WithTopic(topic)
                                                              .WithPayload(message)
-                                                             .WithExactlyOnceQoS()
-                                                             .WithRetainFlag()
                                                              .Build();
-            await _mqttServer.PublishAsync(mqttMsg, CancellationToken.None);
+            // send message
+            await _mqttServer.InjectApplicationMessage(
+                new InjectedMqttApplicationMessage(mqttMsg)
+                {
+                    SenderClientId = "server"
+                });
         }
     }
 }
