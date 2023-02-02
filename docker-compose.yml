@@ -5,7 +5,7 @@ services:
     image: redwoodteq/geosenseplusserver:latest
     build:
       context: .
-      dockerfile: GeoSensePlus.Server/Dockerfile
+      dockerfile: GeoSensePlus.WebApi/Dockerfile
     environment:
       ASPNETCORE_URLS: http://+:5000;https://+:5001
       TARGET_PATH: /root
@@ -33,5 +33,13 @@ services:
     networks:
       - geosenseplusnetwork
 
+  # added by VS, probably duplicated with "gsv" service, may need to be removed
+  geosenseplus.webapi:
+    image: ${DOCKER_REGISTRY-}geosensepluswebapi
+    build:
+      context: .
+      dockerfile: GeoSensePlus.WebApi/Dockerfile
+
 networks:
   geosenseplusnetwork:
+
