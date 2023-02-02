@@ -8,6 +8,7 @@
 
 ## TODOs
 
+- [ ] Add an angular front end project
 - [ ] Test Dockerfile
 - [ ] Test controllers
 - [ ] Change MongoController<> to a util class
@@ -16,7 +17,15 @@
 
 ### v1.2.0-dev
 
-- Add REST API controllers (not fully implemented)
+Working:
+
+- Upgrade to .net7
+
+Done:
+
+- Rename "CoordinationTagsController" to "UwbTagsController"
+- Rename "MetricsController" to "InfluxdbController"
+- Add more REST API controllers (not fully implemented)
 - Implement API: 
   - get /system/info
   - get /system/firebase-key
