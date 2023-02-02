@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Cloud.Firestore" Version="1.1.0" />
-    <PackageReference Include="NetCoreUtils" Version="0.3.0.4" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
+    <PackageReference Include="NetCoreUtils" Version="1.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
   </ItemGroup>
 
 </Project>
