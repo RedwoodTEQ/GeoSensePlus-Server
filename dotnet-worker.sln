@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F19750A6-FB35-4DE9-AB26-7227867F78DD}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		TODOs.md = TODOs.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Firestore", "GeoSensePlus.Firestore\GeoSensePlus.Firestore.csproj", "{1A659629-0922-448F-ABE9-7269214D4864}"
