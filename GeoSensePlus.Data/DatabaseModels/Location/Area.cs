@@ -1,11 +1,12 @@
 ﻿using GeoSensePlus.Data.DatabaseModels.Base;
+using GeoSensePlus.Data.DatabaseModels.Tracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeoSensePlus.Data.DatabaseModels
+namespace GeoSensePlus.Data.DatabaseModels.Location
 {
 
     public class AreaEntity
@@ -13,13 +14,12 @@ namespace GeoSensePlus.Data.DatabaseModels
         public string Name { get; set; }
         public string Description { get; set; }
         public int? EdgeId { get; set; }
-
     }
 
     public class Area : AreaEntity, IIdAvailable<int>
     {
         public Floorplan Floorplan { get; set; }
-        public Edge Edge { get; set; }
+        public CellAnchor CellAnchor { get; set; }
 
         public int AreaId { get; set; }
 

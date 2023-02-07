@@ -1,7 +1,7 @@
 ﻿using GeoSensePlus.Data.DatabaseModels.Base;
 using System;
 
-namespace GeoSensePlus.Data.DatabaseModels
+namespace GeoSensePlus.Data.DatabaseModels.Tracking
 {
 
     public class UwbTagEntity

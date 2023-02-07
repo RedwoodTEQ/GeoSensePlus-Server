@@ -5,28 +5,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeoSensePlus.Data.DatabaseModels
+namespace GeoSensePlus.Data.DatabaseModels.Tracking
 {
-    public class GpsTagEntity
+    public class CellTagEntity
     {
         public string Name { get; set; }
         public string Description { get; set; }
-
-        public double Longitude { get; set; }
-        public double Latitude { get; set; }
-        public double Altitude { get; set; }
         public DateTime TimeStamp { get; set; }
     }
 
-    public class GpsTag : GpsTagEntity, IIdAvailable<int>
+    /// <summary>
+    /// A cell tag is a BLE tag used for cell id location tracking cases.
+    /// </summary>
+    public class CellTag : CellTagEntity, IIdAvailable<int>
     {
         public Target Target { get; set; }
 
-        public int GpsTagId { get; set; }
+        public int CellTagId { get; set; }
 
         public int GetId()
         {
-            return GpsTagId;
+            return CellTagId;
         }
     }
 }

@@ -5,23 +5,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeoSensePlus.Data.DatabaseModels
+namespace GeoSensePlus.Data.DatabaseModels.Tracking
 {
-    public class BuildingEntity
+    public class GatewayEntity
     {
         public string Name { get; set; }
         public string Description { get; set; }
     }
 
-    public class Building : BuildingEntity, IIdAvailable<int>
+    public class Gateway : GatewayEntity, IIdAvailable<int>
     {
-        public List<Floorplan> Floorplans { get; set; } = new List<Floorplan>();
+        public List<CellAnchor> Edges { get; set; } = new List<CellAnchor>();
 
-        public int BuildingId { get; set; }
+        public int GatewayId { get; set; }
 
         public int GetId()
         {
-            return BuildingId;
+            return GatewayId;
         }
     }
 }

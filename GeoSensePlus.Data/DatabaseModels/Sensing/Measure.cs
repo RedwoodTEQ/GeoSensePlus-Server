@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeoSensePlus.Data.DatabaseModels
+namespace GeoSensePlus.Data.DatabaseModels.Sensing
 {
     public class MeasureEntity
     {

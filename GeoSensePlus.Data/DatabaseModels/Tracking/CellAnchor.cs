@@ -1,19 +1,23 @@
 ﻿using GeoSensePlus.Data.DatabaseModels.Base;
+using GeoSensePlus.Data.DatabaseModels.Location;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeoSensePlus.Data.DatabaseModels
+namespace GeoSensePlus.Data.DatabaseModels.Tracking
 {
-    public class EdgeEntity
+    public class CellAnchorEntity
     {
         public string Name { get; set; }
         public string Description { get; set; }
     }
 
-    public class Edge : EdgeEntity, IIdAvailable<int>
+    /// <summary>
+    /// CellAnchor was renamed from "edge".
+    /// </summary>
+    public class CellAnchor : CellAnchorEntity, IIdAvailable<int>
     {
         public Area Area { get; set; }
         public Gateway Gateway { get; set; }

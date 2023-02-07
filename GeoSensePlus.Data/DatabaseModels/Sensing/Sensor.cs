@@ -1,11 +1,12 @@
 ﻿using GeoSensePlus.Data.DatabaseModels.Base;
+using GeoSensePlus.Data.DatabaseModels.Tracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeoSensePlus.Data.DatabaseModels
+namespace GeoSensePlus.Data.DatabaseModels.Sensing
 {
     /// <summary>
     /// Represent a "field" in influxdb
@@ -41,7 +42,7 @@ namespace GeoSensePlus.Data.DatabaseModels
     {
         //public Area CachedArea { get; set; }
         public Measure Measure { get; set; }
-        public Edge Edge { get; set; }
+        public CellAnchor Edge { get; set; }
 
         public int SensorId { get; set; }
 
