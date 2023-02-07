@@ -1,4 +1,4 @@
-﻿using GeoSensePlus.Data.DatabaseModels;
+﻿using GeoSensePlus.Data.DatabaseModels.Tracking;
 using GeoSensePlus.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreUtils.Database;
@@ -9,42 +9,42 @@ using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace GeoSensePlus.WebApi.Controllers.Locating
+namespace GeoSensePlus.WebApi.Controllers.Positioning
 {
     [Route("api/[controller]")]
     [ApiController]
     public class EdgesController : ControllerBase
     {
-        IControllerUtil<Edge> _controllerUtil;
+        IControllerUtil<CellAnchor> _controllerUtil;
 
-        public EdgesController(IControllerUtil<Edge> controllerUtil)
+        public EdgesController(IControllerUtil<CellAnchor> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }
 
         [HttpGet]
-        public IEnumerable<Edge> Get()
+        public IEnumerable<CellAnchor> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Edge> Get(int id)
+        public ActionResult<CellAnchor> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<EdgeEntity> Post([FromBody] EdgeEntity value)
+        public ActionResult<CellAnchorEntity> Post([FromBody] CellAnchorEntity value)
         {
-            var area = new Edge { Name = value.Name, Description = value.Description };
+            var area = new CellAnchor { Name = value.Name, Description = value.Description };
             return _controllerUtil.Post(area);
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] EdgeEntity value)
+        public ActionResult Put(int id, [FromBody] CellAnchorEntity value)
         {
-            var edge = new Edge { EdgeId = id, Name = value.Name, Description = value.Description };
+            var edge = new CellAnchor { EdgeId = id, Name = value.Name, Description = value.Description };
             return _controllerUtil.Put(edge);
         }
 

@@ -8,11 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeoSensePlus.WebApi.Controllers
+namespace GeoSensePlus.WebApi.Controllers.System
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SystemController: ControllerBase
+    public class SystemController : ControllerBase
     {
         IConfigOperator _configOperator;
 

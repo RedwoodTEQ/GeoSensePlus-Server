@@ -1,4 +1,5 @@
 ﻿using GeoSensePlus.Data.DatabaseModels;
+using GeoSensePlus.Data.DatabaseModels.Tracking;
 using GeoSensePlus.Mqtt;
 using GeoSensePlus.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;

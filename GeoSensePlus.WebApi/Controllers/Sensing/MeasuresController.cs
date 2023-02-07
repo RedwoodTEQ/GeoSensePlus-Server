@@ -1,4 +1,4 @@
-﻿using GeoSensePlus.Data.DatabaseModels;
+﻿using GeoSensePlus.Data.DatabaseModels.Sensing;
 using GeoSensePlus.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

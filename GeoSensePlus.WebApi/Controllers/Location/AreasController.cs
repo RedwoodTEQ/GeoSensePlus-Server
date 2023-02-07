@@ -1,4 +1,4 @@
-﻿using GeoSensePlus.Data.DatabaseModels;
+﻿using GeoSensePlus.Data.DatabaseModels.Location;
 using GeoSensePlus.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreUtils.Database;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace GeoSensePlus.WebApi.Controllers.Position
+namespace GeoSensePlus.WebApi.Controllers.Location
 {
     [Route("api/[controller]")]
     [ApiController]

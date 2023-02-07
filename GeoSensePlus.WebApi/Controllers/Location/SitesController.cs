@@ -7,7 +7,7 @@ using GeoSensePlus.Mongo.Models.Platform;
 using NetCoreUtils.Database.MongoDb;
 using GeoSensePlus.WebApi.Controllers.Base;
 
-namespace GeoSensePlus.WebApi.Controllers
+namespace GeoSensePlus.WebApi.Controllers.Location
 {
     [Route("api/[controller]")]
     [ApiController]
