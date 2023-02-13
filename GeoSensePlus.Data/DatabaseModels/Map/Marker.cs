@@ -11,14 +11,19 @@ namespace GeoSensePlus.Data.DatabaseModels.Map;
 /// <summary>
 /// Indoor use only, if need an outdoor POI, use Geofence instead
 /// </summary>
-public class PoiEntity
+public class MarkerEntity
 {
     public string Name { get; set; }
     public double AxisX { get; set; } = -1;
     public double AxisY { get; set; } = -1;
+    public bool IsPoi { get; set; } = false;
 
 }
-public class Poi : PoiEntity, IIdAvailable<int>
+
+/// <summary>
+/// Renamed from "Poi"
+/// </summary>
+public class Marker : MarkerEntity, IIdAvailable<int>
 {
     public int PoiId { get; set; }
 
