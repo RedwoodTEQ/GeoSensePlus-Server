@@ -12,8 +12,9 @@ namespace GeoSensePlus.Data
     {
         public DbSet<Area> Areas { get; set; }
         public DbSet<AlarmEvent> AlarmEvents { get; set; }
-        public DbSet<CellAnchor> Edges { get; set; }
+        public DbSet<CellAnchor> CellAnchors { get; set; }
         public DbSet<CellTag> CellTags { get; set; }
+        public DbSet<UwbAnchor> UwbAnchors { get; set; }
         public DbSet<UwbTag> UwbTags { get; set; }
         public DbSet<Building> Buildings { get; set; }
         public DbSet<Floorplan> Floorplans { get; set; }

@@ -15,7 +15,7 @@ namespace GeoSensePlus.Data.DatabaseModels.Tracking
 
     public class Gateway : GatewayEntity, IIdAvailable<int>
     {
-        public List<CellAnchor> Edges { get; set; } = new List<CellAnchor>();
+        public List<CellAnchor> CellAnchors { get; set; } = new List<CellAnchor>();
 
         public int GatewayId { get; set; }
 

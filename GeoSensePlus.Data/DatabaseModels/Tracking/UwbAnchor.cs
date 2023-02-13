@@ -34,6 +34,22 @@ public class UwbAnchor : UwbAnchorEntity, IIdAvailable<int>
     public Floorplan Floorplan { get; set; }
     public Site Site { get; set; }
 
+    public static UwbAnchor Create(ApplicationDbContext ctx, string name)
+    {
+        var anchor = new UwbAnchor { Name = name };
+        ctx.UwbAnchors.Add(anchor);
+        ctx.SaveChanges();
+        return anchor;
+    }
+
+    public static UwbAnchor Create(ApplicationDbContext ctx, string name, string config)
+    {
+        var anchor = new UwbAnchor { Name = name, Configuration = config };
+        ctx.UwbAnchors.Add(anchor);
+        ctx.SaveChanges();
+        return anchor;
+    }
+
     public int GetId()
     {
         return UwbAnchorID;

@@ -13,7 +13,7 @@ namespace GeoSensePlus.Data.DatabaseModels.Location
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public int? EdgeId { get; set; }
+        public int? CellAnchorId { get; set; }        // rename from EdgeId
     }
 
     public class Area : AreaEntity, IIdAvailable<int>
@@ -28,5 +28,16 @@ namespace GeoSensePlus.Data.DatabaseModels.Location
             return AreaId;
         }
         //public List<Target> CacheTargets { get; set; } = new List<Target>();
+
+        public static void Create(ApplicationDbContext ctx, string name)
+        {
+            ctx.Areas.Add(new Area { Name = name });
+            ctx.SaveChanges();
+        }
+        public static void Create(ApplicationDbContext ctx, string name, string description)
+        {
+            ctx.Areas.Add(new Area { Name = name, Description = description });
+            ctx.SaveChanges();
+        }
     }
 }
