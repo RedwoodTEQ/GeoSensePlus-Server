@@ -1,4 +1,5 @@
 ﻿using GeoSensePlus.Core.MessageProcessing;
+using GeoSensePlus.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GeoSensePlus.Core
@@ -9,6 +10,7 @@ namespace GeoSensePlus.Core
         {
             services.AddTransient(typeof(IMessageProcessor<>), typeof(MessageProcessor<>));
             services.AddTransient<IMessageEngine, MessageEngine>();
+            services.AddTransient<IDeviceService, DeviceService>();
         }
     }
 }
