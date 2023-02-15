@@ -1,7 +1,7 @@
 ﻿using GeoSensePlus.App.AssetTracking.Codecs;
 using GeoSensePlus.App.AssetTracking.Handlers;
+using GeoSensePlus.App.AssetTracking.MessageProcessors;
 using GeoSensePlus.App.AssetTracking.Messages;
-using GeoSensePlus.App.AssetTracking.Services;
 using GeoSensePlus.Core.Codec;
 using GeoSensePlus.Core.MessageProcessing;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +18,7 @@ namespace GeoSensePlus.App.AssetTracking
             services.AddTransient<IPayloadDecoder<List<IndoorTagPayloadInfo>>, IndoorTagPayloadDecoder>();
             services.AddTransient<IPayloadEncoder<List<IndoorTagPayloadInfo>>, IndoorTagPayloadEncoder>();
 
-            services.AddTransient<IAssetReportService, AssetReportService>();
+            services.AddTransient<IIndoorAssetReportProcessor, IndoorAssetReportProcessor>();
         }
     }
 }
