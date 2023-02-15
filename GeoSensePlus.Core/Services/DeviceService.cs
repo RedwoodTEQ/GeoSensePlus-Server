@@ -41,6 +41,7 @@ public class DeviceService : IDeviceService
 
     public void UpdateFirmware(string deviceId)
     {
+        // send message to a mqtt topic with firmware image path in s3?
         throw new NotImplementedException();
     }
 

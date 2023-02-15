@@ -9,7 +9,7 @@ namespace GeoSensePlus.Core.ServiceModels;
 public class DeviceProfile
 {
     public string DeviceName { get; set; }
-    public string DeviceType { get; set; } = Consts.Unknown;
+    public string DeviceType { get; set; } = Consts.unknown;
 
     /// <summary>
     /// Json format device configuration

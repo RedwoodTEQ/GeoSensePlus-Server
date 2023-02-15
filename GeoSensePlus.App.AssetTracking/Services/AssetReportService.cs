@@ -1,5 +1,4 @@
 ﻿using GeoSensePlus.App.AssetTracking.Messages;
-using GeoSensePlus.Core.Database;
 using GeoSensePlus.Firestore;
 using GeoSensePlus.Firestore.Models;
 using GeoSensePlus.Firestore.Repositories;
