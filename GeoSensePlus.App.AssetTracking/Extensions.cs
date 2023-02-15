@@ -17,8 +17,7 @@ namespace GeoSensePlus.App.AssetTracking
             services.AddTransient<IMessageHandler<string>, IndoorAssetReportHandler>();
             services.AddTransient<IPayloadDecoder<List<IndoorTagPayloadInfo>>, IndoorTagPayloadDecoder>();
             services.AddTransient<IPayloadEncoder<List<IndoorTagPayloadInfo>>, IndoorTagPayloadEncoder>();
-
-            services.AddTransient<IIndoorAssetReportProcessor, IndoorAssetReportProcessor>();
+            services.AddTransient<IMessageExecutor<IndoorAssetReportMessage>, IndoorAssetReportProcessor>();
         }
     }
 }

@@ -11,12 +11,12 @@ using System.Text;
 
 namespace GeoSensePlus.App.AssetTracking.MessageProcessors;
 
-public interface IIndoorAssetReportProcessor
+public interface IMessageExecutor<T>
 {
-    void Execute(IndoorAssetReportMessage message);
+    void Execute(T message);
 }
 
-class IndoorAssetReportProcessor : IIndoorAssetReportProcessor
+class IndoorAssetReportProcessor : IMessageExecutor<IndoorAssetReportMessage>
 {
     IRepository<EdgeData> _edgeRepo;
     IRepository<AssetData> _assetRepo;

@@ -60,7 +60,7 @@ namespace GeoSensePlus.Core.UnitTest
             Assert.Equal(0.93, data.TagBatteryLevel);
         }
 
-        class AssetReportServiceMock : IIndoorAssetReportProcessor
+        class AssetReportServiceMock : IMessageExecutor<IndoorAssetReportMessage>
         {
             public void Execute(IndoorAssetReportMessage message)
             { }

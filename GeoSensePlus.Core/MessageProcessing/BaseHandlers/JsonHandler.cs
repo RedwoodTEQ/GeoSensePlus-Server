@@ -20,11 +20,11 @@ namespace GeoSensePlus.Core.MessageProcessing.BaseHandlers
                     DateTimeZoneHandling = DateTimeZoneHandling.Local
                 });
 
-                var message = this.Parse(jsonObject);
+                TMessage message = this.Parse(jsonObject);
                 if (message != null)
                 {
                     ctx.MessageObject = message;
-                    this.Handle(message, ctx);
+                    this.Execute(message, ctx);
                     return true;
                 }
             }
@@ -37,7 +37,7 @@ namespace GeoSensePlus.Core.MessageProcessing.BaseHandlers
         }
 
         protected abstract TMessage Parse(dynamic msg);
-        protected abstract void Handle(TMessage message, ChannelContext<string> ctx);
+        protected abstract void Execute(TMessage message, ChannelContext<string> ctx);
         protected virtual void OnError(Exception ex) { }
     }
 }
