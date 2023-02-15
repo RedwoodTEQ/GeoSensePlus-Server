@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using GeoSensePlus.Core.MessageProcessing.Interfaces;
 
 namespace GeoSensePlus.Core.MessageProcessing.BaseHandlers
 {
