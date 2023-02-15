@@ -13,7 +13,7 @@ namespace GeoSensePlus.App.AssetTracking.MessageProcessors;
 
 public interface IIndoorAssetReportProcessor
 {
-    void Process(IndoorAssetReportMessage message);
+    void Execute(IndoorAssetReportMessage message);
 }
 
 class IndoorAssetReportProcessor : IIndoorAssetReportProcessor
@@ -32,7 +32,7 @@ class IndoorAssetReportProcessor : IIndoorAssetReportProcessor
         _assetRepo = assetRepo;
     }
 
-    public void Process(IndoorAssetReportMessage message)
+    public void Execute(IndoorAssetReportMessage message)
     {
         // if edge doesn't exist
         if (_edgeRepo.RetrieveAsync(message.HardwareSerial).Result == null)

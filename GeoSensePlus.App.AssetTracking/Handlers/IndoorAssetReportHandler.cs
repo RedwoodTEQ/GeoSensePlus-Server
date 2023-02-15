@@ -48,7 +48,7 @@ namespace GeoSensePlus.App.AssetTracking.Handlers
         protected override void Handle(IndoorAssetReportMessage message, ChannelContext<string> ctx)
         {
             Console.WriteLine($"Handling IndoorAssetReportMessage message ... Payload info count = {message.IndoorTagPayloadInfo.Count}");
-            _processor.Process(message);
+            _processor.Execute(message);
             Console.WriteLine("");
         }
 
