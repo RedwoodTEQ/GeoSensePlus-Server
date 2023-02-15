@@ -10,7 +10,7 @@ namespace GeoSensePlus.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public DbSet<Area> Areas { get; set; }
+        public DbSet<Zone> Zones { get; set; }
         public DbSet<AlarmEvent> AlarmEvents { get; set; }
         public DbSet<CellAnchor> CellAnchors { get; set; }
         public DbSet<CellTag> CellTags { get; set; }
@@ -18,7 +18,7 @@ namespace GeoSensePlus.Data
         public DbSet<UwbTag> UwbTags { get; set; }
         public DbSet<Building> Buildings { get; set; }
         public DbSet<Floorplan> Floorplans { get; set; }
-        public DbSet<Gateway> Gateway { get; set; }
+        public DbSet<Hub> Hubs { get; set; }
         public DbSet<Geofence> Geofences { get; set; }
         public DbSet<GpsTag> GpsTags { get; set; }
         public DbSet<Target> Targets { get; set; }

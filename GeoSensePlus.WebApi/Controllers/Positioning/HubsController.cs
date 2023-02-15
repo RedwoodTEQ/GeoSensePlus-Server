@@ -9,38 +9,38 @@ namespace GeoSensePlus.WebApi.Controllers.Positioning
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GatewaysController : ControllerBase
+    public class HubsController : ControllerBase
     {
-        IControllerUtil<Gateway> _controllerUtil;
+        IControllerUtil<Hub> _controllerUtil;
 
-        public GatewaysController(IControllerUtil<Gateway> controllerUtil)
+        public HubsController(IControllerUtil<Hub> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }
 
         [HttpGet]
-        public IEnumerable<Gateway> Get()
+        public IEnumerable<Hub> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Gateway> Get(int id)
+        public ActionResult<Hub> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<GatewayEntity> Post([FromBody] GatewayEntity value)
+        public ActionResult<HubEntity> Post([FromBody] HubEntity value)
         {
-            var gateway = new Gateway { Name = value.Name, Description = value.Description };
+            var gateway = new Hub { Name = value.Name, Description = value.Description };
             return _controllerUtil.Post(gateway);
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] GatewayEntity value)
+        public ActionResult Put(int id, [FromBody] HubEntity value)
         {
-            var gateway = new Gateway { GatewayId = id, Name = value.Name, Description = value.Description };
+            var gateway = new Hub { GatewayId = id, Name = value.Name, Description = value.Description };
             return _controllerUtil.Put(gateway);
         }
 

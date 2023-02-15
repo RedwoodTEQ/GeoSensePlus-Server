@@ -9,14 +9,18 @@ using System.Threading.Tasks;
 namespace GeoSensePlus.Data.DatabaseModels.Location
 {
 
-    public class AreaEntity
+    public class ZoneEntity
     {
         public string Name { get; set; }
         public string Description { get; set; }
         public int? CellAnchorId { get; set; }        // rename from EdgeId
     }
 
-    public class Area : AreaEntity, IIdAvailable<int>
+    /// <summary>
+    /// Renamed from "Area".
+    /// A zone is an indoor area, which can be a room, a corridor etc.
+    /// </summary>
+    public class Zone : ZoneEntity, IIdAvailable<int>
     {
         public Floorplan Floorplan { get; set; }
         public CellAnchor CellAnchor { get; set; }
@@ -31,12 +35,12 @@ namespace GeoSensePlus.Data.DatabaseModels.Location
 
         public static void Create(ApplicationDbContext ctx, string name)
         {
-            ctx.Areas.Add(new Area { Name = name });
+            ctx.Zones.Add(new Zone { Name = name });
             ctx.SaveChanges();
         }
         public static void Create(ApplicationDbContext ctx, string name, string description)
         {
-            ctx.Areas.Add(new Area { Name = name, Description = description });
+            ctx.Zones.Add(new Zone { Name = name, Description = description });
             ctx.SaveChanges();
         }
     }

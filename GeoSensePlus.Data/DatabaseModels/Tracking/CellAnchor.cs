@@ -15,12 +15,15 @@ namespace GeoSensePlus.Data.DatabaseModels.Tracking
     }
 
     /// <summary>
-    /// CellAnchor was renamed from "edge".
+    /// Renamed from "edge"
+    /// 
+    /// Currently, a cell anchor is just a BLE beacon, named to "anchor" to
+    /// keep consistant with other tracking devices' naming.
     /// </summary>
     public class CellAnchor : CellAnchorEntity, IIdAvailable<int>
     {
-        public Area Area { get; set; }
-        public Gateway Gateway { get; set; }
+        public Zone Area { get; set; }
+        public Hub Gateway { get; set; }
         public List<CellTag> CellTags { get; set; } = new List<CellTag>();
 
         public int EdgeId { get; set; }

@@ -22,7 +22,7 @@ namespace GeoSensePlus.Data.DatabaseModels.Location
     public class Floorplan : FloorplanEntity, IIdAvailable<int>
     {
         public Level Level { get; set; }
-        public List<Area> Areas { get; set; } = new List<Area>();
+        public List<Zone> Zones { get; set; } = new List<Zone>();
 
         public int FloorplanId { get; set; }
 

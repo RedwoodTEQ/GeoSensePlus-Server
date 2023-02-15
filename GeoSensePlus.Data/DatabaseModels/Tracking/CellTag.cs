@@ -15,7 +15,9 @@ namespace GeoSensePlus.Data.DatabaseModels.Tracking
     }
 
     /// <summary>
-    /// A cell tag is a BLE tag used for cell id location tracking cases.
+    /// A cell tag is a combination of a BLE reader and a lora gateway, it
+    /// reads BLE beacon signal nearby and transmit the location messages via
+    /// lora to a hub in the local building.
     /// </summary>
     public class CellTag : CellTagEntity, IIdAvailable<int>
     {

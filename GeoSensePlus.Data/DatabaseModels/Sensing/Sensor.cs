@@ -1,4 +1,5 @@
 ﻿using GeoSensePlus.Data.DatabaseModels.Base;
+using GeoSensePlus.Data.DatabaseModels.Location;
 using GeoSensePlus.Data.DatabaseModels.Tracking;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace GeoSensePlus.Data.DatabaseModels.Sensing
     {
         //public Area CachedArea { get; set; }
         public Measure Measure { get; set; }
-        public CellAnchor Edge { get; set; }
+        public Zone Zone { get; set; }
 
         public int SensorId { get; set; }
 

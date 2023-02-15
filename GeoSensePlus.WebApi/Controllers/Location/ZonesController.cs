@@ -13,38 +13,38 @@ namespace GeoSensePlus.WebApi.Controllers.Location
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AreasController : ControllerBase
+    public class ZonesController : ControllerBase
     {
-        IControllerUtil<Area> _controllerUtil;
+        IControllerUtil<Zone> _controllerUtil;
 
-        public AreasController(IControllerUtil<Area> controllerUtil)
+        public ZonesController(IControllerUtil<Zone> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }
 
         [HttpGet]
-        public IEnumerable<Area> Get()
+        public IEnumerable<Zone> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Area> Get(int id)
+        public ActionResult<Zone> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<AreaEntity> Post([FromBody] AreaEntity value)
+        public ActionResult<ZoneEntity> Post([FromBody] ZoneEntity value)
         {
-            var area = new Area { Name = value.Name, Description = value.Description, CellAnchorId = value.CellAnchorId };
+            var area = new Zone { Name = value.Name, Description = value.Description, CellAnchorId = value.CellAnchorId };
             return _controllerUtil.Post(area);
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] AreaEntity value)
+        public ActionResult Put(int id, [FromBody] ZoneEntity value)
         {
-            var area = new Area { AreaId = id, Name = value.Name, Description = value.Description, CellAnchorId = value.CellAnchorId };
+            var area = new Zone { AreaId = id, Name = value.Name, Description = value.Description, CellAnchorId = value.CellAnchorId };
             return _controllerUtil.Put(area);
         }
 
