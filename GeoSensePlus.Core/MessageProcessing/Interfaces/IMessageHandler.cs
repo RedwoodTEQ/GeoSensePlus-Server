@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GeoSensePlus.Core.MessageProcessing
+namespace GeoSensePlus.Core.MessageProcessing.Interfaces
 {
     public interface IMessageHandler<T>
     {
