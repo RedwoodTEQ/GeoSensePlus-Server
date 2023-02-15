@@ -16,12 +16,12 @@ namespace GeoSensePlus.Core.MessageProcessing
         readonly IMessageProcessor<byte[]> _byteProcessor;
 
         public MessageEngine(
-            IMessageProcessor<string> jsonPipeline,
-            IMessageProcessor<byte[]> bytePipeline
+            IMessageProcessor<string> jsonProcessor,
+            IMessageProcessor<byte[]> byteProcessor
         )
         {
-            _jsonProcessor = jsonPipeline;
-            _byteProcessor = bytePipeline;
+            _jsonProcessor = jsonProcessor;
+            _byteProcessor = byteProcessor;
         }
 
         public void Process(string json, ChannelContext<string> ctx) => _jsonProcessor.Process(json, ctx);
