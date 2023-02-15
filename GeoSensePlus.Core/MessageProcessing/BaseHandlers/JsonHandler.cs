@@ -1,12 +1,22 @@
 ﻿using GeoSensePlus.Core.Codec;
+using GeoSensePlus.Core.MessageProcessing.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace GeoSensePlus.Core.MessageProcessing.BaseHandlers
 {
+
     public abstract class JsonHandler<TMessage> : IMessageHandler<string>
     {
+
+        IMessageProcessor<TMessage> _processor;
+
+        protected JsonHandler(IMessageProcessor<TMessage> processor)
+        {
+            _processor = processor;
+        }
+
         public bool Handle(string jsonString, ChannelContext<string> ctx)
         {
             try
@@ -24,7 +34,7 @@ namespace GeoSensePlus.Core.MessageProcessing.BaseHandlers
                 if (message != null)
                 {
                     ctx.MessageObject = message;
-                    this.Execute(message, ctx);
+                    _processor.Process(message);
                     return true;
                 }
             }
@@ -37,7 +47,7 @@ namespace GeoSensePlus.Core.MessageProcessing.BaseHandlers
         }
 
         protected abstract TMessage Parse(dynamic msg);
-        protected abstract void Execute(TMessage message, ChannelContext<string> ctx);
+        //protected abstract void Execute(TMessage message, ChannelContext<string> ctx);
         protected virtual void OnError(Exception ex) { }
     }
 }
