@@ -13,11 +13,11 @@ namespace GeoSensePlus.WebApi.Controllers.Positioning
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EdgesController : ControllerBase
+    public class CellAnchorsController : ControllerBase
     {
         IControllerUtil<CellAnchor> _controllerUtil;
 
-        public EdgesController(IControllerUtil<CellAnchor> controllerUtil)
+        public CellAnchorsController(IControllerUtil<CellAnchor> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }
@@ -44,7 +44,7 @@ namespace GeoSensePlus.WebApi.Controllers.Positioning
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] CellAnchorEntity value)
         {
-            var edge = new CellAnchor { EdgeId = id, Name = value.Name, Description = value.Description };
+            var edge = new CellAnchor { CellAnchorId = id, Name = value.Name, Description = value.Description };
             return _controllerUtil.Put(edge);
         }
 

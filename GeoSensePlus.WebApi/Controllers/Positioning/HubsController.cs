@@ -40,7 +40,7 @@ namespace GeoSensePlus.WebApi.Controllers.Positioning
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] HubEntity value)
         {
-            var gateway = new Hub { GatewayId = id, Name = value.Name, Description = value.Description };
+            var gateway = new Hub { HubId = id, Name = value.Name, Description = value.Description };
             return _controllerUtil.Put(gateway);
         }
 

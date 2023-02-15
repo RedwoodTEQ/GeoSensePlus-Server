@@ -22,11 +22,11 @@ namespace GeoSensePlus.Data.DatabaseModels.Tracking
     {
         public List<CellAnchor> CellAnchors { get; set; } = new List<CellAnchor>();
         public List<CellTag> CellTags { get; set; } = new List<CellTag>();
-        public int GatewayId { get; set; }
+        public int HubId { get; set; }
 
         public int GetId()
         {
-            return GatewayId;
+            return HubId;
         }
     }
 }

@@ -15,9 +15,7 @@ namespace GeoSensePlus.Data.DatabaseModels.Tracking
     }
 
     /// <summary>
-    /// A cell tag is a combination of a BLE reader and a lora gateway, it
-    /// reads BLE beacon signal nearby and transmit the location messages via
-    /// lora to a hub in the local building.
+    /// A cell tag is just a BLE beacon, which sends out BLE signals
     /// </summary>
     public class CellTag : CellTagEntity, IIdAvailable<int>
     {

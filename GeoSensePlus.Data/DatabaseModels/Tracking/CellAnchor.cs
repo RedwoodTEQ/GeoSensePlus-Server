@@ -15,22 +15,23 @@ namespace GeoSensePlus.Data.DatabaseModels.Tracking
     }
 
     /// <summary>
-    /// Renamed from "edge"
+    /// Renamed from "edge", to keep consistant with other tracking devices' naming.
     /// 
-    /// Currently, a cell anchor is just a BLE beacon, named to "anchor" to
-    /// keep consistant with other tracking devices' naming.
+    /// A cell anchor is a combination of a BLE reader and a lora gateway, it
+    /// reads BLE beacon signal nearby and transmit the location messages via
+    /// lora to a hub in the local building.
     /// </summary>
     public class CellAnchor : CellAnchorEntity, IIdAvailable<int>
     {
-        public Zone Area { get; set; }
-        public Hub Gateway { get; set; }
+        public Zone Zone { get; set; }
+        public Hub Hub { get; set; }
         public List<CellTag> CellTags { get; set; } = new List<CellTag>();
 
-        public int EdgeId { get; set; }
+        public int CellAnchorId { get; set; }
 
         public int GetId()
         {
-            return EdgeId;
+            return CellAnchorId;
         }
     }
 }
