@@ -1,4 +1,4 @@
-﻿using GeoSensePlus.Core.MessageProcessing;
+﻿using GeoSensePlus.Core.MessageProcessing.Interfaces;
 using GeoSensePlus.Core.UnitTest.TestEnv;
 using System;
 using System.Collections.Generic;
