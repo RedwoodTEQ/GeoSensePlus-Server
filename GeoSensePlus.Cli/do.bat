@@ -1,7 +1,7 @@
 @echo off
 
 
-SET DEBUG_PATH=%CD%\bin\Debug\netcoreapp3.1
+SET DEBUG_PATH=%CD%\bin\Debug\net7.0
 
 dotnet %DEBUG_PATH%\GeoSensePlus.Cli.dll %*
 
