@@ -5,7 +5,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>gs</ToolCommandName>
     <PackageOutputPath>./bin/NuPkg</PackageOutputPath>
-    <Version>1.2.0-dev</Version>
+    <Version>1.2.0-working</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AWSSDK.IotData" Version="3.7.101.52" />

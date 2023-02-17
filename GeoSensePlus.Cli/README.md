@@ -9,10 +9,11 @@
 
 ## Release Notes
 
-### v1.2.0-dev
+### v1.2.0-working
 
 - [#67](https://gitlab.com/outdoor-asset-tracking-solution/app-front-end/issues/67) Update .gs.config.json set/register/unregister logic
-- Upgrade to .net core 3.1
+- Upgrade to .net7
+- Add aws iot core command "thing"
 
 ### v1.1.0 (internal)
 
