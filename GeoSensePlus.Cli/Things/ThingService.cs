@@ -20,6 +20,7 @@ namespace GeoSensePlus.Cli.Things;
 
 public interface IThingService
 {
+    Task MqttPubAsync();
     Task GetThingShadowAsync();
     Task ListThingsAsync();
 }
@@ -59,7 +60,7 @@ public class ThingService : IThingService
         }
     }
 
-    public async Task AddPreassureMeasurement()     // TODO: not working
+    public async Task MqttPubAsync()
     {
         var measureData = new
         {
@@ -72,7 +73,8 @@ public class ThingService : IThingService
 
         PublishRequest publishRequest = new PublishRequest()
         {
-            Topic = "iot/topic",
+            //Topic = "$aws/things/Test_thing_001/shadow/get/accepted",
+            Topic = "$aws/things/Test_thing_002/shadow/name/rl_test/get/accepted",
             Qos = 0,
             Payload = payloadStream
         };

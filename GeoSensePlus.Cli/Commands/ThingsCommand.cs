@@ -28,4 +28,9 @@ public class ThingsCommand
     {
         await _svc.ListThingsAsync();
     }
+
+    public async Task MqttPub()
+    {
+        await _svc.MqttPubAsync();
+    }
 }
