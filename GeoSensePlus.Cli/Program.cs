@@ -9,6 +9,10 @@ using NetCoreUtils.Database.MongoDb;
 using Microsoft.Extensions.Logging;
 using GeoSensePlus.Mqtt;
 using NetCoreUtils.Database.InfluxDb;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
+using GeoSensePlus.Cli.Things;
+using GeoSensePlus.Cli.ConfigModels;
 
 namespace GeoSensePlus.Cli
 {
@@ -28,6 +32,16 @@ namespace GeoSensePlus.Cli
                 {
                     Token = "ky6JucdlHoiCsDta7BxaagInhk33L9D52sK63CzAYB3S5Ptvvxpqdmn133eq-bWQ31uhH06Kkk7mmwFyhFKfuQ=="
                 });
+                services.AddTransient<IThingService, ThingService>();
+
+                // register configuration model
+                var config = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .AddUserSecrets<Program>()
+                    .AddEnvironmentVariables()
+                    .AddCommandLine(args)
+                    .Build();
+               services.Configure<aws_credentials>(config.GetSection("aws_credentials"));
             });
         }
 
