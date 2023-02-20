@@ -6,6 +6,7 @@ using CoreCmd;
 using GeoSensePlus.Cli.ConfigModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -43,6 +44,26 @@ public class ThingService : IThingService
         {
             throw new Exception($"Received HTTP {result.HttpStatusCode}");
         }
+    }
+
+    public async Task AddPreassureMeasurement()     // TODO: not working
+    {
+        var measureData = new
+        {
+            Id = DateTime.Now.Ticks,
+            Presures = new Random().Next(0, 100)
+        };
+
+        var jsonStr = JsonConvert.SerializeObject(measureData);
+        var payloadStream = new MemoryStream(Encoding.UTF8.GetBytes(jsonStr ?? string.Empty));
+
+        PublishRequest publishRequest = new PublishRequest()
+        {
+            Topic = "iot/topic",
+            Qos = 0,
+            Payload = payloadStream
+        };
+        await client.PublishAsync(publishRequest);
     }
 
     public async Task GetThingShadowAsync()
