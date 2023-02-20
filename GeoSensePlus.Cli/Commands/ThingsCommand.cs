@@ -10,17 +10,22 @@ namespace GeoSensePlus.Cli.Commands;
 /// <summary>
 /// For testing AWS IoT Core device shadow
 /// </summary>
-public class ThingCommand
+public class ThingsCommand
 {
     IThingService _svc;
 
-    public ThingCommand(IThingService svc)
+    public ThingsCommand(IThingService svc)
     {
         _svc = svc;
     }
 
-    public async Task GetShadow()
+    public async Task Shadow()
     {
         await _svc.GetThingShadowAsync();
+    }
+
+    public async Task All()
+    {
+        await _svc.ListThingsAsync();
     }
 }

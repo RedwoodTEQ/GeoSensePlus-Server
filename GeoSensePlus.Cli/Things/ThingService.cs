@@ -1,4 +1,5 @@
 ﻿using Amazon;
+using Amazon.IoT;
 using Amazon.IotData;
 using Amazon.IotData.Model;
 using Amazon.Runtime;
@@ -20,26 +21,38 @@ namespace GeoSensePlus.Cli.Things;
 public interface IThingService
 {
     Task GetThingShadowAsync();
+    Task ListThingsAsync();
 }
 public class ThingService : IThingService
 {
-    private readonly AmazonIotDataClient client;
+    AmazonIotDataClient _iotDataClient;
+    AmazonIoTClient _iotClient;
 
     public ThingService(IOptions<aws_credentials> option)
     {
         string accessKey = option.Value.rwd_access_key_id;
         string secretKey = option.Value.rwd_secret_access_key;
-
-        Console.WriteLine($"accessKey = {accessKey}; secretKey = {secretKey}");
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-        //RegionEndpoint endpoint = RegionEndpoint.APSoutheast2;      // The Asia Pacific (Sydney) endpoint
-        client = new AmazonIotDataClient("https://a30gbmt0ucy3ut-ats.iot.ap-southeast-2.amazonaws.com", credentials);
+
+        _iotDataClient = new AmazonIotDataClient("https://a30gbmt0ucy3ut-ats.iot.ap-southeast-2.amazonaws.com", credentials);
+        _iotClient = new AmazonIoTClient(credentials, RegionEndpoint.APSoutheast2);
+    }
+
+    public async Task ListThingsAsync()
+    {
+        var things = await _iotClient.ListThingsAsync();
+
+        Console.WriteLine("All things:");
+        foreach(var thing in things.Things)
+        {
+            Console.WriteLine(thing.ThingName);
+        }
     }
 
     public async Task UpdateThingShadow(string name, MemoryStream payLoad)
     {
         var updateThingShadowRequest = new UpdateThingShadowRequest() { ThingName = name, Payload = payLoad };
-        var result = await this.client.UpdateThingShadowAsync(updateThingShadowRequest);
+        var result = await this._iotDataClient.UpdateThingShadowAsync(updateThingShadowRequest);
         if (result.HttpStatusCode != HttpStatusCode.OK)
         {
             throw new Exception($"Received HTTP {result.HttpStatusCode}");
@@ -63,13 +76,13 @@ public class ThingService : IThingService
             Qos = 0,
             Payload = payloadStream
         };
-        await client.PublishAsync(publishRequest);
+        await _iotDataClient.PublishAsync(publishRequest);
     }
 
     public async Task GetThingShadowAsync()
     {
         var req = new GetThingShadowRequest() { ThingName = "OTA_DEMO_3" };
-        var res = await this.client.GetThingShadowAsync(req);
+        var res = await this._iotDataClient.GetThingShadowAsync(req);
         var json = Encoding.UTF8.GetString(res.Payload.ToArray());
         Console.WriteLine($"json = {json}");
     }
