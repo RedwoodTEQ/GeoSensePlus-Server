@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeoSensePlus.Cli.Things;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,15 @@ namespace GeoSensePlus.Cli.Commands;
 /// </summary>
 public class ThingCommand
 {
-    public void Test()
+    IThingService _svc;
+
+    public ThingCommand(IThingService svc)
     {
-        Console.WriteLine("Thing test works.");
+        _svc = svc;
+    }
+
+    public async Task GetShadow()
+    {
+        await _svc.GetThingShadowAsync();
     }
 }
