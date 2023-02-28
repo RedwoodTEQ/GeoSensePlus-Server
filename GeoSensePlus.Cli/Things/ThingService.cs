@@ -1,10 +1,13 @@
 ﻿using Amazon;
 using Amazon.IoT;
+using Amazon.IoT.Model;
 using Amazon.IotData;
 using Amazon.IotData.Model;
 using Amazon.Runtime;
 using CoreCmd;
 using GeoSensePlus.Cli.ConfigModels;
+using Google.Api.Gax;
+using InfluxDB.Client.Api.Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -23,6 +26,7 @@ public interface IThingService
     Task MqttPubAsync();
     Task GetThingShadowAsync();
     Task ListThingsAsync();
+    Task CreateKeysAndCertificateAsync();
 }
 public class ThingService : IThingService
 {
@@ -37,6 +41,33 @@ public class ThingService : IThingService
 
         _iotDataClient = new AmazonIotDataClient("https://a30gbmt0ucy3ut-ats.iot.ap-southeast-2.amazonaws.com", credentials);
         _iotClient = new AmazonIoTClient(credentials, RegionEndpoint.APSoutheast2);
+
+        /***** TODO: test the following methods: *****/
+        //_iotClient.CreateThingAsync()
+        //_iotClient.CreateStreamAsync()    // transfer file via mqtt
+        //_iotClient.CreateProvisioningTemplateAsync()
+    }
+
+    public async Task CreateKeysAndCertificateAsync()
+    {
+        var createKeysAndCertificateResponse = await _iotClient.CreateKeysAndCertificateAsync(new CreateKeysAndCertificateRequest() { SetAsActive = true });
+        string cert_id = createKeysAndCertificateResponse.CertificateId;
+        string cert_arn = createKeysAndCertificateResponse.CertificateArn;
+        string cert_pem = createKeysAndCertificateResponse.CertificatePem;
+        string prikey = createKeysAndCertificateResponse.KeyPair.PrivateKey;
+        string pubkey = createKeysAndCertificateResponse.KeyPair.PublicKey;
+
+        Console.WriteLine($"cert_id:\n{cert_id}");
+        Console.WriteLine($"cert_arn:\n{cert_arn}");
+        Console.WriteLine($"cert_pem:\n{cert_pem}");
+        Console.WriteLine($"prikey:\n{prikey}");        // TODO: need to save to file
+        Console.WriteLine($"pubkey:\n{pubkey}");        // TODO: need to save to file
+
+        await _iotClient.AttachPolicyAsync(new AttachPolicyRequest()    // see also: _iotClient.CreatePolicyAsync();
+        {
+            Target = createKeysAndCertificateResponse.CertificateArn,
+            PolicyName = "prod_mqtt__all_things_237624127646"           // preconfigured in aws iot core console page
+        });
     }
 
     public async Task ListThingsAsync()
