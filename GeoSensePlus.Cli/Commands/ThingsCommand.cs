@@ -34,6 +34,11 @@ public class ThingsCommand
         await _svc.MqttPubAsync();
     }
 
+    public async Task MqttSub()
+    {
+        await _svc.MqttSubAsync();
+    }
+
     public async Task Cert()
     {
         await _svc.CreateKeysAndCertificateAsync();
