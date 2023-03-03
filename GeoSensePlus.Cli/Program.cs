@@ -32,7 +32,7 @@ namespace GeoSensePlus.Cli
                 {
                     Token = "ky6JucdlHoiCsDta7BxaagInhk33L9D52sK63CzAYB3S5Ptvvxpqdmn133eq-bWQ31uhH06Kkk7mmwFyhFKfuQ=="
                 });
-                services.AddTransient<IThingService, ThingService>();
+                services.AddTransient<IThingService, ThingsService>();
 
                 // register configuration model
                 var config = new ConfigurationBuilder()
