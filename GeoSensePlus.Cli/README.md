@@ -12,8 +12,18 @@
 ### v1.2.0-working
 
 - [#67](https://gitlab.com/outdoor-asset-tracking-solution/app-front-end/issues/67) Update .gs.config.json set/register/unregister logic
+
 - Upgrade to .net7
+
 - Add aws iot core command "thing"
+
+- Add 2 firebase command:
+  ```
+  firebase export-json [absolute_path] - Export firestore data and save it to be a JSON file at local.
+  firebase import-json [file_path] - Import JSON file to a firestore.
+  ```
+
+  see pull request: https://github.com/RedwoodTEQ/GeoSensePlus-Server/pull/4/
 
 ### v1.1.0 (internal)
 
