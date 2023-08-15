@@ -36,3 +36,7 @@ msbuild.wrn
 
 # Visual Studio
 .vs/
+
+# dotnet upgrade-assistant
+upgrade-assistant.clef
+UpgradeReport.sarif

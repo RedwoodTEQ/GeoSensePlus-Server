@@ -1,7 +1,7 @@
 using GeoSensePlus.App.AssetTracking;
 using GeoSensePlus.App.AssetTracking.Handlers;
+using GeoSensePlus.App.AssetTracking.MessageProcessors;
 using GeoSensePlus.App.AssetTracking.Messages;
-using GeoSensePlus.App.AssetTracking.Services;
 using GeoSensePlus.App.ProgressTracking.Messages;
 using GeoSensePlus.Core.Codec;
 using GeoSensePlus.Core.CommandProcessing.MessageHandlers;
@@ -60,7 +60,7 @@ namespace GeoSensePlus.Core.UnitTest
             Assert.Equal(0.93, data.TagBatteryLevel);
         }
 
-        class AssetReportServiceMock : IAssetReportService
+        class AssetReportServiceMock : IMessageExecutor<IndoorAssetReportMessage>
         {
             public void Execute(IndoorAssetReportMessage message)
             { }

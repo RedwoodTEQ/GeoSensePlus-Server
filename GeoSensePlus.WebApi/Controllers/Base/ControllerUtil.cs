@@ -21,6 +21,15 @@ namespace GeoSensePlus.WebApi.Controllers.Base
     {
         private readonly IRepository<TEntity> _repo;
 
+        /** About HttpContext.RequestServices.GetService<T>():
+         * Not recommended as it will make the dependencies inexplicit, better
+         * to use constructor injection instead
+         */
+        public T GetService<T>()
+        {
+            return HttpContext.RequestServices.GetService<T>();
+        }
+
         public ControllerUtil(IRepository<TEntity> repo)
         {
             _repo = repo;

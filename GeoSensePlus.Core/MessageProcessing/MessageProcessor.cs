@@ -3,43 +3,36 @@ using System.Collections.Generic;
 
 namespace GeoSensePlus.Core.MessageProcessing
 {
-    public interface IMessageProcessor<T>
+    public interface IMessageProcessor<TInput>
     {
-        void Process(T msg, ChannelContext<T> ctx);
+        void Process(TInput msg, ChannelContext<TInput> ctx);
     }
 
-    /// <typeparam name="T">Common, generic types, like json string, binary array, xml string etc.</typeparam>
-    public class MessageProcessor<T> : IMessageProcessor<T>
+    /// <typeparam name="TInput">Either string (for json) or byte[]</typeparam>
+    public class MessageProcessor<TInput> : IMessageProcessor<TInput>
     {
-        readonly IEnumerable<IMessageHandler<T>> _handlers;
+        readonly IEnumerable<IMessageHandler<TInput>> _handlers;
 
-        public MessageProcessor(IEnumerable<IMessageHandler<T>> handlers)
+        public MessageProcessor(IEnumerable<IMessageHandler<TInput>> handlers)
         {
             _handlers = handlers;
         }
 
-        public void Process(T msg, ChannelContext<T> ctx)
+        public void Process(TInput msg, ChannelContext<TInput> ctx)
         {
             foreach(var handler in _handlers)
             {
-                if(this.Invoke(() => { return handler.Handle(msg, ctx); })) // i.e. only allow one handler to make valid process
-                    break;
+                try
+                {
+                    if (handler.Handle(msg, ctx))
+                        break;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine("Message processor error:");
+                    Console.WriteLine(ex);
+                }
             }
-        }
-
-        private bool Invoke(Func<bool> fn)
-        {
-            try
-            {
-                return fn();
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine("Message processor error:");
-                Console.WriteLine(ex);
-            }
-
-            return false;
         }
     }
 }

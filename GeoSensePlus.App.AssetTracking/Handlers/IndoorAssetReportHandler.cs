@@ -1,5 +1,5 @@
-﻿using GeoSensePlus.App.AssetTracking.Messages;
-using GeoSensePlus.App.AssetTracking.Services;
+﻿using GeoSensePlus.App.AssetTracking.MessageProcessors;
+using GeoSensePlus.App.AssetTracking.Messages;
 using GeoSensePlus.Core.Codec;
 using GeoSensePlus.Core.MessageProcessing;
 using GeoSensePlus.Core.MessageProcessing.BaseHandlers;
@@ -13,15 +13,15 @@ namespace GeoSensePlus.App.AssetTracking.Handlers
     public class IndoorAssetReportHandler : JsonHandler<IndoorAssetReportMessage>
     {
         readonly IPayloadDecoder<List<IndoorTagPayloadInfo>> _payloadDecoder;
-        readonly IAssetReportService _service;
+        readonly IMessageExecutor<IndoorAssetReportMessage> _processor;
 
         public IndoorAssetReportHandler(
             IPayloadDecoder<List<IndoorTagPayloadInfo>> payloadDecoder,
-            IAssetReportService service
+            IMessageExecutor<IndoorAssetReportMessage> service
             )
         {
             _payloadDecoder = payloadDecoder;
-            _service = service;
+            _processor = service;
         }
 
         protected override IndoorAssetReportMessage Parse(dynamic msg)
@@ -45,10 +45,10 @@ namespace GeoSensePlus.App.AssetTracking.Handlers
             };
         }
 
-        protected override void Handle(IndoorAssetReportMessage message, ChannelContext<string> ctx)
+        protected override void Execute(IndoorAssetReportMessage message, ChannelContext<string> ctx)
         {
             Console.WriteLine($"Handling IndoorAssetReportMessage message ... Payload info count = {message.IndoorTagPayloadInfo.Count}");
-            _service.Execute(message);
+            _processor.Execute(message);
             Console.WriteLine("");
         }
 

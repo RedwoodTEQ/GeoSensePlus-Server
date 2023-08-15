@@ -1,0 +1,26 @@
+version: "3.4"
+
+services:
+  postgresql:
+    image: postgres:11.12
+    container_name: "gsp_postgresql"
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=open
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=GeoSensePlus
+      - POSTGRES_PORT=5432
+      # - PGDATA="/data/postgres"  # PGDATA: /data/postgres
+
+    #volumes:
+      #- postgresql-data-11.12:/var/lib/postgresql/data
+    networks:
+      - geosenseplusnetwork
+    # restart: unless-stopped
+
+networks:
+  geosenseplusnetwork:
+
+#volumes:
+#  postgresql-data-11.12:

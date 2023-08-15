@@ -26,7 +26,7 @@ namespace GeoSensePlus.Core.CommandProcessing.MessageHandlers
             };
         }
 
-        protected override void Handle(IndoorArrivalMessage data, ChannelContext<string> ctx)
+        protected override void Execute(IndoorArrivalMessage data, ChannelContext<string> ctx)
         {
             Console.WriteLine("\nHandling IndoorArrivalMessage message ...");
             Console.WriteLine($"ReceiveTime = {ctx.ReceiveTime}; UserDeviceId = {data.UserDeviceId}; TagId = {data.TagId}");
