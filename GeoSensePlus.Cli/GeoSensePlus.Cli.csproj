@@ -16,9 +16,9 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="MQTTnet" Version="4.1.4.563" />
     <PackageReference Include="NetCoreUtils.Database.InfluxDb" Version="1.3.0.3" />
-    <PackageReference Include="Oocx.ReadX509CertificateFromPem" Version="1.2.3" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GeoSensePlus.Aws.IoT\GeoSensePlus.Aws.IoT.csproj" />
     <ProjectReference Include="..\GeoSensePlus.Firestore\GeoSensePlus.Firestore.csproj" />
     <ProjectReference Include="..\GeoSensePlus.Mongo\GeoSensePlus.Mongo.csproj" />
     <ProjectReference Include="..\GeoSensePlus.Mqtt\GeoSensePlus.Mqtt.csproj" />

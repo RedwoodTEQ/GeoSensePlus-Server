@@ -9,7 +9,6 @@ using NetCoreUtils.Database.MongoDb;
 using Microsoft.Extensions.Logging;
 using GeoSensePlus.Mqtt;
 using NetCoreUtils.Database.InfluxDb;
-using System.Configuration;
 using Microsoft.Extensions.Configuration;
 using GeoSensePlus.Cli.Things;
 using GeoSensePlus.Cli.ConfigModels;

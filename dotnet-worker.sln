@@ -41,6 +41,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoSensePlus.Data", "GeoSen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "docker-compose-more", "docker-compose-more\docker-compose-more.csproj", "{1574E244-5DCF-4AA3-B221-06F5186397B6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoSensePlus.Aws.IoT", "GeoSensePlus.Aws.IoT\GeoSensePlus.Aws.IoT.csproj", "{17F020E0-0CDC-4899-BB38-A7D44A18F36C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{1574E244-5DCF-4AA3-B221-06F5186397B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1574E244-5DCF-4AA3-B221-06F5186397B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1574E244-5DCF-4AA3-B221-06F5186397B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17F020E0-0CDC-4899-BB38-A7D44A18F36C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17F020E0-0CDC-4899-BB38-A7D44A18F36C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17F020E0-0CDC-4899-BB38-A7D44A18F36C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17F020E0-0CDC-4899-BB38-A7D44A18F36C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
