@@ -12,6 +12,6 @@ namespace GeoSensePlus.Firestore.Repositories
     {
         public AssetRepository(IFirebaseClient fbClient, IConfigOperator config) : base(fbClient, config) { }
 
-        protected override string SubcollectionName => CollectionName.assets;
+        protected override string SubcollectionName => CollectionName.Assets;
     }
 }

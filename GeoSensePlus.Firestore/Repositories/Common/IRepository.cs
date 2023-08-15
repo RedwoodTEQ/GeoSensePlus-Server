@@ -7,6 +7,8 @@ namespace GeoSensePlus.Firestore.Repositories.Common
     public interface IRepository<TEntity>
     {
         Task<TEntity> RetrieveAsync(string docId);
+        Task<Dictionary<string, object>> RetrieveDictionaryAsync(string docId);
+        Task<Dictionary<string, object>> RetrieveJsonDictionaryAsync(string docId);
         Task SetAsync(string docId, TEntity model);
         Task AddAsync(TEntity model);
         Task<IReadOnlyList<DocumentSnapshot>> ListAllAsync();

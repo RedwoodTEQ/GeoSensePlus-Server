@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CoreCmd.Attributes;
 using GeoSensePlus.Cli.Commands.Shared;
@@ -7,9 +8,11 @@ using GeoSensePlus.Firestore;
 using GeoSensePlus.Firestore.Models;
 using GeoSensePlus.Firestore.Repositories;
 using GeoSensePlus.Firestore.Repositories.Common;
+using Google.Cloud.Firestore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace GeoSensePlus.Cli.Commands
 {
@@ -64,8 +67,32 @@ namespace GeoSensePlus.Cli.Commands
         public void Display(string edgeId)
         {
             this.Execute(() => {
-                EdgeData obj = _svc.RetrieveAsync(edgeId).Result;
-                Console.WriteLine($"ID:{obj.HardwareSerial}; Update Time = {obj.LastUpdate}");
+                // EdgeData obj = _svc.RetrieveAsync(edgeId).Result;
+                var dict = _svc.RetrieveJsonDictionaryAsync(edgeId).Result;
+
+                if ( dict == null)
+                {
+                    Console.WriteLine($"Can not find any edge by given id {edgeId}");
+                }
+                else
+                {
+                    // Console.WriteLine(
+                    //     JsonConvert.SerializeObject( dict, Formatting.Indented )
+                    // );
+
+                    JsonConverter[] converters =
+                    {
+                       new DocumentReferenceConverter(),
+                       new CollectionReferenceConverter(),
+                    };
+                    
+                    Console.WriteLine(
+                        JsonConvert.SerializeObject( 
+                            dict, 
+                            Formatting.Indented, converters
+                        )
+                    );
+                }
             });
         }
 

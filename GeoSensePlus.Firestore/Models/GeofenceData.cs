@@ -5,25 +5,31 @@ using System.Text;
 
 namespace GeoSensePlus.Firestore.Models
 {
-    [FirestoreData]
-    public class GeofenceData
+    public class GeofenceDataBase
     {
-        [FirestoreProperty]
-        public string Bounds { get; set; }
+        [FirestoreDocumentId]
+        public string Id { get; protected set; } = null!;
 
-        [FirestoreProperty]
-        public string Centroid { get; set; }
+        [FirestoreProperty("bounds")]
+        public string Bounds { get; protected set; } = null!;
 
-        [FirestoreProperty]
-        public string Name { get; set; }
+        [FirestoreProperty("centroid")]
+        public string Centroid { get; protected set; } = null!;
 
-        [FirestoreProperty]
-        public double Radius { get; set; }
+        [FirestoreProperty("name")]
+        public string Name { get; protected set; } = null!;
 
-        [FirestoreProperty]
-        public string ShapeType { get; set; }
+        [FirestoreProperty("radius")]
+        public double Radius { get; protected set; }
 
-        [FirestoreProperty]
-        public string Vertices { get; set; }
+        [FirestoreProperty("shapeType")]
+        public string ShapeType { get; protected set; } = null!;
+
+        [FirestoreProperty("vertices")]
+        public string Vertices { get; protected set; } = null!;
     }
+    
+    [FirestoreData]
+    public class GeofenceData : GeofenceDataBase { }
+    public class GeofenceDataJson : GeofenceDataBase { }
 }

@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Firestore.Repositories
 {
-    public class GeofenceRepository : FirestoreRepositoryBase<GeofenceData>, IRepository<GeofenceData>
+    public class IndoorAssetTagRepository : FirestoreRepositoryBase<IndoorAssetTagData>, IRepository<IndoorAssetTagData>
     {
-        public GeofenceRepository(IFirebaseClient fbClient, IConfigOperator config) : base(fbClient, config) { }
+        public IndoorAssetTagRepository(IFirebaseClient fbClient, IConfigOperator config) : base(fbClient, config)
+        {
+        }
 
-        protected override string SubcollectionName => CollectionName.Geofences;
+        protected override string SubcollectionName => CollectionName.IndoorAssetTags;
 
         //public async Task Add(string docId)
         //{
@@ -40,5 +42,4 @@ namespace GeoSensePlus.Firestore.Repositories
         //    }
         //}
     }
-
 }
