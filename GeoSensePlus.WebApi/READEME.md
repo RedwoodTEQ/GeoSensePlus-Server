@@ -5,6 +5,7 @@
 - Responsibility: the main application server of GeoSense+ system
 - Published as a global tool: gsv
 - NuGet page: https://www.nuget.org/packages/GeoSensePlus.Server/
+- For more info about controllers, see the relevant entities' comments
 
 ## TODOs
 
@@ -12,6 +13,7 @@
 - [ ] Test Dockerfile
 - [ ] Test controllers
 - [ ] Change MongoController<> to a util class
+- [ ] Change API methods to async
 
 ## Release Notes
 

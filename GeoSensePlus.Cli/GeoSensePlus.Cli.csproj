@@ -5,15 +5,20 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>gs</ToolCommandName>
     <PackageOutputPath>./bin/NuPkg</PackageOutputPath>
-    <Version>1.2.0-dev</Version>
+    <Version>1.2.0-working</Version>
+    <UserSecretsId>6aeb8504-bbcd-4a86-bd9f-d5dcaa4014a6</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="AWSSDK.IoT" Version="3.7.104.14" />
+    <PackageReference Include="AWSSDK.IotData" Version="3.7.101.54" />
     <PackageReference Include="CoreCmd" Version="1.6.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    <PackageReference Include="MQTTnet" Version="4.1.4.563" />
     <PackageReference Include="NetCoreUtils.Database.InfluxDb" Version="1.3.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GeoSensePlus.Aws.IoT\GeoSensePlus.Aws.IoT.csproj" />
     <ProjectReference Include="..\GeoSensePlus.Firestore\GeoSensePlus.Firestore.csproj" />
     <ProjectReference Include="..\GeoSensePlus.Mongo\GeoSensePlus.Mongo.csproj" />
     <ProjectReference Include="..\GeoSensePlus.Mqtt\GeoSensePlus.Mqtt.csproj" />
