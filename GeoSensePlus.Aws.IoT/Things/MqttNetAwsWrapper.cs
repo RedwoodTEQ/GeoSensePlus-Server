@@ -10,14 +10,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GeoSensePlus.Cli.Things;
+namespace GeoSensePlus.Aws.IoT.Things;
 public class MqttNetAwsWrapper : IDisposable
 {
     IMqttClient _mqttClient;
 
     public MqttNetAwsWrapper(IMqttClient mqttClient)
     {
-        this._mqttClient = mqttClient;
+        _mqttClient = mqttClient;
     }
 
     static public async Task<MqttNetAwsWrapper> Create(
@@ -28,7 +28,8 @@ public class MqttNetAwsWrapper : IDisposable
         , string clientId = "mqtt-test-client-id"
         , string amazonRootCA1FileName = "AmazonRootCA1.pem"
         , int port = 8883
-    ){
+    )
+    {
         var mqttClient = new MqttFactory().CreateMqttClient();
 
         string pemString_DeviceCert = File.ReadAllText(@$"{certKeyPath}\{certFileName}");

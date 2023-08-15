@@ -1,4 +1,4 @@
-﻿namespace GeoSensePlus.Cli.ConfigModels
+﻿namespace GeoSensePlus.Aws.IoT.ConfigModels
 {
     public class aws_credentials
     {

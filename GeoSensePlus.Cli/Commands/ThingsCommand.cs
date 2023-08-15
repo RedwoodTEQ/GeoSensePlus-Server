@@ -1,4 +1,4 @@
-﻿using GeoSensePlus.Cli.Things;
+﻿using GeoSensePlus.Aws.IoT.Things;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -4,7 +4,6 @@ using Amazon.IoT.Model;
 using Amazon.IotData;
 using Amazon.IotData.Model;
 using Amazon.Runtime;
-using GeoSensePlus.Cli.ConfigModels;
 using Microsoft.Extensions.Options;
 using MQTTnet;
 using Newtonsoft.Json;
@@ -17,8 +16,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Oocx.ReadX509CertificateFromPem;
 using System.Threading;
+using GeoSensePlus.Aws.IoT.ConfigModels;
 
-namespace GeoSensePlus.Cli.Things;
+namespace GeoSensePlus.Aws.IoT.Things;
 
 public interface IThingService
 {
@@ -75,7 +75,7 @@ public class ThingsService : IThingService
         var things = await _iotClient.ListThingsAsync();
 
         Console.WriteLine("All things:");
-        foreach(var thing in things.Things)
+        foreach (var thing in things.Things)
         {
             Console.WriteLine(thing.ThingName);
         }
@@ -84,7 +84,7 @@ public class ThingsService : IThingService
     public async Task UpdateThingShadow(string name, MemoryStream payLoad)
     {
         var updateThingShadowRequest = new UpdateThingShadowRequest() { ThingName = name, Payload = payLoad };
-        var result = await this._iotDataClient.UpdateThingShadowAsync(updateThingShadowRequest);
+        var result = await _iotDataClient.UpdateThingShadowAsync(updateThingShadowRequest);
         if (result.HttpStatusCode != HttpStatusCode.OK)
         {
             throw new Exception($"Received HTTP {result.HttpStatusCode}");
@@ -149,7 +149,7 @@ public class ThingsService : IThingService
     public async Task GetThingShadowAsync()
     {
         var req = new GetThingShadowRequest() { ThingName = "OTA_DEMO_3" };
-        var res = await this._iotDataClient.GetThingShadowAsync(req);
+        var res = await _iotDataClient.GetThingShadowAsync(req);
         var json = Encoding.UTF8.GetString(res.Payload.ToArray());
         Console.WriteLine($"json = {json}");
     }

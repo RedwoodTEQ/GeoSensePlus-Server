@@ -2,7 +2,7 @@
 using System.Net.Security;
 using MQTTnet.Client;
 
-namespace GeoSensePlus.Cli.Things;
+namespace GeoSensePlus.Aws.IoT.Things;
 
 /// <summary>
 /// Verifies certificates against a list of manually trusted certs.

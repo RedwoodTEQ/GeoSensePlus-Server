@@ -10,8 +10,8 @@ using Microsoft.Extensions.Logging;
 using GeoSensePlus.Mqtt;
 using NetCoreUtils.Database.InfluxDb;
 using Microsoft.Extensions.Configuration;
-using GeoSensePlus.Cli.Things;
-using GeoSensePlus.Cli.ConfigModels;
+using GeoSensePlus.Aws.IoT.Things;
+using GeoSensePlus.Aws.IoT.ConfigModels;
 
 namespace GeoSensePlus.Cli
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 
-namespace GeoSensePlus.Cli.Things;
+namespace GeoSensePlus.Aws.IoT.Things;
 
 internal static class ObjectExtensions
 {
@@ -10,7 +10,7 @@ internal static class ObjectExtensions
         var output = "NULL";
         if (@object != null)
         {
-            output = System.Text.Json.JsonSerializer.Serialize(@object, new JsonSerializerOptions
+            output = JsonSerializer.Serialize(@object, new JsonSerializerOptions
             {
                 WriteIndented = true
             });
