@@ -29,13 +29,7 @@ namespace GeoSensePlus.App.AssetTracking.Handlers
         {
             Console.WriteLine("Parsing indoor asset report message ...");
 
-            StringBuilder sb = new StringBuilder();
-            foreach(byte b in msg.payload_raw.data)
-            {
-                sb.Append(b.ToString("x2"));
-            }
-
-            string payload = sb.ToString();
+            string payload = msg.payload_raw;
             Console.WriteLine($"payload = {payload}");
 
             return new IndoorAssetReportMessage

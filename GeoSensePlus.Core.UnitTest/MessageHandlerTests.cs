@@ -124,11 +124,11 @@ namespace GeoSensePlus.Core.UnitTest
             Assert.Equal("1918FC01F04D", data.IndoorTagPayloadInfo[0].MacAddress);
             Assert.NotEqual("1918fc01f04d", data.IndoorTagPayloadInfo[0].MacAddress);    // must be upper cases
             Assert.Equal(new BinaryDecoder("c7").DecodeNextInt(2), data.IndoorTagPayloadInfo[0].Rss);
-            Assert.Equal(new BinaryDecoder("c5").DecodeNextInt(2), data.IndoorTagPayloadInfo[0].BatteryLevel);
+            Assert.Equal((int)new BinaryDecoder("c5").DecodeNextUnsigned(2), data.IndoorTagPayloadInfo[0].BatteryLevel);
 
             Assert.Equal("1918FC01F242", data.IndoorTagPayloadInfo[1].MacAddress);
             Assert.Equal(new BinaryDecoder("b9").DecodeNextInt(2), data.IndoorTagPayloadInfo[1].Rss);
-            Assert.Equal(new BinaryDecoder("c5").DecodeNextInt(2), data.IndoorTagPayloadInfo[1].BatteryLevel);
+            Assert.Equal((int)new BinaryDecoder("c5").DecodeNextUnsigned(2), data.IndoorTagPayloadInfo[1].BatteryLevel);
         }
 
         [Fact]

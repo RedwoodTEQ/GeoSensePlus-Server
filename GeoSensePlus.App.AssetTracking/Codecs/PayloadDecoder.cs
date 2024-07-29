@@ -25,7 +25,7 @@ namespace GeoSensePlus.App.AssetTracking.Codecs
                 _decoder.ResetPayload(payload);
                 IndoorTagPayloadInfo msg = new IndoorTagPayloadInfo();
                 msg.MacAddress = _decoder.DecodeNextString(12);
-                msg.Rss = ((int)_decoder.DecodeNextUnsigned(2) - 255);
+                msg.Rss = _decoder.DecodeNextInt(2);
                 msg.BatteryLevel = (int)_decoder.DecodeNextUnsigned(2); // should be between HEX:[0,0x64], i.e. DEC:[0, 100]
 
                 result.Add(msg);
