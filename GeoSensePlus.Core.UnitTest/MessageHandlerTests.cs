@@ -26,7 +26,7 @@ namespace GeoSensePlus.Core.UnitTest
         public void Test_IndoorArrivalHandler()
         {
             var ctx = new TestChannelContext();
-            new IndoorArrivalHandler().Handle(@"
+            new IndoorArrivalHandler(new IndoorArrivalMessageProcessor()).Handle(@"
                 {
                    timestamp: '2019-06-19T17:33:22Z',
                    user: {

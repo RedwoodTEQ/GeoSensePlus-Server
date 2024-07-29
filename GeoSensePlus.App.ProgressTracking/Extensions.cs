@@ -11,6 +11,7 @@ namespace GeoSensePlus.App.ProgressTracking
         static public void AddProgressTracking(this IServiceCollection services)
         {
             services.AddTransient<IMessageHandler<string>, IndoorArrivalHandler>();
+            services.AddTransient<IMessageProcessor<IndoorArrivalMessage>, IndoorArrivalMessageProcessor>();
         }
     }
 }
