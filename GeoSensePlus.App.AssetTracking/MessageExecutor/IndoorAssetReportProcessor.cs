@@ -1,4 +1,5 @@
 ﻿using GeoSensePlus.App.AssetTracking.Messages;
+using GeoSensePlus.Core.MessageProcessing.Interfaces;
 using GeoSensePlus.Firestore;
 using GeoSensePlus.Firestore.Models;
 using GeoSensePlus.Firestore.Repositories;
@@ -11,12 +12,7 @@ using System.Text;
 
 namespace GeoSensePlus.App.AssetTracking.MessageProcessors;
 
-public interface IMessageExecutor<T>
-{
-    void Execute(T message);
-}
-
-class IndoorAssetReportProcessor : IMessageExecutor<IndoorAssetReportMessage>
+class IndoorAssetReportProcessor : IMessageProcessor<IndoorAssetReportMessage>
 {
     IRepository<EdgeData> _edgeRepo;
     IRepository<AssetData> _assetRepo;
@@ -32,7 +28,7 @@ class IndoorAssetReportProcessor : IMessageExecutor<IndoorAssetReportMessage>
         _assetRepo = assetRepo;
     }
 
-    public void Execute(IndoorAssetReportMessage message)
+    public void Process(IndoorAssetReportMessage message)
     {
         // if edge doesn't exist
         if (_edgeRepo.RetrieveAsync(message.HardwareSerial).Result == null)

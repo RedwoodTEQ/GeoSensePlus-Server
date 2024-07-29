@@ -8,7 +8,7 @@ namespace GeoSensePlus.Core
     {
         static public void AddGeoSensePlusCore(this IServiceCollection services)
         {
-            services.AddTransient(typeof(IMessageProcessor<>), typeof(MessageProcessor<>));
+            //services.AddTransient(typeof(IMessageProcessor<>), typeof(MessageProcessor<>));
             services.AddTransient<IMessageEngine, MessageEngine>();
             services.AddTransient<IDeviceService, DeviceService>();
         }

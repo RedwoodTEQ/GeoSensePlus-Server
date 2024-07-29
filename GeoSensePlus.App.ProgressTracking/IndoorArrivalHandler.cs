@@ -2,8 +2,8 @@
 using GeoSensePlus.Core.Codec;
 using GeoSensePlus.Core.MessageProcessing;
 using GeoSensePlus.Core.MessageProcessing.BaseHandlers;
+using GeoSensePlus.Core.MessageProcessing.Interfaces;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,6 +11,10 @@ namespace GeoSensePlus.Core.CommandProcessing.MessageHandlers
 {
     public class IndoorArrivalHandler : JsonHandler<IndoorArrivalMessage>
     {
+        public IndoorArrivalHandler(IMessageProcessor<IndoorArrivalMessage> processor) : base(processor)
+        {
+        }
+
         protected override IndoorArrivalMessage Parse(dynamic msg)
         {
             return new IndoorArrivalMessage
@@ -26,10 +30,10 @@ namespace GeoSensePlus.Core.CommandProcessing.MessageHandlers
             };
         }
 
-        protected override void Execute(IndoorArrivalMessage data, ChannelContext<string> ctx)
-        {
-            Console.WriteLine("\nHandling IndoorArrivalMessage message ...");
-            Console.WriteLine($"ReceiveTime = {ctx.ReceiveTime}; UserDeviceId = {data.UserDeviceId}; TagId = {data.TagId}");
-        }
+        //protected override void Execute(IndoorArrivalMessage data, ChannelContext<string> ctx)
+        //{
+        //    Console.WriteLine("\nHandling IndoorArrivalMessage message ...");
+        //    Console.WriteLine($"ReceiveTime = {ctx.ReceiveTime}; UserDeviceId = {data.UserDeviceId}; TagId = {data.TagId}");
+        //}
     }
 }
