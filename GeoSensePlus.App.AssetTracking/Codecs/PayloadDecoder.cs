@@ -17,9 +17,9 @@ namespace GeoSensePlus.App.AssetTracking.Codecs
             List<IndoorTagPayloadInfo> result = new List<IndoorTagPayloadInfo>();
 
             int count = 0;
-            _segregator.Segragate(payloadBinary, 16).ForEach(payload =>
+            _segregator.Segregate(payloadBinary, 16).ForEach(payload =>
             {
-                if (count++ == 0)
+                if (count++ == 0)   // skip over the 1st segragated substring
                     return;
 
                 _decoder.ResetPayload(payload);
