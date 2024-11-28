@@ -19,7 +19,7 @@ namespace GeoSensePlus.Core.UnitTest
             Assert.Equal("F8", new BinaryEncoder().EncodeNext(-8, 2).Build());
             Assert.Equal("51", new BinaryEncoder().EncodeNext(81, 2).Build());
 
-            BinaryEncoder encoder2 = new BinaryEncoder();
+            BinaryEncoder encoder2 = new();
             Assert.Equal("1918FC01F04DF851", encoder2.EncodeNext("1918FC01F04D").EncodeNext(-8, 2).EncodeNext(81, 2).Build());
         }
 
