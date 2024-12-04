@@ -1,7 +1,7 @@
 ﻿namespace GeoSensePlus.OpcUa.WinForm;
-public class TagClass
+public class TagObject
 {
-    public TagClass(string displayName, string nodeID)
+    public TagObject(string displayName, string nodeID)
     {
         DisplayName = displayName;
         NodeID = nodeID;

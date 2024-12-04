@@ -4,15 +4,15 @@ using Opc.Ua.Configuration;
 
 namespace GeoSensePlus.OpcUa.WinForm;
 
-public class OPCUAClass
+public class OpcUaServerConnector
 {
     public string ServerAddress { get; set; }
     public string ServerPortNumber { get; set; }
     public bool SecurityEnabled { get; set; }
     public string MyApplicationName { get; set; }
-    public Session OPCSession { get; set; }
-    public string OPCNameSpace { get; set; }
-    public Dictionary<string, TagClass> TagList { get; set; }
+    public Session OpcUaSession { get; set; }
+    public string OpcUaNameSpace { get; set; }
+    public Dictionary<string, TagObject> TagList { get; set; }
 
     public bool SessionRenewalRequired { get; set; }
     public double SessionRenewalPeriodMins { get; set; }
@@ -20,8 +20,8 @@ public class OPCUAClass
     public DateTime LastTimeOPCServerFoundAlive { get; set; }
     public bool ClassDisposing { get; set; }
     public bool InitialisationCompleted { get; set; }
-    private Thread RenewerTHread { get; set; }
-    public OPCUAClass(string serverAddres, string serverport, Dictionary<string, TagClass> taglist, bool sessionrenewalRequired, double sessionRenewalMinutes, string nameSpace)
+    private Thread RenewerThread { get; set; }
+    public OpcUaServerConnector(string serverAddres, string serverport, Dictionary<string, TagObject> taglist, bool sessionrenewalRequired, double sessionRenewalMinutes, string nameSpace)
     {
         ServerAddress = serverAddres;
         ServerPortNumber = serverport;
@@ -29,28 +29,28 @@ public class OPCUAClass
         TagList = taglist;
         SessionRenewalRequired = sessionrenewalRequired;
         SessionRenewalPeriodMins = sessionRenewalMinutes;
-        OPCNameSpace = nameSpace;
+        OpcUaNameSpace = nameSpace;
         LastTimeOPCServerFoundAlive = DateTime.Now;
         InitializeOPCUAClient();
 
         if (SessionRenewalRequired)
         {
             LastTimeSessionRenewed = DateTime.Now;
-            RenewerTHread = new Thread(renewSessionThread);
-            RenewerTHread.Start();
+            RenewerThread = new Thread(renewSessionThread);
+            RenewerThread.Start();
         }
     }
 
     //class destructor
-    ~OPCUAClass()
+    ~OpcUaServerConnector()
     {
         ClassDisposing = true;
         try
         {
-            OPCSession.Close();
-            OPCSession.Dispose();
-            OPCSession = null;
-            RenewerTHread.Abort();
+            OpcUaSession.Close();
+            OpcUaSession.Dispose();
+            OpcUaSession = null;
+            RenewerThread.Abort();
         }
         catch { }
     }
@@ -65,8 +65,8 @@ public class OPCUAClass
                 Console.WriteLine("Renewing Session");
                 try
                 {
-                    OPCSession.Close();
-                    OPCSession.Dispose();
+                    OpcUaSession.Close();
+                    OpcUaSession.Dispose();
                 }
                 catch { }
                 InitializeOPCUAClient();
@@ -114,14 +114,14 @@ public class OPCUAClass
 
 
         //string serverAddress = Dns.GetHostName();
-        string serverAddress = ServerAddress; ;
+        string serverAddress = ServerAddress;
         var selectedEndpoint = CoreClientUtils.SelectEndpoint("opc.tcp://" + serverAddress + ":" + ServerPortNumber + "", useSecurity: SecurityEnabled, discoverTimeout: 15000);
 
         // Console.WriteLine($"Step 2 - Create a session with your server: {selectedEndpoint.EndpointUrl} ");
-        OPCSession = Session.Create(config, new ConfiguredEndpoint(null, selectedEndpoint, EndpointConfiguration.Create(config)), false, "", 60000, null, null).GetAwaiter().GetResult();
+        OpcUaSession = Session.Create(config, new ConfiguredEndpoint(null, selectedEndpoint, EndpointConfiguration.Create(config)), false, "", 60000, null, null).GetAwaiter().GetResult();
         {
             //Console.WriteLine("Step 4 - Create a subscription. Set a faster publishing interval if you wish.");
-            var subscription = new Subscription(OPCSession.DefaultSubscription) { PublishingInterval = 1000 };
+            var subscription = new Subscription(OpcUaSession.DefaultSubscription) { PublishingInterval = 1000 };
 
             //Console.WriteLine("Step 5 - Add a list of items you wish to monitor to the subscription.");
             var list = new List<MonitoredItem> { };
@@ -129,16 +129,16 @@ public class OPCUAClass
 
             list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = "ServerStatusCurrentTime", StartNodeId = "i=2258" });
 
-            foreach (KeyValuePair<string, TagClass> td in TagList)
+            foreach (KeyValuePair<string, TagObject> td in TagList)
             {
-                list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = td.Value.DisplayName, StartNodeId = "ns=" + OPCNameSpace + ";s=" + td.Value.NodeID + "" });
+                list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = td.Value.DisplayName, StartNodeId = "ns=" + OpcUaNameSpace + ";s=" + td.Value.NodeID + "" });
             }
 
             list.ForEach(i => i.Notification += OnTagValueChange);
             subscription.AddItems(list);
 
             //Console.WriteLine("Step 6 - Add the subscription to the session.");
-            OPCSession.AddSubscription(subscription);
+            OpcUaSession.AddSubscription(subscription);
             subscription.Create();
         }
     }

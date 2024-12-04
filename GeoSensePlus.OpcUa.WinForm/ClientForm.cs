@@ -6,15 +6,15 @@ using System.Threading;
 
 namespace GeoSensePlus.OpcUa.WinForm;
 
-public partial class Form1 : Form
+public partial class ClientForm : Form
 {
     //creating a object that encapsulates the entire OPC UA Server related work
-    OPCUAClass myOPCUAServer;
+    OpcUaServerConnector myOPCUAServer;
 
     //creating a dictionary of Tags that would be captured from the OPC UA Server
-    Dictionary<String, TagClass> TagList = new Dictionary<String, TagClass>();
+    Dictionary<String, TagObject> TagList = new Dictionary<String, TagObject>();
 
-    public Form1()
+    public ClientForm()
     {
         InitializeComponent();
 
@@ -24,12 +24,12 @@ public partial class Form1 : Form
         // The OPC Server had the following hierarchy: M0401 -> CPU945 -> IBatchOutput
         //i used TBC0401 as a name of the tag, you can use any name
         //add as many tags as you want to capture
-        TagList.Add("TBC0401", new TagClass("TBC0401", "M0401.CPU945.iBatchOutput"));
+        TagList.Add("TBC0401", new TagObject("TBC0401", "M0401.CPU945.iBatchOutput"));
 
         //to initialize the OPC UA Server, provide the IP Address, Port Number, the list of tags you want to capture
         //in some OPC UA servers and kepware aswell the session can be closed by the OPC UA Server, so its better to 
         //allow the class to reinitiate session periodically, before renewing current sessions are closed
-        myOPCUAServer = new OPCUAClass("127.0.0.1", "49320", TagList, true, 1, "2");
+        myOPCUAServer = new OpcUaServerConnector("127.0.0.1", "49320", TagList, true, 1, "2");
 
 
         //once the OPC Server has been initialized, you can easily read Tag values and even see when they were

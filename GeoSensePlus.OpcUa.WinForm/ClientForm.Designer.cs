@@ -1,6 +1,6 @@
 ﻿namespace GeoSensePlus.OpcUa.WinForm;
 
-partial class Form1
+partial class ClientForm
 {
     /// <summary>
     ///  Required designer variable.
