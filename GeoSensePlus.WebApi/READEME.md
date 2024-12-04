@@ -7,13 +7,13 @@
 - NuGet page: https://www.nuget.org/packages/GeoSensePlus.Server/
 - For more info about controllers, see the relevant entities' comments
 
-## TODOs
+## TODO
 
-- [ ] Add an angular front end project
-- [ ] Test Dockerfile
-- [ ] Test controllers
-- [ ] Change MongoController<> to a util class
-- [ ] Change API methods to async
+- Add an angular front end project
+- Test Dockerfile
+- Test controllers
+- Change MongoController<> to a util class
+- Change API methods to async
 
 ## Release Notes
 
@@ -21,10 +21,10 @@
 
 Working:
 
-- Upgrade to .net7
 
 Done:
 
+- Upgrade to .net9
 - Rename "CoordinationTagsController" to "UwbTagsController"
 - Rename "MetricsController" to "InfluxdbController"
 - Add more REST API controllers (not fully implemented)
