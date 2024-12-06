@@ -101,7 +101,9 @@ public class OpcUaServerConnector
         config.Validate(ApplicationType.Client).GetAwaiter().GetResult();
         if (config.SecurityConfiguration.AutoAcceptUntrustedCertificates)
         {
-            config.CertificateValidator.CertificateValidation += (s, e) => { e.Accept = (e.Error.StatusCode == StatusCodes.BadCertificateUntrusted); };
+            config.CertificateValidator.CertificateValidation += (s, e) => {
+                e.Accept = (e.Error.StatusCode == StatusCodes.BadCertificateUntrusted);
+            };
         }
 
         var application = new ApplicationInstance
@@ -113,34 +115,30 @@ public class OpcUaServerConnector
         application.CheckApplicationInstanceCertificate(false, 2048).GetAwaiter().GetResult();
 
 
-        //string serverAddress = Dns.GetHostName();
         string serverAddress = ServerAddress;
-        var selectedEndpoint = CoreClientUtils.SelectEndpoint("opc.tcp://" + serverAddress + ":" + ServerPortNumber + "", useSecurity: SecurityEnabled, discoverTimeout: 15000);
 
-        // Console.WriteLine($"Step 2 - Create a session with your server: {selectedEndpoint.EndpointUrl} ");
+        //string discoveryUrl = "opc.tcp://" + serverAddress + ":" + ServerPortNumber + "";
+        string discoveryUrl = "opc.tcp://127.0.0.1:53530/OPCUA/SimulationServer";
+
+        var selectedEndpoint = CoreClientUtils.SelectEndpoint(discoveryUrl, useSecurity: SecurityEnabled, discoverTimeout: 15000);
+
+
         OpcUaSession = Session.Create(config, new ConfiguredEndpoint(null, selectedEndpoint, EndpointConfiguration.Create(config)), false, "", 60000, null, null).GetAwaiter().GetResult();
-        {
-            //Console.WriteLine("Step 4 - Create a subscription. Set a faster publishing interval if you wish.");
-            var subscription = new Subscription(OpcUaSession.DefaultSubscription) { PublishingInterval = 1000 };
+        
+        var subscription = new Subscription(OpcUaSession.DefaultSubscription) { PublishingInterval = 1000 };
 
-            //Console.WriteLine("Step 5 - Add a list of items you wish to monitor to the subscription.");
-            var list = new List<MonitoredItem> { };
-            //list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = "M0404.CPU945.iBatchOutput", StartNodeId = "ns=2;s=M0404.CPU945.iBatchOutput" });
+        var list = new List<MonitoredItem> { };
 
-            list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = "ServerStatusCurrentTime", StartNodeId = "i=2258" });
+        list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = "RLTest1", StartNodeId = "ns=3;i=1001" });
 
-            foreach (KeyValuePair<string, TagObject> td in TagList)
-            {
-                list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = td.Value.DisplayName, StartNodeId = "ns=" + OpcUaNameSpace + ";s=" + td.Value.NodeID + "" });
-            }
+        foreach (KeyValuePair<string, TagObject> td in TagList)
+            list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = td.Value.DisplayName, StartNodeId = "ns=" + OpcUaNameSpace + ";s=" + td.Value.NodeID + "" });
 
-            list.ForEach(i => i.Notification += OnTagValueChange);
-            subscription.AddItems(list);
+        list.ForEach(i => i.Notification += OnTagValueChange);
+        subscription.AddItems(list);
 
-            //Console.WriteLine("Step 6 - Add the subscription to the session.");
-            OpcUaSession.AddSubscription(subscription);
-            subscription.Create();
-        }
+        OpcUaSession.AddSubscription(subscription);
+        subscription.Create();
     }
 
     public void OnTagValueChange(MonitoredItem item, MonitoredItemNotificationEventArgs e)
@@ -156,7 +154,10 @@ public class OpcUaServerConnector
             else
             {
                 if (value.Value != null)
+                {
                     Console.WriteLine("{0}: {1}, {2}, {3}", item.DisplayName, value.Value.ToString(), value.SourceTimestamp.ToLocalTime(), value.StatusCode);
+                    System.Diagnostics.Debug.WriteLine("{0}: {1}, {2}, {3}", item.DisplayName, value.Value.ToString(), value.SourceTimestamp.ToLocalTime(), value.StatusCode);
+                }
                 else
                     Console.WriteLine("{0}: {1}, {2}, {3}", item.DisplayName, "Null Value", value.SourceTimestamp, value.StatusCode);
 
