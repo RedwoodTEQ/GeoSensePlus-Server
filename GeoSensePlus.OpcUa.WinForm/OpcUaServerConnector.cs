@@ -1,6 +1,7 @@
 ﻿using Opc.Ua;   // Install-Package OPCFoundation.NetStandard.Opc.Ua
 using Opc.Ua.Client;
 using Opc.Ua.Configuration;
+using System.Threading;
 
 namespace GeoSensePlus.OpcUa.WinForm;
 
@@ -21,6 +22,7 @@ public class OpcUaServerConnector
     public bool ClassDisposing { get; set; }
     public bool InitialisationCompleted { get; set; }
     private Thread RenewerThread { get; set; }
+    private CancellationTokenSource tokenSource = new();
     public OpcUaServerConnector(string serverAddres, string serverport, Dictionary<string, TagObject> taglist, bool sessionrenewalRequired, double sessionRenewalMinutes, string nameSpace)
     {
         ServerAddress = serverAddres;
@@ -36,12 +38,11 @@ public class OpcUaServerConnector
         if (SessionRenewalRequired)
         {
             LastTimeSessionRenewed = DateTime.Now;
-            RenewerThread = new Thread(renewSessionThread);
+            RenewerThread = new( () => RenewSessionThread(tokenSource.Token));
             RenewerThread.Start();
         }
     }
 
-    //class destructor
     ~OpcUaServerConnector()
     {
         ClassDisposing = true;
@@ -49,18 +50,22 @@ public class OpcUaServerConnector
         {
             OpcUaSession.Close();
             OpcUaSession.Dispose();
-            OpcUaSession = null;
-            RenewerThread.Abort();
+
+            // Stop thread
+            tokenSource.Cancel();
+            RenewerThread.Join(); // wait thread to finish
+            tokenSource.Dispose();
+
         }
         catch { }
     }
 
-    private void renewSessionThread()
+    private void RenewSessionThread(CancellationToken token)
     {
-        while (!ClassDisposing)
+        while (!token.IsCancellationRequested && !ClassDisposing)
         {
             if ((DateTime.Now - LastTimeSessionRenewed).TotalMinutes > SessionRenewalPeriodMins
-                || (DateTime.Now - LastTimeOPCServerFoundAlive).TotalSeconds > 60)
+            || (DateTime.Now - LastTimeOPCServerFoundAlive).TotalSeconds > 60)
             {
                 Console.WriteLine("Renewing Session");
                 try
@@ -122,7 +127,6 @@ public class OpcUaServerConnector
 
         var selectedEndpoint = CoreClientUtils.SelectEndpoint(discoveryUrl, useSecurity: SecurityEnabled, discoverTimeout: 15000);
 
-
         OpcUaSession = Session.Create(config, new ConfiguredEndpoint(null, selectedEndpoint, EndpointConfiguration.Create(config)), false, "", 60000, null, null).GetAwaiter().GetResult();
         
         var subscription = new Subscription(OpcUaSession.DefaultSubscription) { PublishingInterval = 1000 };
@@ -138,6 +142,8 @@ public class OpcUaServerConnector
         subscription.AddItems(list);
 
         OpcUaSession.AddSubscription(subscription);
+
+
         subscription.Create();
     }
 
@@ -146,7 +152,6 @@ public class OpcUaServerConnector
 
         foreach (var value in item.DequeueValues())
         {
-
             if (item.DisplayName == "ServerStatusCurrentTime")
             {
                 LastTimeOPCServerFoundAlive = value.SourceTimestamp.ToLocalTime();
