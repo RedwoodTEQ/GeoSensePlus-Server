@@ -43,6 +43,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "docker-compose-more", "dock
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoSensePlus.Aws.IoT", "GeoSensePlus.Aws.IoT\GeoSensePlus.Aws.IoT.csproj", "{17F020E0-0CDC-4899-BB38-A7D44A18F36C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoSensePlus.OpcUa", "GeoSensePlus.OpcUa\GeoSensePlus.OpcUa.csproj", "{4D3B2750-636F-4864-A097-98A4898F38C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoSensePlus.OpcUa.WinForm", "GeoSensePlus.OpcUa.WinForm\GeoSensePlus.OpcUa.WinForm.csproj", "{2E60BEC6-6D7E-4220-8BE8-E4D290869104}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +109,14 @@ Global
 		{17F020E0-0CDC-4899-BB38-A7D44A18F36C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17F020E0-0CDC-4899-BB38-A7D44A18F36C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17F020E0-0CDC-4899-BB38-A7D44A18F36C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D3B2750-636F-4864-A097-98A4898F38C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D3B2750-636F-4864-A097-98A4898F38C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D3B2750-636F-4864-A097-98A4898F38C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D3B2750-636F-4864-A097-98A4898F38C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E60BEC6-6D7E-4220-8BE8-E4D290869104}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E60BEC6-6D7E-4220-8BE8-E4D290869104}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E60BEC6-6D7E-4220-8BE8-E4D290869104}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E60BEC6-6D7E-4220-8BE8-E4D290869104}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
