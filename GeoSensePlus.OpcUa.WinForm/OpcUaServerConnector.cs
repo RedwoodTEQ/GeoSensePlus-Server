@@ -7,8 +7,6 @@ namespace GeoSensePlus.OpcUa.WinForm;
 
 public class OpcUaServerConnector
 {
-    public string ServerAddress { get; set; }
-    public string ServerPortNumber { get; set; }
     public bool SecurityEnabled { get; set; }
     public string MyApplicationName { get; set; }
     public Session OpcUaSession { get; set; }
@@ -24,11 +22,9 @@ public class OpcUaServerConnector
     private Thread RenewerThread { get; set; }
     private CancellationTokenSource tokenSource = new();
 
-    public OpcUaServerConnector(Dictionary<string, TagObject> taglist, bool sessionrenewalRequired, double sessionRenewalMinutes, string nameSpace)
+    public OpcUaServerConnector(string discoveryUrl, Dictionary<string, TagObject> taglist, bool sessionrenewalRequired, double sessionRenewalMinutes, string nameSpace)
     {
-        ServerAddress = "127.0.0.1";
-        ServerPortNumber = "53530";
-        DiscoveryUrl = "opc.tcp://127.0.0.1:53530/OPCUA/SimulationServer";
+        DiscoveryUrl = discoveryUrl;
         MyApplicationName = "MyApplication";
         TagList = taglist;
         SessionRenewalRequired = sessionrenewalRequired;
@@ -89,11 +85,12 @@ public class OpcUaServerConnector
         var config = new Opc.Ua.ApplicationConfiguration()
         {
             ApplicationName = MyApplicationName,
-            ApplicationUri = Utils.Format(@"urn:{0}:" + MyApplicationName + "", ServerAddress),
+            //ApplicationUri = Utils.Format(@"urn:{0}:" + MyApplicationName + "", ServerAddress),
             ApplicationType = ApplicationType.Client,
             SecurityConfiguration = new SecurityConfiguration
             {
-                ApplicationCertificate = new CertificateIdentifier { StoreType = @"Directory", StorePath = @"%CommonApplicationData%\OPC Foundation\CertificateStores\MachineDefault", SubjectName = Utils.Format(@"CN={0}, DC={1}", MyApplicationName, ServerAddress) },
+                //ApplicationCertificate = new CertificateIdentifier { StoreType = @"Directory", StorePath = @"%CommonApplicationData%\OPC Foundation\CertificateStores\MachineDefault", SubjectName = Utils.Format(@"CN={0}, DC={1}", MyApplicationName, ServerAddress) },
+                ApplicationCertificate = new CertificateIdentifier { StoreType = @"Directory", StorePath = @"%CommonApplicationData%\OPC Foundation\CertificateStores\MachineDefault", SubjectName = "TestSubject1" },
                 TrustedIssuerCertificates = new CertificateTrustList { StoreType = @"Directory", StorePath = @"%CommonApplicationData%\OPC Foundation\CertificateStores\UA Certificate Authorities" },
                 TrustedPeerCertificates = new CertificateTrustList { StoreType = @"Directory", StorePath = @"%CommonApplicationData%\OPC Foundation\CertificateStores\UA Applications" },
                 RejectedCertificateStore = new CertificateTrustList { StoreType = @"Directory", StorePath = @"%CommonApplicationData%\OPC Foundation\CertificateStores\RejectedCertificates" },
@@ -122,7 +119,6 @@ public class OpcUaServerConnector
         application.CheckApplicationInstanceCertificate(false, 2048).GetAwaiter().GetResult();
 
 
-        string serverAddress = ServerAddress;
         var selectedEndpoint = CoreClientUtils.SelectEndpoint(DiscoveryUrl, useSecurity: SecurityEnabled, discoverTimeout: 15000);
 
         OpcUaSession = Session.Create(config, new ConfiguredEndpoint(null, selectedEndpoint, EndpointConfiguration.Create(config)), false, "", 60000, null, null).GetAwaiter().GetResult();

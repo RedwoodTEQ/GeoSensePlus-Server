@@ -29,7 +29,7 @@ public partial class ClientForm : Form
         //to initialize the OPC UA Server, provide the IP Address, Port Number, the list of tags you want to capture
         //in some OPC UA servers and kepware aswell the session can be closed by the OPC UA Server, so its better to 
         //allow the class to reinitiate session periodically, before renewing current sessions are closed
-        myOPCUAServer = new OpcUaServerConnector("127.0.0.1", "53530", TagList, true, 1, "3");
+        myOPCUAServer = new OpcUaServerConnector("opc.tcp://127.0.0.1:53530/OPCUA/SimulationServer", TagList, true, 1, "3");
 
 
         //once the OPC Server has been initialized, you can easily read Tag values and even see when they were
