@@ -40,3 +40,5 @@ msbuild.wrn
 # dotnet upgrade-assistant
 upgrade-assistant.clef
 UpgradeReport.sarif
+.aider*
+.env
