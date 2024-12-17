@@ -19,6 +19,10 @@ public class OpcUaServerConnector
     public DateTime LastTimeOPCServerFoundAlive { get; set; }
     public bool ClassDisposing { get; set; }
     public bool InitialisationCompleted { get; set; }
+
+
+    // In some OPC UA servers, the session can be closed from the Server side, so its better to 
+    // allow the class to reinitiate session periodically
     private Thread RenewerThread { get; set; }
     private CancellationTokenSource tokenSource = new();
 
@@ -127,10 +131,12 @@ public class OpcUaServerConnector
 
         var list = new List<MonitoredItem> { };
 
+
+        // TODO: refactor this list logic
         list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = "RLTest1", StartNodeId = "ns=3;i=1001" });
 
         foreach (KeyValuePair<string, TagObject> td in TagList)
-            list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = td.Value.DisplayName, StartNodeId = "ns=" + OpcUaNameSpace + ";s=" + td.Value.NodeID + "" });
+            list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = td.Value.DisplayName, StartNodeId = "ns=" + OpcUaNameSpace + ";s=" + td.Value.NodeID });
 
         list.ForEach(i => i.Notification += OnTagValueChange);
         subscription.AddItems(list);
