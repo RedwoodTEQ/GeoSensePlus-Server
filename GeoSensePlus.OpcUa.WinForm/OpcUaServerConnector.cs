@@ -14,7 +14,7 @@ public class OpcUaServerConnector
     public Session OpcUaSession { get; set; }
     public string OpcUaNameSpace { get; set; }
     public Dictionary<string, TagObject> TagList { get; set; }
-
+    private string DiscoveryUrl { get; set; }
     public bool SessionRenewalRequired { get; set; }
     public double SessionRenewalPeriodMins { get; set; }
     public DateTime LastTimeSessionRenewed { get; set; }
@@ -24,11 +24,11 @@ public class OpcUaServerConnector
     private Thread RenewerThread { get; set; }
     private CancellationTokenSource tokenSource = new();
 
-    // ai: remove parameter "serverAddres" and "serverport"
-    public OpcUaServerConnector(string serverAddres, string serverport, Dictionary<string, TagObject> taglist, bool sessionrenewalRequired, double sessionRenewalMinutes, string nameSpace)
+    public OpcUaServerConnector(Dictionary<string, TagObject> taglist, bool sessionrenewalRequired, double sessionRenewalMinutes, string nameSpace)
     {
-        ServerAddress = serverAddres;
-        ServerPortNumber = serverport;
+        ServerAddress = "127.0.0.1";
+        ServerPortNumber = "53530";
+        DiscoveryUrl = "opc.tcp://127.0.0.1:53530/OPCUA/SimulationServer";
         MyApplicationName = "MyApplication";
         TagList = taglist;
         SessionRenewalRequired = sessionrenewalRequired;
@@ -123,12 +123,7 @@ public class OpcUaServerConnector
 
 
         string serverAddress = ServerAddress;
-
-        // move discoveryUrl to constructor. ai!
-        //string discoveryUrl = "opc.tcp://" + serverAddress + ":" + ServerPortNumber + "";
-        string discoveryUrl = "opc.tcp://127.0.0.1:53530/OPCUA/SimulationServer";
-
-        var selectedEndpoint = CoreClientUtils.SelectEndpoint(discoveryUrl, useSecurity: SecurityEnabled, discoverTimeout: 15000);
+        var selectedEndpoint = CoreClientUtils.SelectEndpoint(DiscoveryUrl, useSecurity: SecurityEnabled, discoverTimeout: 15000);
 
         OpcUaSession = Session.Create(config, new ConfiguredEndpoint(null, selectedEndpoint, EndpointConfiguration.Create(config)), false, "", 60000, null, null).GetAwaiter().GetResult();
         
