@@ -14,6 +14,15 @@ public partial class ClientForm : Form
     //creating a dictionary of Tags that would be captured from the OPC UA Server
     Dictionary<String, TagObject> TagList = new Dictionary<String, TagObject>();
 
+    protected override void OnFormClosing(FormClosingEventArgs e)
+    {
+        base.OnFormClosing(e);
+        if (myOPCUAServer != null)
+        {
+            myOPCUAServer.Dispose();
+        }
+    }
+
     public ClientForm()
     {
         InitializeComponent();

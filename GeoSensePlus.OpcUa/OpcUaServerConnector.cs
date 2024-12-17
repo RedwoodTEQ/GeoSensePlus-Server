@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace GeoSensePlus.OpcUa;
 
-public class OpcUaServerConnector
+public class OpcUaServerConnector : IDisposable
 {
     public bool SecurityEnabled { get; set; }
     public string MyApplicationName { get; set; }
@@ -45,21 +45,35 @@ public class OpcUaServerConnector
         }
     }
 
-    ~OpcUaServerConnector()
+    public void Dispose()
     {
         ClassDisposing = true;
         try
         {
-            OpcUaSession.Close();
-            OpcUaSession.Dispose();
+            if (OpcUaSession != null)
+            {
+                OpcUaSession.Close();
+                OpcUaSession.Dispose();
+            }
 
             // Stop thread
-            tokenSource.Cancel();
-            RenewerThread.Join(); // wait thread to finish
-            tokenSource.Dispose();
-
+            if (tokenSource != null)
+            {
+                tokenSource.Cancel();
+                if (RenewerThread != null)
+                {
+                    RenewerThread.Join(); // wait thread to finish
+                }
+                tokenSource.Dispose();
+            }
         }
         catch { }
+        GC.SuppressFinalize(this);
+    }
+
+    ~OpcUaServerConnector()
+    {
+        Dispose();
     }
 
     private void RenewSessionThread(CancellationToken token)
