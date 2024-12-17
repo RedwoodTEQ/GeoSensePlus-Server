@@ -23,6 +23,8 @@ public class OpcUaServerConnector
     public bool InitialisationCompleted { get; set; }
     private Thread RenewerThread { get; set; }
     private CancellationTokenSource tokenSource = new();
+
+    // ai: remove parameter "serverAddres" and "serverport"
     public OpcUaServerConnector(string serverAddres, string serverport, Dictionary<string, TagObject> taglist, bool sessionrenewalRequired, double sessionRenewalMinutes, string nameSpace)
     {
         ServerAddress = serverAddres;
@@ -122,6 +124,7 @@ public class OpcUaServerConnector
 
         string serverAddress = ServerAddress;
 
+        // move discoveryUrl to constructor. ai!
         //string discoveryUrl = "opc.tcp://" + serverAddress + ":" + ServerPortNumber + "";
         string discoveryUrl = "opc.tcp://127.0.0.1:53530/OPCUA/SimulationServer";
 
