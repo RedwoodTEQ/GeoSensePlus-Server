@@ -1,4 +1,4 @@
-﻿namespace GeoSensePlus.OpcUa.WinForm;
+﻿namespace GeoSensePlus.OpcUa;
 public class TagObject
 {
     public TagObject(string displayName, string nodeID)
