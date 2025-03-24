@@ -9,7 +9,7 @@ public class OpcUaServerConnector : IDisposable
 {
     public bool SecurityEnabled { get; set; }
     public string MyApplicationName { get; set; }
-    public Session OpcUaSession { get; set; }
+    public Session? OpcUaSession { get; set; }
     public string OpcUaNameSpace { get; set; }
     public Dictionary<string, TagObject> TagList { get; set; }
     private string DiscoveryUrl { get; set; }
@@ -21,19 +21,29 @@ public class OpcUaServerConnector : IDisposable
     public bool InitialisationCompleted { get; set; }
 
 
-    // In some OPC UA servers, the session can be closed from the Server side, so its better to 
-    // allow the class to reinitiate session periodically
-    private Thread RenewerThread { get; set; }
+    /// <summary>
+    /// The session can be closed from the Server side, so it's better to allow the class to
+    /// reinitiate session periodically
+    /// </summary>
+    private Thread? RenewerThread { get; set; }
+
     private CancellationTokenSource tokenSource = new();
 
-    public OpcUaServerConnector(string discoveryUrl, Dictionary<string, TagObject> taglist, bool sessionrenewalRequired, double sessionRenewalMinutes, string nameSpace)
+    /// <param name="discoveryUrl">
+    /// If use "Prosys OPC UA Simulation Server", discoveryUrl is the value of "Connection Address (UA TCP)"
+    /// on the "Status" tab.
+    /// </param>
+    /// <param name="nameSpaceIndex">
+    /// For example, if NodeId is "ns=7;i=1001",the nameSpaceIndex should be assigned as "7".
+    /// </param>
+    public OpcUaServerConnector(string discoveryUrl, Dictionary<string, TagObject> taglist, bool sessionrenewalRequired, double sessionRenewalMinutes, string nameSpaceIndex)
     {
         DiscoveryUrl = discoveryUrl;
         MyApplicationName = "MyApplication";
         TagList = taglist;
         SessionRenewalRequired = sessionrenewalRequired;
         SessionRenewalPeriodMins = sessionRenewalMinutes;
-        OpcUaNameSpace = nameSpace;
+        OpcUaNameSpace = nameSpaceIndex;
         LastTimeOPCServerFoundAlive = DateTime.Now;
         InitializeOPCUAClient();
 
@@ -67,7 +77,10 @@ public class OpcUaServerConnector : IDisposable
                 tokenSource.Dispose();
             }
         }
-        catch { }
+        catch
+        {
+            // TODO: log exception
+        }
         GC.SuppressFinalize(this);
     }
 
