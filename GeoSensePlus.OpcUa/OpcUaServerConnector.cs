@@ -3,61 +3,90 @@ using Opc.Ua.Client;
 using Opc.Ua.Configuration;
 using System.Threading;
 
-namespace GeoSensePlus.OpcUa.WinForm;
+namespace GeoSensePlus.OpcUa;
 
-public class OpcUaServerConnector
+public class OpcUaServerConnector : IDisposable
 {
-    public string ServerAddress { get; set; }
-    public string ServerPortNumber { get; set; }
     public bool SecurityEnabled { get; set; }
     public string MyApplicationName { get; set; }
-    public Session OpcUaSession { get; set; }
-    public string OpcUaNameSpace { get; set; }
+    public Session? OpcUaSession { get; set; }
+    public string OpcUaNameSpaceIndex { get; set; }
     public Dictionary<string, TagObject> TagList { get; set; }
-
+    private string DiscoveryUrl { get; set; }
     public bool SessionRenewalRequired { get; set; }
     public double SessionRenewalPeriodMins { get; set; }
     public DateTime LastTimeSessionRenewed { get; set; }
     public DateTime LastTimeOPCServerFoundAlive { get; set; }
     public bool ClassDisposing { get; set; }
     public bool InitialisationCompleted { get; set; }
-    private Thread RenewerThread { get; set; }
+
+
+    /// <summary>
+    /// The session can be closed from the Server side, so it's better to allow the class to
+    /// reinitiate session periodically
+    /// </summary>
+    private Thread? RenewerThread { get; set; }
+
     private CancellationTokenSource tokenSource = new();
-    public OpcUaServerConnector(string serverAddres, string serverport, Dictionary<string, TagObject> taglist, bool sessionrenewalRequired, double sessionRenewalMinutes, string nameSpace)
+
+    /// <param name="discoveryUrl">
+    /// If use "Prosys OPC UA Simulation Server", discoveryUrl is the value of "Connection Address (UA TCP)"
+    /// on the "Status" tab.
+    /// </param>
+    /// <param name="nameSpaceIndex">
+    /// For example, if NodeId is "ns=7;i=1001",the nameSpaceIndex should be assigned as "7".
+    /// </param>
+    public OpcUaServerConnector(string discoveryUrl, Dictionary<string, TagObject> taglist, bool sessionrenewalRequired, double sessionRenewalMinutes, string nameSpaceIndex)
     {
-        ServerAddress = serverAddres;
-        ServerPortNumber = serverport;
+        DiscoveryUrl = discoveryUrl;
         MyApplicationName = "MyApplication";
         TagList = taglist;
         SessionRenewalRequired = sessionrenewalRequired;
         SessionRenewalPeriodMins = sessionRenewalMinutes;
-        OpcUaNameSpace = nameSpace;
+        OpcUaNameSpaceIndex = nameSpaceIndex;
         LastTimeOPCServerFoundAlive = DateTime.Now;
         InitializeOPCUAClient();
 
         if (SessionRenewalRequired)
         {
             LastTimeSessionRenewed = DateTime.Now;
-            RenewerThread = new( () => RenewSessionThread(tokenSource.Token));
+            RenewerThread = new(() => RenewSessionThread(tokenSource.Token));
             RenewerThread.Start();
         }
     }
 
-    ~OpcUaServerConnector()
+    public void Dispose()
     {
         ClassDisposing = true;
         try
         {
-            OpcUaSession.Close();
-            OpcUaSession.Dispose();
+            if (OpcUaSession != null)
+            {
+                OpcUaSession.Close();
+                OpcUaSession.Dispose();
+            }
 
             // Stop thread
-            tokenSource.Cancel();
-            RenewerThread.Join(); // wait thread to finish
-            tokenSource.Dispose();
-
+            if (tokenSource != null)
+            {
+                tokenSource.Cancel();
+                if (RenewerThread != null)
+                {
+                    RenewerThread.Join(); // wait thread to finish
+                }
+                tokenSource.Dispose();
+            }
         }
-        catch { }
+        catch
+        {
+            // TODO: log exception
+        }
+        GC.SuppressFinalize(this);
+    }
+
+    ~OpcUaServerConnector()
+    {
+        Dispose();
     }
 
     private void RenewSessionThread(CancellationToken token)
@@ -70,8 +99,8 @@ public class OpcUaServerConnector
                 Console.WriteLine("Renewing Session");
                 try
                 {
-                    OpcUaSession.Close();
-                    OpcUaSession.Dispose();
+                    OpcUaSession?.Close();
+                    OpcUaSession?.Dispose();
                 }
                 catch { }
                 InitializeOPCUAClient();
@@ -84,14 +113,17 @@ public class OpcUaServerConnector
     public void InitializeOPCUAClient()
     {
         //Console.WriteLine("Step 1 - Create application configuration and certificate.");
-        var config = new Opc.Ua.ApplicationConfiguration()
+        var config = new ApplicationConfiguration()
         {
             ApplicationName = MyApplicationName,
-            ApplicationUri = Utils.Format(@"urn:{0}:" + MyApplicationName + "", ServerAddress),
+            //ApplicationUri = Utils.Format(@"urn:{0}:" + MyApplicationName + "", ServerAddress),
             ApplicationType = ApplicationType.Client,
+
+            // TODO: refactor to enable this certificate configuration
             SecurityConfiguration = new SecurityConfiguration
             {
-                ApplicationCertificate = new CertificateIdentifier { StoreType = @"Directory", StorePath = @"%CommonApplicationData%\OPC Foundation\CertificateStores\MachineDefault", SubjectName = Utils.Format(@"CN={0}, DC={1}", MyApplicationName, ServerAddress) },
+                //ApplicationCertificate = new CertificateIdentifier { StoreType = @"Directory", StorePath = @"%CommonApplicationData%\OPC Foundation\CertificateStores\MachineDefault", SubjectName = Utils.Format(@"CN={0}, DC={1}", MyApplicationName, ServerAddress) },
+                ApplicationCertificate = new CertificateIdentifier { StoreType = @"Directory", StorePath = @"%CommonApplicationData%\OPC Foundation\CertificateStores\MachineDefault", SubjectName = "TestSubject1" },
                 TrustedIssuerCertificates = new CertificateTrustList { StoreType = @"Directory", StorePath = @"%CommonApplicationData%\OPC Foundation\CertificateStores\UA Certificate Authorities" },
                 TrustedPeerCertificates = new CertificateTrustList { StoreType = @"Directory", StorePath = @"%CommonApplicationData%\OPC Foundation\CertificateStores\UA Applications" },
                 RejectedCertificateStore = new CertificateTrustList { StoreType = @"Directory", StorePath = @"%CommonApplicationData%\OPC Foundation\CertificateStores\RejectedCertificates" },
@@ -106,8 +138,9 @@ public class OpcUaServerConnector
         config.Validate(ApplicationType.Client).GetAwaiter().GetResult();
         if (config.SecurityConfiguration.AutoAcceptUntrustedCertificates)
         {
-            config.CertificateValidator.CertificateValidation += (s, e) => {
-                e.Accept = (e.Error.StatusCode == StatusCodes.BadCertificateUntrusted);
+            config.CertificateValidator.CertificateValidation += (s, e) =>
+            {
+                e.Accept = e.Error.StatusCode == StatusCodes.BadCertificateUntrusted;
             };
         }
 
@@ -120,30 +153,31 @@ public class OpcUaServerConnector
         application.CheckApplicationInstanceCertificate(false, 2048).GetAwaiter().GetResult();
 
 
-        string serverAddress = ServerAddress;
-
-        //string discoveryUrl = "opc.tcp://" + serverAddress + ":" + ServerPortNumber + "";
-        string discoveryUrl = "opc.tcp://127.0.0.1:53530/OPCUA/SimulationServer";
-
-        var selectedEndpoint = CoreClientUtils.SelectEndpoint(discoveryUrl, useSecurity: SecurityEnabled, discoverTimeout: 15000);
+        var selectedEndpoint = CoreClientUtils.SelectEndpoint(DiscoveryUrl, useSecurity: SecurityEnabled, discoverTimeout: 15000);
 
         OpcUaSession = Session.Create(config, new ConfiguredEndpoint(null, selectedEndpoint, EndpointConfiguration.Create(config)), false, "", 60000, null, null).GetAwaiter().GetResult();
-        
+
         var subscription = new Subscription(OpcUaSession.DefaultSubscription) { PublishingInterval = 1000 };
 
         var list = new List<MonitoredItem> { };
 
-        list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = "RLTest1", StartNodeId = "ns=3;i=1001" });
+
+        // TODO: refactor this list logic
+        //list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = "RLTest1", StartNodeId = "ns=3;i=1001" });
 
         foreach (KeyValuePair<string, TagObject> td in TagList)
-            list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = td.Value.DisplayName, StartNodeId = "ns=" + OpcUaNameSpace + ";s=" + td.Value.NodeID + "" });
+        {
+            var item = new MonitoredItem(subscription.DefaultItem)
+            {
+                DisplayName = td.Value.DisplayName,
+                StartNodeId = "ns=" + OpcUaNameSpaceIndex + ";s=" + td.Value.Identifier,
+            };
+            item.Notification += OnTagValueChange;
+            list.Add(item);
+        }
 
-        list.ForEach(i => i.Notification += OnTagValueChange);
         subscription.AddItems(list);
-
         OpcUaSession.AddSubscription(subscription);
-
-
         subscription.Create();
     }
 
@@ -152,6 +186,7 @@ public class OpcUaServerConnector
 
         foreach (var value in item.DequeueValues())
         {
+            // TODO: what's the purpose of this if block?
             if (item.DisplayName == "ServerStatusCurrentTime")
             {
                 LastTimeOPCServerFoundAlive = value.SourceTimestamp.ToLocalTime();
@@ -160,12 +195,14 @@ public class OpcUaServerConnector
             {
                 if (value.Value != null)
                 {
-                    Console.WriteLine("{0}: {1}, {2}, {3}", item.DisplayName, value.Value.ToString(), value.SourceTimestamp.ToLocalTime(), value.StatusCode);
-                    System.Diagnostics.Debug.WriteLine("{0}: {1}, {2}, {3}", item.DisplayName, value.Value.ToString(), value.SourceTimestamp.ToLocalTime(), value.StatusCode);
+                    string info = $"{item.DisplayName}: {value.Value.ToString()}, {value.SourceTimestamp.ToLocalTime()}, {value.StatusCode}";
+                    Console.WriteLine(info);
+                    System.Diagnostics.Debug.WriteLine(info);
                 }
                 else
-                    Console.WriteLine("{0}: {1}, {2}, {3}", item.DisplayName, "Null Value", value.SourceTimestamp, value.StatusCode);
+                    Console.WriteLine($"{item.DisplayName}: Null Value, {value.SourceTimestamp}, {value.StatusCode}");
 
+                // TODO: refactor to use dictionary
                 if (TagList.ContainsKey(item.DisplayName))
                 {
                     if (value.Value != null)
