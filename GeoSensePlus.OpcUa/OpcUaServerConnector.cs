@@ -10,7 +10,7 @@ public class OpcUaServerConnector : IDisposable
     public bool SecurityEnabled { get; set; }
     public string MyApplicationName { get; set; }
     public Session? OpcUaSession { get; set; }
-    public string OpcUaNameSpace { get; set; }
+    public string OpcUaNameSpaceIndex { get; set; }
     public Dictionary<string, TagObject> TagList { get; set; }
     private string DiscoveryUrl { get; set; }
     public bool SessionRenewalRequired { get; set; }
@@ -43,7 +43,7 @@ public class OpcUaServerConnector : IDisposable
         TagList = taglist;
         SessionRenewalRequired = sessionrenewalRequired;
         SessionRenewalPeriodMins = sessionRenewalMinutes;
-        OpcUaNameSpace = nameSpaceIndex;
+        OpcUaNameSpaceIndex = nameSpaceIndex;
         LastTimeOPCServerFoundAlive = DateTime.Now;
         InitializeOPCUAClient();
 
@@ -99,8 +99,8 @@ public class OpcUaServerConnector : IDisposable
                 Console.WriteLine("Renewing Session");
                 try
                 {
-                    OpcUaSession.Close();
-                    OpcUaSession.Dispose();
+                    OpcUaSession?.Close();
+                    OpcUaSession?.Dispose();
                 }
                 catch { }
                 InitializeOPCUAClient();
@@ -118,6 +118,8 @@ public class OpcUaServerConnector : IDisposable
             ApplicationName = MyApplicationName,
             //ApplicationUri = Utils.Format(@"urn:{0}:" + MyApplicationName + "", ServerAddress),
             ApplicationType = ApplicationType.Client,
+
+            // TODO: refactor to enable this certificate configuration
             SecurityConfiguration = new SecurityConfiguration
             {
                 //ApplicationCertificate = new CertificateIdentifier { StoreType = @"Directory", StorePath = @"%CommonApplicationData%\OPC Foundation\CertificateStores\MachineDefault", SubjectName = Utils.Format(@"CN={0}, DC={1}", MyApplicationName, ServerAddress) },
@@ -161,17 +163,21 @@ public class OpcUaServerConnector : IDisposable
 
 
         // TODO: refactor this list logic
-        list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = "RLTest1", StartNodeId = "ns=3;i=1001" });
+        //list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = "RLTest1", StartNodeId = "ns=3;i=1001" });
 
         foreach (KeyValuePair<string, TagObject> td in TagList)
-            list.Add(new MonitoredItem(subscription.DefaultItem) { DisplayName = td.Value.DisplayName, StartNodeId = "ns=" + OpcUaNameSpace + ";s=" + td.Value.NodeID });
+        {
+            var item = new MonitoredItem(subscription.DefaultItem)
+            {
+                DisplayName = td.Value.DisplayName,
+                StartNodeId = "ns=" + OpcUaNameSpaceIndex + ";s=" + td.Value.Identifier,
+            };
+            item.Notification += OnTagValueChange;
+            list.Add(item);
+        }
 
-        list.ForEach(i => i.Notification += OnTagValueChange);
         subscription.AddItems(list);
-
         OpcUaSession.AddSubscription(subscription);
-
-
         subscription.Create();
     }
 
@@ -180,6 +186,7 @@ public class OpcUaServerConnector : IDisposable
 
         foreach (var value in item.DequeueValues())
         {
+            // TODO: what's the purpose of this if block?
             if (item.DisplayName == "ServerStatusCurrentTime")
             {
                 LastTimeOPCServerFoundAlive = value.SourceTimestamp.ToLocalTime();
@@ -188,12 +195,14 @@ public class OpcUaServerConnector : IDisposable
             {
                 if (value.Value != null)
                 {
-                    Console.WriteLine("{0}: {1}, {2}, {3}", item.DisplayName, value.Value.ToString(), value.SourceTimestamp.ToLocalTime(), value.StatusCode);
-                    System.Diagnostics.Debug.WriteLine("{0}: {1}, {2}, {3}", item.DisplayName, value.Value.ToString(), value.SourceTimestamp.ToLocalTime(), value.StatusCode);
+                    string info = $"{item.DisplayName}: {value.Value.ToString()}, {value.SourceTimestamp.ToLocalTime()}, {value.StatusCode}";
+                    Console.WriteLine(info);
+                    System.Diagnostics.Debug.WriteLine(info);
                 }
                 else
-                    Console.WriteLine("{0}: {1}, {2}, {3}", item.DisplayName, "Null Value", value.SourceTimestamp, value.StatusCode);
+                    Console.WriteLine($"{item.DisplayName}: Null Value, {value.SourceTimestamp}, {value.StatusCode}");
 
+                // TODO: refactor to use dictionary
                 if (TagList.ContainsKey(item.DisplayName))
                 {
                     if (value.Value != null)
