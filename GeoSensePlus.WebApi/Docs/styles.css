@@ -1,0 +1,47 @@
+﻿/* todo { color:red; background-color:lightyellow; font-weight:bold; padding: 5px; border-radius: 2px;}
+todo::before { content: "[TODO] "; }
+
+note { color:yellow; background-color:green; font-weight:bold; padding: 5px; border-radius: 2px;}
+note::before { content: "[NOTE] ";}
+ */
+
+:root{
+    --shared-padding: 4px 5px 5px 0;
+    --shared-border-radius: 2px;
+    --shared-border: 1px solid gainsboro;
+
+    --before-font-weght: bold;
+    --before-color: white;
+    --before-padding: 4px 4px 5px 4px;
+    --before-margin-right: 3px;
+}
+
+todo {
+    border: var(--shared-border);
+    padding: var(--shared-padding);
+    border-radius: var(--shared-border-radius);
+}
+
+todo::before {
+    content: "TODO";
+    padding: var(--before-padding);
+    margin-right: var(--before-margin-right);
+    background-color: yellow;
+    color: red;
+    font-weight: var(--before-font-weight);
+}
+
+note {
+    border: var(--shared-border);
+    padding: var(--shared-padding);
+    border-radius: var(--shared-border-radius);
+}
+
+note::before {
+    content: "NOTE";
+    padding: var(--before-padding);
+    margin-right: var(--before-margin-right);
+    background-color: green;
+    color: white;
+    font-weight: var(--before-font-weight);
+}

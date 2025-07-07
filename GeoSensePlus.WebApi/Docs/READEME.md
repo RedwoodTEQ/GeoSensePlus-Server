@@ -1,3 +1,5 @@
+<link href="styles.css" rel="stylesheet"></link>
+
 # GeoSensePlus.Server
 
 ## About Project
@@ -15,12 +17,36 @@
 - Change MongoController<> to a util class
 - Change API methods to async
 
+---
+You can use `<todo>` and `<note>` to highlight TODOs and notes.
+
+Example: <note>test note</note> <todo>test todo</todo>
+
+## Initial Setup
+
+- Startup PostgreSQL server  
+  Approach 1: Use Docker
+  ```
+  docker run --name postgres -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 postgres
+  ```
+
+  Approach 2: Use Docker Compose
+  ```
+  Navigate to project "docker-compose-more", do:
+  docker-compose -f postgresql.yml up
+  ```
+
+- Database migration
+  ```
+  Navigate to project "GeoSensePlus.Data", execute:
+  update-database.bat
+  ```
+
 ## Release Notes
 
 ### v1.2.0-dev
 
 Working:
-
 
 Done:
 
@@ -34,8 +60,6 @@ Done:
   - post /metrics
   - get /metrics/metric/unit/range
 - rename api /textdata to /api/message
-- Upgrade target framework to .net5
-- Upgrade all dependent projects to .net core 3.1
 - Upgrade MqttNet package
 - Add support for InfluxDB
 - Add support for OpenAPI
@@ -43,7 +67,7 @@ Done:
 **Non-CLI part**
 
 - Add docker support
-- Add dapr batch script
+- Add dapr batch script `serve-dapr.bat`
 
 ### v1.1.1
 
