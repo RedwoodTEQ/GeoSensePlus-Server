@@ -44,7 +44,7 @@ namespace GeoSensePlus.WebApi.Controllers.Location
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] ZoneEntity value)
         {
-            var area = new Zone { AreaId = id, Name = value.Name, Description = value.Description, CellAnchorId = value.CellAnchorId };
+            var area = new Zone { ZoneId = id, Name = value.Name, Description = value.Description, CellAnchorId = value.CellAnchorId };
             return _controllerUtil.Put(area);
         }
 

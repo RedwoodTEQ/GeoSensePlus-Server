@@ -25,11 +25,11 @@ namespace GeoSensePlus.Data.DatabaseModels.Location
         public Floorplan Floorplan { get; set; }
         public CellAnchor CellAnchor { get; set; }
 
-        public int AreaId { get; set; }
+        public int ZoneId { get; set; }
 
         public int GetId()
         {
-            return AreaId;
+            return ZoneId;
         }
         //public List<Target> CacheTargets { get; set; } = new List<Target>();
 

@@ -47,37 +47,7 @@ namespace GeoSensePlus.Data.Migrations
                     b.ToTable("AlarmEvents");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Area", b =>
-                {
-                    b.Property<int>("AreaId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AreaId"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("EdgeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("FloorplanId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("AreaId");
-
-                    b.HasIndex("EdgeId")
-                        .IsUnique();
-
-                    b.HasIndex("FloorplanId");
-
-                    b.ToTable("Areas");
-                });
-
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Building", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Building", b =>
                 {
                     b.Property<int>("BuildingId")
                         .ValueGeneratedOnAdd()
@@ -91,68 +61,17 @@ namespace GeoSensePlus.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<int?>("SiteId")
+                        .HasColumnType("integer");
+
                     b.HasKey("BuildingId");
+
+                    b.HasIndex("SiteId");
 
                     b.ToTable("Buildings");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.CellTag", b =>
-                {
-                    b.Property<int>("CellTagId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CellTagId"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("EdgeId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("TargetId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("CellTagId");
-
-                    b.HasIndex("EdgeId");
-
-                    b.HasIndex("TargetId");
-
-                    b.ToTable("CellTags");
-                });
-
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Edge", b =>
-                {
-                    b.Property<int>("EdgeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("EdgeId"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("GatewayId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("EdgeId");
-
-                    b.HasIndex("GatewayId");
-
-                    b.ToTable("Edges");
-                });
-
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Floorplan", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Floorplan", b =>
                 {
                     b.Property<int>("FloorplanId")
                         .ValueGeneratedOnAdd()
@@ -169,6 +88,9 @@ namespace GeoSensePlus.Data.Migrations
                     b.Property<string>("FileLocation")
                         .HasColumnType("text");
 
+                    b.Property<int?>("LevelId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
@@ -176,16 +98,36 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("BuildingId");
 
+                    b.HasIndex("LevelId");
+
                     b.ToTable("Floorplans");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Gateway", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Level", b =>
                 {
-                    b.Property<int>("GatewayId")
+                    b.Property<int>("LevelId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("GatewayId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("LevelId"));
+
+                    b.Property<int?>("BuildingId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("LevelId");
+
+                    b.HasIndex("BuildingId");
+
+                    b.ToTable("Level");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Site", b =>
+                {
+                    b.Property<int>("SiteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SiteId"));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -193,12 +135,42 @@ namespace GeoSensePlus.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.HasKey("GatewayId");
+                    b.HasKey("SiteId");
 
-                    b.ToTable("Gateway");
+                    b.ToTable("Site");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Geofence", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Zone", b =>
+                {
+                    b.Property<int>("ZoneId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ZoneId"));
+
+                    b.Property<int?>("CellAnchorId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("FloorplanId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("ZoneId");
+
+                    b.HasIndex("CellAnchorId")
+                        .IsUnique();
+
+                    b.HasIndex("FloorplanId");
+
+                    b.ToTable("Zones");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Map.Geofence", b =>
                 {
                     b.Property<int>("GeofenceId")
                         .ValueGeneratedOnAdd()
@@ -212,12 +184,142 @@ namespace GeoSensePlus.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<string>("Shape")
+                        .HasColumnType("text");
+
                     b.HasKey("GeofenceId");
 
                     b.ToTable("Geofences");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.GpsTag", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Sensing.Measure", b =>
+                {
+                    b.Property<int>("MeasureId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MeasureId"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Labels")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("MeasureId");
+
+                    b.ToTable("Measures");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Sensing.Sensor", b =>
+                {
+                    b.Property<int>("SensorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SensorId"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Labels")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("MeasureId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Unit")
+                        .HasColumnType("text");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("double precision");
+
+                    b.Property<int?>("ZoneId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("SensorId");
+
+                    b.HasIndex("MeasureId");
+
+                    b.HasIndex("ZoneId");
+
+                    b.ToTable("Sensors");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.CellAnchor", b =>
+                {
+                    b.Property<int>("CellAnchorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CellAnchorId"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("HubId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("CellAnchorId");
+
+                    b.HasIndex("HubId");
+
+                    b.ToTable("CellAnchors");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.CellTag", b =>
+                {
+                    b.Property<int>("CellTagId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CellTagId"));
+
+                    b.Property<int?>("CellAnchorId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("HubId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("TargetId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("CellTagId");
+
+                    b.HasIndex("CellAnchorId");
+
+                    b.HasIndex("HubId");
+
+                    b.HasIndex("TargetId");
+
+                    b.ToTable("CellTags");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.GpsTag", b =>
                 {
                     b.Property<int>("GpsTagId")
                         .ValueGeneratedOnAdd()
@@ -253,73 +355,26 @@ namespace GeoSensePlus.Data.Migrations
                     b.ToTable("GpsTags");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Measure", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.Hub", b =>
                 {
-                    b.Property<int>("MeasureId")
+                    b.Property<int>("HubId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MeasureId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("HubId"));
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Labels")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.HasKey("MeasureId");
+                    b.HasKey("HubId");
 
-                    b.ToTable("Measures");
+                    b.ToTable("Hubs");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Sensor", b =>
-                {
-                    b.Property<int>("SensorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SensorId"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("EdgeId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Labels")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("MeasureId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Unit")
-                        .HasColumnType("text");
-
-                    b.Property<double>("Value")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("SensorId");
-
-                    b.HasIndex("EdgeId");
-
-                    b.HasIndex("MeasureId");
-
-                    b.ToTable("Sensors");
-                });
-
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Target", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.Target", b =>
                 {
                     b.Property<int>("TargetId")
                         .ValueGeneratedOnAdd()
@@ -338,7 +393,51 @@ namespace GeoSensePlus.Data.Migrations
                     b.ToTable("Targets");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.UwbTag", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.UwbAnchor", b =>
+                {
+                    b.Property<int>("UwbAnchorID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UwbAnchorID"));
+
+                    b.Property<double>("AxisX")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("AxisY")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("AxisZ")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Configuration")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("FloorplanId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("SiteId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.HasKey("UwbAnchorID");
+
+                    b.HasIndex("FloorplanId");
+
+                    b.HasIndex("SiteId");
+
+                    b.ToTable("UwbAnchors");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.UwbTag", b =>
                 {
                     b.Property<int>("UwbTagId")
                         .ValueGeneratedOnAdd()
@@ -574,79 +673,118 @@ namespace GeoSensePlus.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Area", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Building", b =>
                 {
-                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Edge", "Edge")
-                        .WithOne("Area")
-                        .HasForeignKey("GeoSensePlus.Data.DatabaseModels.Area", "EdgeId");
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Location.Site", null)
+                        .WithMany("Buildings")
+                        .HasForeignKey("SiteId");
+                });
 
-                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Floorplan", "Floorplan")
-                        .WithMany("Areas")
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Floorplan", b =>
+                {
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Location.Building", null)
+                        .WithMany("Floorplans")
+                        .HasForeignKey("BuildingId");
+
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Location.Level", "Level")
+                        .WithMany("Floorplans")
+                        .HasForeignKey("LevelId");
+
+                    b.Navigation("Level");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Level", b =>
+                {
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Location.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId");
+
+                    b.Navigation("Building");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Zone", b =>
+                {
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Tracking.CellAnchor", "CellAnchor")
+                        .WithOne("Zone")
+                        .HasForeignKey("GeoSensePlus.Data.DatabaseModels.Location.Zone", "CellAnchorId");
+
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Location.Floorplan", "Floorplan")
+                        .WithMany("Zones")
                         .HasForeignKey("FloorplanId");
 
-                    b.Navigation("Edge");
+                    b.Navigation("CellAnchor");
 
                     b.Navigation("Floorplan");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.CellTag", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Sensing.Sensor", b =>
                 {
-                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Edge", null)
-                        .WithMany("CellTags")
-                        .HasForeignKey("EdgeId");
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Sensing.Measure", "Measure")
+                        .WithMany("Sensors")
+                        .HasForeignKey("MeasureId");
 
-                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Target", "Target")
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Location.Zone", "Zone")
+                        .WithMany()
+                        .HasForeignKey("ZoneId");
+
+                    b.Navigation("Measure");
+
+                    b.Navigation("Zone");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.CellAnchor", b =>
+                {
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Tracking.Hub", "Hub")
+                        .WithMany("CellAnchors")
+                        .HasForeignKey("HubId");
+
+                    b.Navigation("Hub");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.CellTag", b =>
+                {
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Tracking.CellAnchor", null)
+                        .WithMany("CellTags")
+                        .HasForeignKey("CellAnchorId");
+
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Tracking.Hub", null)
+                        .WithMany("CellTags")
+                        .HasForeignKey("HubId");
+
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Tracking.Target", "Target")
                         .WithMany("CellTags")
                         .HasForeignKey("TargetId");
 
                     b.Navigation("Target");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Edge", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.GpsTag", b =>
                 {
-                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Gateway", "Gateway")
-                        .WithMany("Edges")
-                        .HasForeignKey("GatewayId");
-
-                    b.Navigation("Gateway");
-                });
-
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Floorplan", b =>
-                {
-                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Building", "Building")
-                        .WithMany("Floorplans")
-                        .HasForeignKey("BuildingId");
-
-                    b.Navigation("Building");
-                });
-
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.GpsTag", b =>
-                {
-                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Target", "Target")
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Tracking.Target", "Target")
                         .WithMany("GpsTags")
                         .HasForeignKey("TargetId");
 
                     b.Navigation("Target");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Sensor", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.UwbAnchor", b =>
                 {
-                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Edge", "Edge")
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Location.Floorplan", "Floorplan")
                         .WithMany()
-                        .HasForeignKey("EdgeId");
+                        .HasForeignKey("FloorplanId");
 
-                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Measure", "Measure")
-                        .WithMany("Sensors")
-                        .HasForeignKey("MeasureId");
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Location.Site", "Site")
+                        .WithMany()
+                        .HasForeignKey("SiteId");
 
-                    b.Navigation("Edge");
+                    b.Navigation("Floorplan");
 
-                    b.Navigation("Measure");
+                    b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.UwbTag", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.UwbTag", b =>
                 {
-                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Target", "Target")
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Tracking.Target", "Target")
                         .WithMany("UwbTags")
                         .HasForeignKey("TargetId");
 
@@ -704,34 +842,46 @@ namespace GeoSensePlus.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Building", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Building", b =>
                 {
                     b.Navigation("Floorplans");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Edge", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Floorplan", b =>
                 {
-                    b.Navigation("Area");
-
-                    b.Navigation("CellTags");
+                    b.Navigation("Zones");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Floorplan", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Level", b =>
                 {
-                    b.Navigation("Areas");
+                    b.Navigation("Floorplans");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Gateway", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Site", b =>
                 {
-                    b.Navigation("Edges");
+                    b.Navigation("Buildings");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Measure", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Sensing.Measure", b =>
                 {
                     b.Navigation("Sensors");
                 });
 
-            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Target", b =>
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.CellAnchor", b =>
+                {
+                    b.Navigation("CellTags");
+
+                    b.Navigation("Zone");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.Hub", b =>
+                {
+                    b.Navigation("CellAnchors");
+
+                    b.Navigation("CellTags");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.Target", b =>
                 {
                     b.Navigation("CellTags");
 

@@ -68,45 +68,32 @@ namespace GeoSensePlus.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Buildings",
-                columns: table => new
-                {
-                    BuildingId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Buildings", x => x.BuildingId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Gateway",
-                columns: table => new
-                {
-                    GatewayId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Gateway", x => x.GatewayId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Geofences",
                 columns: table => new
                 {
                     GeofenceId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: true)
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Shape = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Geofences", x => x.GeofenceId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Hubs",
+                columns: table => new
+                {
+                    HubId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Hubs", x => x.HubId);
                 });
 
             migrationBuilder.CreateTable(
@@ -122,6 +109,20 @@ namespace GeoSensePlus.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Measures", x => x.MeasureId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Site",
+                columns: table => new
+                {
+                    SiteId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Site", x => x.SiteId);
                 });
 
             migrationBuilder.CreateTable(
@@ -245,44 +246,43 @@ namespace GeoSensePlus.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Floorplans",
+                name: "CellAnchors",
                 columns: table => new
                 {
-                    FloorplanId = table.Column<int>(type: "integer", nullable: false)
+                    CellAnchorId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BuildingId = table.Column<int>(type: "integer", nullable: true),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    FileLocation = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Floorplans", x => x.FloorplanId);
-                    table.ForeignKey(
-                        name: "FK_Floorplans_Buildings_BuildingId",
-                        column: x => x.BuildingId,
-                        principalTable: "Buildings",
-                        principalColumn: "BuildingId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Edges",
-                columns: table => new
-                {
-                    EdgeId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    GatewayId = table.Column<int>(type: "integer", nullable: true),
+                    HubId = table.Column<int>(type: "integer", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Edges", x => x.EdgeId);
+                    table.PrimaryKey("PK_CellAnchors", x => x.CellAnchorId);
                     table.ForeignKey(
-                        name: "FK_Edges_Gateway_GatewayId",
-                        column: x => x.GatewayId,
-                        principalTable: "Gateway",
-                        principalColumn: "GatewayId");
+                        name: "FK_CellAnchors_Hubs_HubId",
+                        column: x => x.HubId,
+                        principalTable: "Hubs",
+                        principalColumn: "HubId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Buildings",
+                columns: table => new
+                {
+                    BuildingId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SiteId = table.Column<int>(type: "integer", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Buildings", x => x.BuildingId);
+                    table.ForeignKey(
+                        name: "FK_Buildings_Site_SiteId",
+                        column: x => x.SiteId,
+                        principalTable: "Site",
+                        principalColumn: "SiteId");
                 });
 
             migrationBuilder.CreateTable(
@@ -334,39 +334,14 @@ namespace GeoSensePlus.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Areas",
-                columns: table => new
-                {
-                    AreaId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FloorplanId = table.Column<int>(type: "integer", nullable: true),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    EdgeId = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Areas", x => x.AreaId);
-                    table.ForeignKey(
-                        name: "FK_Areas_Edges_EdgeId",
-                        column: x => x.EdgeId,
-                        principalTable: "Edges",
-                        principalColumn: "EdgeId");
-                    table.ForeignKey(
-                        name: "FK_Areas_Floorplans_FloorplanId",
-                        column: x => x.FloorplanId,
-                        principalTable: "Floorplans",
-                        principalColumn: "FloorplanId");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CellTags",
                 columns: table => new
                 {
                     CellTagId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     TargetId = table.Column<int>(type: "integer", nullable: true),
-                    EdgeId = table.Column<int>(type: "integer", nullable: true),
+                    CellAnchorId = table.Column<int>(type: "integer", nullable: true),
+                    HubId = table.Column<int>(type: "integer", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
                     TimeStamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -375,15 +350,122 @@ namespace GeoSensePlus.Data.Migrations
                 {
                     table.PrimaryKey("PK_CellTags", x => x.CellTagId);
                     table.ForeignKey(
-                        name: "FK_CellTags_Edges_EdgeId",
-                        column: x => x.EdgeId,
-                        principalTable: "Edges",
-                        principalColumn: "EdgeId");
+                        name: "FK_CellTags_CellAnchors_CellAnchorId",
+                        column: x => x.CellAnchorId,
+                        principalTable: "CellAnchors",
+                        principalColumn: "CellAnchorId");
+                    table.ForeignKey(
+                        name: "FK_CellTags_Hubs_HubId",
+                        column: x => x.HubId,
+                        principalTable: "Hubs",
+                        principalColumn: "HubId");
                     table.ForeignKey(
                         name: "FK_CellTags_Targets_TargetId",
                         column: x => x.TargetId,
                         principalTable: "Targets",
                         principalColumn: "TargetId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Level",
+                columns: table => new
+                {
+                    LevelId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    BuildingId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Level", x => x.LevelId);
+                    table.ForeignKey(
+                        name: "FK_Level_Buildings_BuildingId",
+                        column: x => x.BuildingId,
+                        principalTable: "Buildings",
+                        principalColumn: "BuildingId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Floorplans",
+                columns: table => new
+                {
+                    FloorplanId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    LevelId = table.Column<int>(type: "integer", nullable: true),
+                    BuildingId = table.Column<int>(type: "integer", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    FileLocation = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Floorplans", x => x.FloorplanId);
+                    table.ForeignKey(
+                        name: "FK_Floorplans_Buildings_BuildingId",
+                        column: x => x.BuildingId,
+                        principalTable: "Buildings",
+                        principalColumn: "BuildingId");
+                    table.ForeignKey(
+                        name: "FK_Floorplans_Level_LevelId",
+                        column: x => x.LevelId,
+                        principalTable: "Level",
+                        principalColumn: "LevelId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UwbAnchors",
+                columns: table => new
+                {
+                    UwbAnchorID = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FloorplanId = table.Column<int>(type: "integer", nullable: true),
+                    SiteId = table.Column<int>(type: "integer", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    AxisX = table.Column<double>(type: "double precision", nullable: false),
+                    AxisY = table.Column<double>(type: "double precision", nullable: false),
+                    AxisZ = table.Column<double>(type: "double precision", nullable: false),
+                    Configuration = table.Column<string>(type: "text", nullable: true),
+                    Status = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UwbAnchors", x => x.UwbAnchorID);
+                    table.ForeignKey(
+                        name: "FK_UwbAnchors_Floorplans_FloorplanId",
+                        column: x => x.FloorplanId,
+                        principalTable: "Floorplans",
+                        principalColumn: "FloorplanId");
+                    table.ForeignKey(
+                        name: "FK_UwbAnchors_Site_SiteId",
+                        column: x => x.SiteId,
+                        principalTable: "Site",
+                        principalColumn: "SiteId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Zones",
+                columns: table => new
+                {
+                    ZoneId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FloorplanId = table.Column<int>(type: "integer", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    CellAnchorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Zones", x => x.ZoneId);
+                    table.ForeignKey(
+                        name: "FK_Zones_CellAnchors_CellAnchorId",
+                        column: x => x.CellAnchorId,
+                        principalTable: "CellAnchors",
+                        principalColumn: "CellAnchorId");
+                    table.ForeignKey(
+                        name: "FK_Zones_Floorplans_FloorplanId",
+                        column: x => x.FloorplanId,
+                        principalTable: "Floorplans",
+                        principalColumn: "FloorplanId");
                 });
 
             migrationBuilder.CreateTable(
@@ -393,7 +475,7 @@ namespace GeoSensePlus.Data.Migrations
                     SensorId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     MeasureId = table.Column<int>(type: "integer", nullable: true),
-                    EdgeId = table.Column<int>(type: "integer", nullable: true),
+                    ZoneId = table.Column<int>(type: "integer", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
                     Type = table.Column<string>(type: "text", nullable: true),
@@ -406,27 +488,16 @@ namespace GeoSensePlus.Data.Migrations
                 {
                     table.PrimaryKey("PK_Sensors", x => x.SensorId);
                     table.ForeignKey(
-                        name: "FK_Sensors_Edges_EdgeId",
-                        column: x => x.EdgeId,
-                        principalTable: "Edges",
-                        principalColumn: "EdgeId");
-                    table.ForeignKey(
                         name: "FK_Sensors_Measures_MeasureId",
                         column: x => x.MeasureId,
                         principalTable: "Measures",
                         principalColumn: "MeasureId");
+                    table.ForeignKey(
+                        name: "FK_Sensors_Zones_ZoneId",
+                        column: x => x.ZoneId,
+                        principalTable: "Zones",
+                        principalColumn: "ZoneId");
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Areas_EdgeId",
-                table: "Areas",
-                column: "EdgeId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Areas_FloorplanId",
-                table: "Areas",
-                column: "FloorplanId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -466,9 +537,24 @@ namespace GeoSensePlus.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CellTags_EdgeId",
+                name: "IX_Buildings_SiteId",
+                table: "Buildings",
+                column: "SiteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CellAnchors_HubId",
+                table: "CellAnchors",
+                column: "HubId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CellTags_CellAnchorId",
                 table: "CellTags",
-                column: "EdgeId");
+                column: "CellAnchorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CellTags_HubId",
+                table: "CellTags",
+                column: "HubId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CellTags_TargetId",
@@ -476,14 +562,14 @@ namespace GeoSensePlus.Data.Migrations
                 column: "TargetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Edges_GatewayId",
-                table: "Edges",
-                column: "GatewayId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Floorplans_BuildingId",
                 table: "Floorplans",
                 column: "BuildingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Floorplans_LevelId",
+                table: "Floorplans",
+                column: "LevelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GpsTags_TargetId",
@@ -491,9 +577,9 @@ namespace GeoSensePlus.Data.Migrations
                 column: "TargetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sensors_EdgeId",
-                table: "Sensors",
-                column: "EdgeId");
+                name: "IX_Level_BuildingId",
+                table: "Level",
+                column: "BuildingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sensors_MeasureId",
@@ -501,9 +587,35 @@ namespace GeoSensePlus.Data.Migrations
                 column: "MeasureId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Sensors_ZoneId",
+                table: "Sensors",
+                column: "ZoneId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UwbAnchors_FloorplanId",
+                table: "UwbAnchors",
+                column: "FloorplanId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UwbAnchors_SiteId",
+                table: "UwbAnchors",
+                column: "SiteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UwbTags_TargetId",
                 table: "UwbTags",
                 column: "TargetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Zones_CellAnchorId",
+                table: "Zones",
+                column: "CellAnchorId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Zones_FloorplanId",
+                table: "Zones",
+                column: "FloorplanId");
         }
 
         /// <inheritdoc />
@@ -511,9 +623,6 @@ namespace GeoSensePlus.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "AlarmEvents");
-
-            migrationBuilder.DropTable(
-                name: "Areas");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -543,10 +652,10 @@ namespace GeoSensePlus.Data.Migrations
                 name: "Sensors");
 
             migrationBuilder.DropTable(
-                name: "UwbTags");
+                name: "UwbAnchors");
 
             migrationBuilder.DropTable(
-                name: "Floorplans");
+                name: "UwbTags");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -555,19 +664,31 @@ namespace GeoSensePlus.Data.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Edges");
+                name: "Measures");
 
             migrationBuilder.DropTable(
-                name: "Measures");
+                name: "Zones");
 
             migrationBuilder.DropTable(
                 name: "Targets");
 
             migrationBuilder.DropTable(
+                name: "CellAnchors");
+
+            migrationBuilder.DropTable(
+                name: "Floorplans");
+
+            migrationBuilder.DropTable(
+                name: "Hubs");
+
+            migrationBuilder.DropTable(
+                name: "Level");
+
+            migrationBuilder.DropTable(
                 name: "Buildings");
 
             migrationBuilder.DropTable(
-                name: "Gateway");
+                name: "Site");
         }
     }
 }
