@@ -1,8 +1,8 @@
-version: "3.4"
+version: "3.9"
 
 services:
   postgresql:
-    image: postgres:11.12
+    image: postgres:15
     container_name: "gsp_postgresql"
     ports:
       - 5432:5432
@@ -14,7 +14,7 @@ services:
       # - PGDATA="/data/postgres"  # PGDATA: /data/postgres
 
     #volumes:
-      #- postgresql-data-11.12:/var/lib/postgresql/data
+      #- postgresql-data-15:/var/lib/postgresql/data
     networks:
       - geosenseplusnetwork
     # restart: unless-stopped
@@ -23,4 +23,4 @@ networks:
   geosenseplusnetwork:
 
 #volumes:
-#  postgresql-data-11.12:
+#  postgresql-data-15:
