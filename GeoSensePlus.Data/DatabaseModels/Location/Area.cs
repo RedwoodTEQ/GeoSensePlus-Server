@@ -1,6 +1,7 @@
 ﻿using GeoSensePlus.Data.DatabaseModels.Tracking;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,10 @@ namespace GeoSensePlus.Data.DatabaseModels.Location;
 
 public class AreaEntity : NamedEntity<int>
 {
+    [Column("cell_anchor_id")]
     public int? CellAnchorId { get; set; }  // foreign key to CellAnchor
+
+    [Column("floor_plan_id")]
     public int? FloorPlanId { get; set; }   // foreign key to FloorPlan
 }
 

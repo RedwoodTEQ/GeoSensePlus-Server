@@ -37,7 +37,7 @@ namespace GeoSensePlus.WebApi.Controllers.Positioning
             {
                 Name = value.Name,
                 Description = value.Description,
-                TimeStamp = value.TimeStamp,
+                UpdatedAt = value.UpdatedAt,
                 Latitude = value.Latitude,
                 Longitude = value.Longitude,
                 Altitude = value.Altitude
@@ -53,7 +53,7 @@ namespace GeoSensePlus.WebApi.Controllers.Positioning
                 Id = id,
                 Name = value.Name,
                 Description = value.Description,
-                TimeStamp = value.TimeStamp,
+                UpdatedAt = value.UpdatedAt,
                 Latitude = value.Latitude,
                 Longitude = value.Longitude,
                 Altitude = value.Altitude

@@ -12,5 +12,5 @@ public class BuildingEntity : NamedEntity<int>
 
 public class Building : BuildingEntity
 {
-    public List<FloorPlan> Floorplans { get; set; } = new List<FloorPlan>();
+    public List<FloorPlan> FloorPlans { get; set; } = new List<FloorPlan>();
 }

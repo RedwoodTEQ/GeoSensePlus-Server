@@ -1,14 +1,23 @@
 ﻿using GeoSensePlus.Data.DatabaseModels.Location;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Tracking;
 
 public class UwbAnchorEntity : NamedEntity<int>
 {
+    [Column("axis_x")]
     public double AxisX { get; set; } = -1;
+
+    [Column("axis_y")]
     public double AxisY { get; set; } = -1;
+
+    [Column("axis_z")]
     public double AxisZ { get; set; } = -1;
-    //[Column(TypeName = "jsonb")]
+
+    [Column("configuration", TypeName = "jsonb")]
     public string Configuration { get; set; }
+
+    [Column("status")]
     public string Status { get; set; }
 
     /** TODO: confirm with Kai, more properties?
@@ -19,7 +28,10 @@ public class UwbAnchorEntity : NamedEntity<int>
      * Extra?
      */
 
+    [Column("floor_plan_id")]
     public int? FloorPlanId { get; set; }  // foreign key to FloorPlan
+
+    [Column("site_id")]
     public int? SiteId { get; set; }       // foreign key to Site
 }
 

@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Location;
 
 public class FloorEntity : NamedEntity<int>
 {
+    [Column("level_number")]
     public int LevelNumber { get; set; }
+
+    [Column("building_id")]
     public int? BuildingId { get; set; } // Foreign key to Building
 }
 

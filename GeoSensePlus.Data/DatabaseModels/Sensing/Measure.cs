@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Sensing;
 
@@ -8,6 +9,7 @@ public class MeasureEntity : NamedEntity<int>
     /// Multiple lables are separated by ';'
     /// Used as influxdb tags
     /// </summary>
+    [Column("labels")]
     public string Labels { get; set; }
 }
 

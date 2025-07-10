@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Location;
 
 public class FloorPlanEntity : NamedEntity<int>
 {
+    [Column("file_location")]
     public string FileLocation { get; set; } // Path to the floor plan image or file
+
+    [Column("floor_id")]
     public string FloorId { get; set; } // Foreign key to Floor
 }
 

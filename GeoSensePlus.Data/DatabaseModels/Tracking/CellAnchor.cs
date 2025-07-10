@@ -1,11 +1,15 @@
 ﻿using GeoSensePlus.Data.DatabaseModels.Location;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Tracking;
 
 public class CellAnchorEntity : NamedEntity<int>
 {
+    [Column("area_id")]
     public int? AreaId { get; set; }  // foreign key to Area
+
+    [Column("cell_hub_id")]
     public int? CellHubId { get; set; }    // foreign key to CellHub
 }
 

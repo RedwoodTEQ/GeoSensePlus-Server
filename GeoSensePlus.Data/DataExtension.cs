@@ -18,10 +18,9 @@ namespace GeoSensePlus.Data
             }
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(
-                    Configuration.GetConnectionString(postgresConnStr),
-                    postgresOption => postgresOption.MigrationsAssembly("GeoSensePlus.Data")
-                ).UseSnakeCaseNamingConvention()
-            );
+                Configuration.GetConnectionString(postgresConnStr),
+                postgresOption => postgresOption.MigrationsAssembly("GeoSensePlus.Data")
+            ));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)

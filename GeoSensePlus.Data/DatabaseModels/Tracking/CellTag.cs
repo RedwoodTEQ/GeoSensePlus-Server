@@ -1,11 +1,15 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Tracking;
 
 public class CellTagEntity : NamedEntity<int>
 {
-    public DateTime TimeStamp { get; set; }
-    public int TargetId { get; set; }   // foreign key to Target
+    [Column("updated_at")]
+    public DateTime UpdatedAt { get; set; }
+
+    [Column("target_id")]
+    public int? TargetId { get; set; }   // foreign key to Target
 }
 
 /// <summary>
