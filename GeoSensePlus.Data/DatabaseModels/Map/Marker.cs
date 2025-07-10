@@ -22,6 +22,7 @@ public class MarkerEntity : NamedEntity<int>
 /// Renamed from "Poi"
 /// Indoor use only, if need an outdoor POI, use Geofence instead
 /// </summary>
+[Table("marker", Schema = SchemaNames.map)]
 public class Marker : MarkerEntity
 {
     public FloorPlan Floorplan { get; set; }

@@ -12,6 +12,7 @@ public class GeofenceEntity : NamedEntity<int>
     [Column("shape")]
     public string Shape { get; set; }
 }
+[Table("geofence", Schema = SchemaNames.map)]
 public class Geofence : GeofenceEntity
 {
 }

@@ -17,7 +17,7 @@ namespace GeoSensePlus.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("ProductVersion", "9.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -44,7 +44,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasKey("AlarmEventId");
 
-                    b.ToTable("AlarmEvents");
+                    b.ToTable("AlarmEvents", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Building", b =>
@@ -68,7 +68,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("SiteId");
 
-                    b.ToTable("Buildings");
+                    b.ToTable("Buildings", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Floorplan", b =>
@@ -100,7 +100,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("LevelId");
 
-                    b.ToTable("Floorplans");
+                    b.ToTable("Floorplans", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Level", b =>
@@ -118,7 +118,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("BuildingId");
 
-                    b.ToTable("Level");
+                    b.ToTable("Level", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Site", b =>
@@ -137,7 +137,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasKey("SiteId");
 
-                    b.ToTable("Site");
+                    b.ToTable("Site", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Location.Zone", b =>
@@ -167,7 +167,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("FloorplanId");
 
-                    b.ToTable("Zones");
+                    b.ToTable("Zones", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Map.Geofence", b =>
@@ -189,7 +189,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasKey("GeofenceId");
 
-                    b.ToTable("Geofences");
+                    b.ToTable("Geofences", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Sensing.Measure", b =>
@@ -211,7 +211,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasKey("MeasureId");
 
-                    b.ToTable("Measures");
+                    b.ToTable("Measures", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Sensing.Sensor", b =>
@@ -255,7 +255,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("ZoneId");
 
-                    b.ToTable("Sensors");
+                    b.ToTable("Sensors", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.CellAnchor", b =>
@@ -279,7 +279,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("HubId");
 
-                    b.ToTable("CellAnchors");
+                    b.ToTable("CellAnchors", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.CellTag", b =>
@@ -316,7 +316,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("TargetId");
 
-                    b.ToTable("CellTags");
+                    b.ToTable("CellTags", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.GpsTag", b =>
@@ -352,7 +352,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("TargetId");
 
-                    b.ToTable("GpsTags");
+                    b.ToTable("GpsTags", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.Hub", b =>
@@ -371,7 +371,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasKey("HubId");
 
-                    b.ToTable("Hubs");
+                    b.ToTable("Hubs", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.Target", b =>
@@ -390,7 +390,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasKey("TargetId");
 
-                    b.ToTable("Targets");
+                    b.ToTable("Targets", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.UwbAnchor", b =>
@@ -434,7 +434,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("SiteId");
 
-                    b.ToTable("UwbAnchors");
+                    b.ToTable("UwbAnchors", (string)null);
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Tracking.UwbTag", b =>
@@ -470,7 +470,7 @@ namespace GeoSensePlus.Data.Migrations
 
                     b.HasIndex("TargetId");
 
-                    b.ToTable("UwbTags");
+                    b.ToTable("UwbTags", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

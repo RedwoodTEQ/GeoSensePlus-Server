@@ -12,6 +12,7 @@ public class FloorPlanEntity : NamedEntity<int>
     public int? FloorId { get; set; } // Foreign key to Floor
 }
 
+[Table("floor_plan", Schema = SchemaNames.location)]
 public class FloorPlan : FloorPlanEntity
 {
     public Floor Floor { get; set; }

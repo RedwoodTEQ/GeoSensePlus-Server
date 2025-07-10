@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ public class SiteEntity : NamedEntity<int>
 /// <summary>
 /// A site is a gsv service deployment
 /// </summary>
+[Table("site", Schema = SchemaNames.location)]
 public class Site : SiteEntity
 {
     public List<Building> Buildings { get; set; }

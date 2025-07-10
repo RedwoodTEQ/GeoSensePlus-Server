@@ -14,8 +14,8 @@ public class UwbAnchorEntity : NamedEntity<int>
     [Column("axis_z")]
     public double AxisZ { get; set; } = -1;
 
-    [Column("configuration", TypeName = "jsonb")]
-    public string Configuration { get; set; }
+    [Column("config", TypeName = "jsonb")]
+    public string Config { get; set; }
 
     [Column("status")]
     public string Status { get; set; }
@@ -50,7 +50,7 @@ public class UwbAnchor : UwbAnchorEntity
 
     public static UwbAnchor Create(ApplicationDbContext ctx, string name, string config)
     {
-        var anchor = new UwbAnchor { Name = name, Configuration = config };
+        var anchor = new UwbAnchor { Name = name, Config = config };
         ctx.UwbAnchors.Add(anchor);
         ctx.SaveChanges();
         return anchor;

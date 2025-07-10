@@ -17,6 +17,7 @@ public class AreaEntity : NamedEntity<int>
 /// <summary>
 /// An area is an indoor area, which can be a room, a corridor etc.
 /// </summary>
+[Table("area", Schema = SchemaNames.location)]
 public class Area : AreaEntity
 {
     public FloorPlan Floorplan { get; set; }
