@@ -10,9 +10,6 @@ namespace GeoSensePlus.Data.DatabaseModels.Location;
 
 public class AreaEntity : NamedEntity<int>
 {
-    [Column("cell_anchor_id")]
-    public int? CellAnchorId { get; set; }  // foreign key to CellAnchor
-
     [Column("floor_plan_id")]
     public int? FloorPlanId { get; set; }   // foreign key to FloorPlan
 }
@@ -23,7 +20,7 @@ public class AreaEntity : NamedEntity<int>
 public class Area : AreaEntity
 {
     public FloorPlan Floorplan { get; set; }
-    public CellAnchor CellAnchor { get; set; }
+    public CellAnchor CellAnchor { get; set; }      // CellAnchor is the the principal entity in this ne-to-one relationship, so a int CellAnchorId is not needed here.
 
     //public List<Target> CacheTargets { get; set; } = new List<Target>();
 

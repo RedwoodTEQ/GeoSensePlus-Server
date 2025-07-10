@@ -37,14 +37,14 @@ namespace GeoSensePlus.WebApi.Controllers.Location
         [HttpPost]
         public ActionResult<AreaEntity> Post([FromBody] AreaEntity value)
         {
-            var area = new Area { Name = value.Name, Description = value.Description, CellAnchorId = value.CellAnchorId };
+            var area = new Area { Name = value.Name, Description = value.Description };
             return _controllerUtil.Post(area);
         }
 
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] AreaEntity value)
         {
-            var area = new Area { Id = id, Name = value.Name, Description = value.Description, CellAnchorId = value.CellAnchorId };
+            var area = new Area { Id = id, Name = value.Name, Description = value.Description };
             return _controllerUtil.Put(area);
         }
 

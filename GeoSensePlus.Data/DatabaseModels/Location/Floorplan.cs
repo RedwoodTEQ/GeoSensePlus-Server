@@ -9,7 +9,7 @@ public class FloorPlanEntity : NamedEntity<int>
     public string FileLocation { get; set; } // Path to the floor plan image or file
 
     [Column("floor_id")]
-    public string FloorId { get; set; } // Foreign key to Floor
+    public int? FloorId { get; set; } // Foreign key to Floor
 }
 
 public class FloorPlan : FloorPlanEntity
