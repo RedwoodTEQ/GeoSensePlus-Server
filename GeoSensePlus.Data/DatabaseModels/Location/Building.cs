@@ -16,6 +16,18 @@ public class BuildingEntity : NamedEntity<int>
 [Table("building", Schema = SchemaNames.location)]
 public class Building : BuildingEntity
 {
+    [ForeignKey("SiteId")]
     public Site Site { get; set; }
     public List<FloorPlan> FloorPlans { get; set; } = new List<FloorPlan>();
+
+    public static Building Create(ApplicationDbContext ctx, string name, int siteId)
+    {
+        var building = new Building
+        {
+            Name = name,
+            SiteId = siteId
+        };
+        ctx.Buildings.Add(building);
+        return building;
+    }
 }
