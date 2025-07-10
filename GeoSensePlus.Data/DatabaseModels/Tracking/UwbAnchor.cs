@@ -1,18 +1,9 @@
-﻿using GeoSensePlus.Data.DatabaseModels.Base;
-using GeoSensePlus.Data.DatabaseModels.Location;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GeoSensePlus.Data.DatabaseModels.Location;
 
 namespace GeoSensePlus.Data.DatabaseModels.Tracking;
-public class UwbAnchorEntity
+
+public class UwbAnchorEntity : NamedEntity<int>
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
     public double AxisX { get; set; } = -1;
     public double AxisY { get; set; } = -1;
     public double AxisZ { get; set; } = -1;
@@ -27,11 +18,14 @@ public class UwbAnchorEntity
      * Info? -- RL: redundant with "Description"?
      * Extra?
      */
+
+    public int? FloorPlanId { get; set; }  // foreign key to FloorPlan
+    public int? SiteId { get; set; }       // foreign key to Site
 }
-public class UwbAnchor : UwbAnchorEntity, IIdAvailable<int>
+
+public class UwbAnchor : UwbAnchorEntity
 {
-    public int UwbAnchorID { get; set; }
-    public Floorplan Floorplan { get; set; }
+    public FloorPlan Floorplan { get; set; }
     public Site Site { get; set; }
 
     public static UwbAnchor Create(ApplicationDbContext ctx, string name)
@@ -48,10 +42,5 @@ public class UwbAnchor : UwbAnchorEntity, IIdAvailable<int>
         ctx.UwbAnchors.Add(anchor);
         ctx.SaveChanges();
         return anchor;
-    }
-
-    public int GetId()
-    {
-        return UwbAnchorID;
     }
 }

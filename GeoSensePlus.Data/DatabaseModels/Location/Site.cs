@@ -1,5 +1,4 @@
-﻿using GeoSensePlus.Data.DatabaseModels.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,22 +6,15 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels.Location;
 
+public class SiteEntity : NamedEntity<int>
+{
+    // This class can be extended with additional properties if needed
+}
+
 /// <summary>
 /// A site is a gsv service deployment
 /// </summary>
-public class SiteEntity
+public class Site : SiteEntity
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
-}
-public class Site : SiteEntity, IIdAvailable<int>
-{
-    public int SiteId { get; set; }
-
     public List<Building> Buildings { get; set; }
-
-    public int GetId()
-    {
-        return SiteId;
-    }
 }

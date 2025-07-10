@@ -12,29 +12,29 @@ namespace GeoSensePlus.WebApi.Controllers.Location
     [ApiController]
     public class FloorplansController : ControllerBase
     {
-        IControllerUtil<Floorplan> _controllerUtil;
+        IControllerUtil<FloorPlan> _controllerUtil;
 
-        public FloorplansController(IControllerUtil<Floorplan> controllerUtil)
+        public FloorplansController(IControllerUtil<FloorPlan> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }
 
         [HttpGet]
-        public IEnumerable<Floorplan> Get()
+        public IEnumerable<FloorPlan> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Floorplan> Get(int id)
+        public ActionResult<FloorPlan> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<FloorplanEntity> Post([FromBody] FloorplanEntity value)
+        public ActionResult<FloorPlanEntity> Post([FromBody] FloorPlanEntity value)
         {
-            var floorplan = new Floorplan
+            var floorplan = new FloorPlan
             {
                 Name = value.Name,
                 Description = value.Description
@@ -45,9 +45,9 @@ namespace GeoSensePlus.WebApi.Controllers.Location
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] MeasureEntity value)
         {
-            var floorplan = new Floorplan
+            var floorplan = new FloorPlan
             {
-                FloorplanId = id,
+                Id = id,
                 Name = value.Name,
                 Description = value.Description
             };

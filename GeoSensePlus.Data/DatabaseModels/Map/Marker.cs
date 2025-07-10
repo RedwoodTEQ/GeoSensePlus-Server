@@ -1,36 +1,21 @@
-﻿using GeoSensePlus.Data.DatabaseModels.Base;
-using GeoSensePlus.Data.DatabaseModels.Location;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GeoSensePlus.Data.DatabaseModels.Location;
 
 namespace GeoSensePlus.Data.DatabaseModels.Map;
 
-/// <summary>
-/// Indoor use only, if need an outdoor POI, use Geofence instead
-/// </summary>
-public class MarkerEntity
+public class MarkerEntity : NamedEntity<int>
 {
-    public string Name { get; set; }
     public double AxisX { get; set; } = -1;
     public double AxisY { get; set; } = -1;
     public bool IsPoi { get; set; } = false;
-
+    public int? FloorPlanId { get; set; }  // foreign key to FloorPlan
 }
 
 /// <summary>
 /// Renamed from "Poi"
+/// Indoor use only, if need an outdoor POI, use Geofence instead
 /// </summary>
-public class Marker : MarkerEntity, IIdAvailable<int>
+public class Marker : MarkerEntity
 {
-    public int PoiId { get; set; }
+    public FloorPlan Floorplan { get; set; }
 
-    public Floorplan Floorplan { get; set; }
-
-    public int GetId()
-    {
-        return PoiId;
-    }
 }

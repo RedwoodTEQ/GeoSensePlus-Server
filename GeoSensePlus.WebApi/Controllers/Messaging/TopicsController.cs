@@ -1,4 +1,4 @@
-﻿using GeoSensePlus.Data.DatabaseModels;
+﻿using GeoSensePlus.Data.DatabaseModels.PubSub;
 using GeoSensePlus.Data.DatabaseModels.Tracking;
 using GeoSensePlus.Mqtt;
 using GeoSensePlus.WebApi.Controllers.Base;
@@ -52,7 +52,7 @@ namespace GeoSensePlus.WebApi.Controllers.Messaging
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] TargetEntity value)
         {
-            var topic = new Topic { TopicId = id, Name = value.Name, Description = value.Description };
+            var topic = new Topic { Id = id, Name = value.Name, Description = value.Description };
             return _controllerUtil.Put(topic);
         }
 

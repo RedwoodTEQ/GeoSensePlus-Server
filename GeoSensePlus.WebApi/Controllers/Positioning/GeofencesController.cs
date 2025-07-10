@@ -40,7 +40,7 @@ namespace GeoSensePlus.WebApi.Controllers.Positioning
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] GeofenceEntity value)
         {
-            var geofence = new Geofence { GeofenceId = id, Name = value.Name, Description = value.Description };
+            var geofence = new Geofence { Id = id, Name = value.Name, Description = value.Description };
             return _controllerUtil.Put(geofence);
         }
 

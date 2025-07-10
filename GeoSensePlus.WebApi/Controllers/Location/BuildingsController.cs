@@ -40,7 +40,7 @@ namespace GeoSensePlus.WebApi.Controllers.Location
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] BuildingEntity value)
         {
-            var building = new Building { BuildingId = id, Name = value.Name, Description = value.Description };
+            var building = new Building { Id = id, Name = value.Name, Description = value.Description };
             return _controllerUtil.Put(building);
         }
 

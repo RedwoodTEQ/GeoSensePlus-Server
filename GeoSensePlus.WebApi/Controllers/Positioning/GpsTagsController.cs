@@ -50,7 +50,7 @@ namespace GeoSensePlus.WebApi.Controllers.Positioning
         {
             var tag = new GpsTag
             {
-                GpsTagId = id,
+                Id = id,
                 Name = value.Name,
                 Description = value.Description,
                 TimeStamp = value.TimeStamp,

@@ -52,7 +52,7 @@ namespace GeoSensePlus.WebApi.Controllers.Sensing
         {
             var sensor = new Sensor
             {
-                SensorId = id,
+                Id = id,
                 Name = value.Name,
                 Description = value.Description,
                 Labels = value.Labels,
