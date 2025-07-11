@@ -2,11 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.1">
@@ -16,9 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GeoSensePlus.App.AssetTracking\GeoSensePlus.App.AssetTracking.csproj" />
-    <ProjectReference Include="..\GeoSensePlus.App.ProgressTracking\GeoSensePlus.App.ProgressTracking.csproj" />
-    <ProjectReference Include="..\GeoSensePlus.Core\GeoSensePlus.Core.csproj" />
+    <ProjectReference Include="..\GeoSensePlus.Data\GeoSensePlus.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
   </ItemGroup>
 
 </Project>

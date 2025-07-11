@@ -1,4 +1,4 @@
-﻿using GeoSensePlus.Data.DatabaseModels.Base;
+﻿using GeoSensePlus.Data.DatabaseModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreUtils.Database;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace GeoSensePlus.WebApi.Controllers.Base
 {
-    public interface IControllerUtil<TEntity> where TEntity : class, IIdAvailable<int>
+    public interface IControllerUtil<TEntity> where TEntity : class
     {
         ActionResult Delete(int id);
         IEnumerable<TEntity> Get();
@@ -17,7 +17,7 @@ namespace GeoSensePlus.WebApi.Controllers.Base
         ActionResult Put(TEntity entity);
     }
 
-    public class ControllerUtil<TEntity> : ControllerBase, IControllerUtil<TEntity> where TEntity : class, IIdAvailable<int>
+    public class ControllerUtil<TEntity> : ControllerBase, IControllerUtil<TEntity> where TEntity : NamedEntity<int>
     {
         private readonly IRepository<TEntity> _repo;
 
@@ -53,12 +53,12 @@ namespace GeoSensePlus.WebApi.Controllers.Base
             _repo.Add(entity);
             _repo.Commit();
 
-            return CreatedAtAction(nameof(Get), new { id = entity.GetId() }, entity);
+            return CreatedAtAction(nameof(Get), new { id = entity.Id }, entity);
         }
 
         public ActionResult Put(TEntity entity)
         {
-            if (_repo.GetByIdNoTracking(entity.GetId()) is null)
+            if (_repo.GetByIdNoTracking(entity.Id) is null)
                 return NotFound();
 
             _repo.Update(entity);

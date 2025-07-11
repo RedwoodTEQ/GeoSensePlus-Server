@@ -1,34 +1,20 @@
-﻿using GeoSensePlus.Data.DatabaseModels.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GeoSensePlus.Data.DatabaseModels.Location
+namespace GeoSensePlus.Data.DatabaseModels.Location;
+
+public class FloorPlanEntity : NamedEntity<int>
 {
-    public class FloorplanEntity
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string FileLocation { get; set; }
+    [Column("file_location")]
+    public string FileLocation { get; set; } // Path to the floor plan image or file
 
-        /// <summary>
-        /// Floor level
-        /// </summary>
-        public int Level { get; set; }
-    }
+    [Column("floor_id")]
+    public int? FloorId { get; set; } // Foreign key to Floor
+}
 
-    public class Floorplan : FloorplanEntity, IIdAvailable<int>
-    {
-        public Level Level { get; set; }
-        public List<Zone> Zones { get; set; } = new List<Zone>();
-
-        public int FloorplanId { get; set; }
-
-        public int GetId()
-        {
-            return FloorplanId;
-        }
-    }
+[Table("floor_plan", Schema = SchemaNames.location)]
+public class FloorPlan : FloorPlanEntity
+{
+    public Floor Floor { get; set; }
+    public List<Area> Areas { get; set; } = new List<Area>();
 }

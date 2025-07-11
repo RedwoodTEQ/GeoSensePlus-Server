@@ -1,37 +1,29 @@
-﻿using GeoSensePlus.Data.DatabaseModels.Base;
-using GeoSensePlus.Data.DatabaseModels.Location;
-using System;
+﻿using GeoSensePlus.Data.DatabaseModels.Location;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GeoSensePlus.Data.DatabaseModels.Tracking
+namespace GeoSensePlus.Data.DatabaseModels.Tracking;
+
+public class CellAnchorEntity : NamedEntity<int>
 {
-    public class CellAnchorEntity
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-    }
+    [Column("area_id")]
+    public int? AreaId { get; set; }  // foreign key to Area
 
-    /// <summary>
-    /// Renamed from "edge", to keep consistant with other tracking devices' naming.
-    /// 
-    /// A cell anchor is a combination of a BLE reader and a lora gateway, it
-    /// reads BLE beacon signal nearby and transmit the location messages via
-    /// lora to a hub in the local building.
-    /// </summary>
-    public class CellAnchor : CellAnchorEntity, IIdAvailable<int>
-    {
-        public Zone Zone { get; set; }
-        public Hub Hub { get; set; }
-        public List<CellTag> CellTags { get; set; } = new List<CellTag>();
+    [Column("cell_hub_id")]
+    public int? CellHubId { get; set; }    // foreign key to CellHub
+}
 
-        public int CellAnchorId { get; set; }
-
-        public int GetId()
-        {
-            return CellAnchorId;
-        }
-    }
+/// <summary>
+/// Renamed from "edge", to keep consistant with other tracking devices' naming.
+/// 
+/// A cell anchor is a combination of a BLE reader and a lora gateway, it
+/// reads BLE beacon signal nearby and transmit the location messages via
+/// lora to a hub in the local building.
+/// </summary>
+[Table("cell_anchor", Schema = SchemaNames.tracking)]
+public class CellAnchor : CellAnchorEntity
+{
+    public Area Area { get; set; }
+    public CellHub CellHub { get; set; }
+    public List<CellTag> CellTags { get; set; } = new List<CellTag>();
 }

@@ -40,7 +40,7 @@ namespace GeoSensePlus.WebApi.Controllers.Positioning
             {
                 Name = value.Name,
                 Description = value.Description,
-                TimeStamp = value.TimeStamp,
+                UpdatedAt = value.UpdatedAt,
                 AxisX = value.AxisX,
                 AxisY = value.AxisY,
                 AxisZ = value.AxisZ
@@ -53,10 +53,10 @@ namespace GeoSensePlus.WebApi.Controllers.Positioning
         {
             var tag = new UwbTag
             {
-                UwbTagId = id,
+                Id = id,
                 Name = value.Name,
                 Description = value.Description,
-                TimeStamp = value.TimeStamp,
+                UpdatedAt = value.UpdatedAt,
                 AxisX = value.AxisX,
                 AxisY = value.AxisY,
                 AxisZ = value.AxisZ

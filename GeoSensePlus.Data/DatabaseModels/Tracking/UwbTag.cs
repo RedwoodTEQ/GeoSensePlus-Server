@@ -1,29 +1,28 @@
-﻿using GeoSensePlus.Data.DatabaseModels.Base;
-using System;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GeoSensePlus.Data.DatabaseModels.Tracking
+namespace GeoSensePlus.Data.DatabaseModels.Tracking;
+
+public class UwbTagEntity : NamedEntity<int>
 {
+    [Column("axis_x")]
+    public double AxisX { get; set; } = -1;
 
-    public class UwbTagEntity
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
+    [Column("axis_y")]
+    public double AxisY { get; set; } = -1;
 
-        public double AxisX { get; set; } = -1;
-        public double AxisY { get; set; } = -1;
-        public double AxisZ { get; set; } = -1;
-        public DateTime TimeStamp { get; set; }
-    }
+    [Column("axis_z")]
+    public double AxisZ { get; set; } = -1;
 
-    public class UwbTag : UwbTagEntity, IIdAvailable<int>
-    {
-        public Target Target { get; set; }
+    [Column("updated_at")]
+    public DateTime UpdatedAt { get; set; }
 
-        public int UwbTagId { get; set; }
+    [Column("target_id")]
+    public int TargetId { get; set; } // Foreign key to Target
+}
 
-        public int GetId()
-        {
-            return UwbTagId;
-        }
-    }
+[Table("uwb_tag", Schema = SchemaNames.tracking)]
+public class UwbTag : UwbTagEntity
+{
+    public Target Target { get; set; }
 }

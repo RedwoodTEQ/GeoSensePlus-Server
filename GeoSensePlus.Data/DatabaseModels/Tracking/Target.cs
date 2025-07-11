@@ -1,34 +1,22 @@
-﻿using GeoSensePlus.Data.DatabaseModels.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GeoSensePlus.Data.DatabaseModels.Tracking
+namespace GeoSensePlus.Data.DatabaseModels.Tracking;
+
+public class TargetEntity : NamedEntity<int>
 {
-    public class TargetEntity
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-    }
+    // This class is used for API requests, so it does not need any additional properties.
+}
 
-    /// <summary>
-    /// A target is a tracking target, which can be an asset or a person.
-    /// </summary>
-    public class Target : TargetEntity, IIdAvailable<int>
-    {
-        //public Area CacheArea { get; set; }
+/// <summary>
+/// A target is a tracking target, which can be an asset or a person.
+/// </summary>
+[Table("target", Schema = SchemaNames.tracking)]
+public class Target : TargetEntity
+{
+    //public Area CacheArea { get; set; }
 
-        public List<CellTag> CellTags { get; set; } = new List<CellTag>();
-        public List<UwbTag> UwbTags { get; set; } = new List<UwbTag>();
-        public List<GpsTag> GpsTags { get; set; } = new List<GpsTag>();
-
-        public int TargetId { get; set; }
-
-        public int GetId()
-        {
-            return TargetId;
-        }
-    }
+    public List<CellTag> CellTags { get; set; } = new List<CellTag>();
+    public List<UwbTag> UwbTags { get; set; } = new List<UwbTag>();
+    public List<GpsTag> GpsTags { get; set; } = new List<GpsTag>();
 }

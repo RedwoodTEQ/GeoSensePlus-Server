@@ -40,7 +40,7 @@ namespace GeoSensePlus.WebApi.Controllers.Positioning
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] CellTagEntity value)
         {
-            var celltag = new CellTag { CellTagId = id, Name = value.Name, Description = value.Description };
+            var celltag = new CellTag { Id = id, Name = value.Name, Description = value.Description };
             return _controllerUtil.Put(celltag);
         }
 

@@ -44,7 +44,7 @@ namespace GeoSensePlus.WebApi.Controllers.Positioning
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] CellAnchorEntity value)
         {
-            var edge = new CellAnchor { CellAnchorId = id, Name = value.Name, Description = value.Description };
+            var edge = new CellAnchor { Id = id, Name = value.Name, Description = value.Description };
             return _controllerUtil.Put(edge);
         }
 

@@ -40,7 +40,7 @@ namespace GeoSensePlus.WebApi.Controllers.Positioning
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] TargetEntity value)
         {
-            var target = new Target { TargetId = id, Name = value.Name, Description = value.Description };
+            var target = new Target { Id = id, Name = value.Name, Description = value.Description };
             return _controllerUtil.Put(target);
         }
 

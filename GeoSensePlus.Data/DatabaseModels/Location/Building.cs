@@ -1,27 +1,32 @@
-﻿using GeoSensePlus.Data.DatabaseModels.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeoSensePlus.Data.DatabaseModels.Location
+namespace GeoSensePlus.Data.DatabaseModels.Location;
+
+public class BuildingEntity : NamedEntity<int>
 {
-    public class BuildingEntity
+    [Column("site_id")]
+    public int? SiteId { get; set; } // Foreign key to Site
+}
+
+[Table("building", Schema = SchemaNames.location)]
+public class Building : BuildingEntity
+{
+    public Site Site { get; set; }
+    public List<FloorPlan> FloorPlans { get; set; } = new List<FloorPlan>();
+
+    public static Building Create(ApplicationDbContext ctx, string name, int siteId)
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-    }
-
-    public class Building : BuildingEntity, IIdAvailable<int>
-    {
-        public List<Floorplan> Floorplans { get; set; } = new List<Floorplan>();
-
-        public int BuildingId { get; set; }
-
-        public int GetId()
+        var building = new Building
         {
-            return BuildingId;
-        }
+            Name = name,
+            SiteId = siteId
+        };
+        ctx.Buildings.Add(building);
+        return building;
     }
 }

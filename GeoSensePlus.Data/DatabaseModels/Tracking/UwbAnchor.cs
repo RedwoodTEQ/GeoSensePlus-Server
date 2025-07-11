@@ -1,23 +1,23 @@
-﻿using GeoSensePlus.Data.DatabaseModels.Base;
-using GeoSensePlus.Data.DatabaseModels.Location;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using System.Collections.Generic;
+﻿using GeoSensePlus.Data.DatabaseModels.Location;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels.Tracking;
-public class UwbAnchorEntity
+
+public class UwbAnchorEntity : NamedEntity<int>
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
+    [Column("axis_x")]
     public double AxisX { get; set; } = -1;
+
+    [Column("axis_y")]
     public double AxisY { get; set; } = -1;
+
+    [Column("axis_z")]
     public double AxisZ { get; set; } = -1;
-    //[Column(TypeName = "jsonb")]
-    public string Configuration { get; set; }
+
+    [Column("config", TypeName = "jsonb")]
+    public string Config { get; set; }
+
+    [Column("status")]
     public string Status { get; set; }
 
     /** TODO: confirm with Kai, more properties?
@@ -27,11 +27,18 @@ public class UwbAnchorEntity
      * Info? -- RL: redundant with "Description"?
      * Extra?
      */
+
+    [Column("floor_plan_id")]
+    public int? FloorPlanId { get; set; }  // foreign key to FloorPlan
+
+    [Column("site_id")]
+    public int? SiteId { get; set; }       // foreign key to Site
 }
-public class UwbAnchor : UwbAnchorEntity, IIdAvailable<int>
+
+[Table("uwb_anchor", Schema = SchemaNames.tracking)]
+public class UwbAnchor : UwbAnchorEntity
 {
-    public int UwbAnchorID { get; set; }
-    public Floorplan Floorplan { get; set; }
+    public FloorPlan Floorplan { get; set; }
     public Site Site { get; set; }
 
     public static UwbAnchor Create(ApplicationDbContext ctx, string name)
@@ -44,14 +51,9 @@ public class UwbAnchor : UwbAnchorEntity, IIdAvailable<int>
 
     public static UwbAnchor Create(ApplicationDbContext ctx, string name, string config)
     {
-        var anchor = new UwbAnchor { Name = name, Configuration = config };
+        var anchor = new UwbAnchor { Name = name, Config = config };
         ctx.UwbAnchors.Add(anchor);
         ctx.SaveChanges();
         return anchor;
-    }
-
-    public int GetId()
-    {
-        return UwbAnchorID;
     }
 }

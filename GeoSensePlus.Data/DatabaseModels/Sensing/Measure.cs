@@ -1,34 +1,21 @@
-﻿using GeoSensePlus.Data.DatabaseModels.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GeoSensePlus.Data.DatabaseModels.Sensing
+namespace GeoSensePlus.Data.DatabaseModels.Sensing;
+
+public class MeasureEntity : NamedEntity<int>
 {
-    public class MeasureEntity
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
+    /// <summary>
+    /// Multiple lables are separated by ';'
+    /// Used as influxdb tags
+    /// </summary>
+    [Column("labels")]
+    public string Labels { get; set; }
+}
 
-        /// <summary>
-        /// Multiple lables are separated by ';'
-        /// Used as influxdb tags
-        /// </summary>
-        public string Labels { get; set; }
-    }
-
-    public class Measure : MeasureEntity, IIdAvailable<int>
-    {
-        //public Area CachedArea { get; set; }
-        public List<Sensor> Sensors { get; set; } = new List<Sensor>();
-
-        public int MeasureId { get; set; }
-
-        public int GetId()
-        {
-            return MeasureId;
-        }
-    }
+[Table("measure", Schema = SchemaNames.sensing)]
+public class Measure : MeasureEntity
+{
+    //public Area CachedArea { get; set; }
+    public List<Sensor> Sensors { get; set; } = new List<Sensor>();
 }

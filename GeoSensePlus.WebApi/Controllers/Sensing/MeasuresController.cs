@@ -40,7 +40,7 @@ namespace GeoSensePlus.WebApi.Controllers.Sensing
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] MeasureEntity value)
         {
-            var measure = new Measure { MeasureId = id, Name = value.Name, Description = value.Description, Labels = value.Labels };
+            var measure = new Measure { Id = id, Name = value.Name, Description = value.Description, Labels = value.Labels };
             return _controllerUtil.Put(measure);
         }
 

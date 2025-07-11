@@ -1,32 +1,28 @@
-﻿using GeoSensePlus.Data.DatabaseModels.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GeoSensePlus.Data.DatabaseModels.Tracking
+namespace GeoSensePlus.Data.DatabaseModels.Tracking;
+
+public class GpsTagEntity : NamedEntity<int>
 {
-    public class GpsTagEntity
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
+    [Column("longitude")]
+    public double Longitude { get; set; }
 
-        public double Longitude { get; set; }
-        public double Latitude { get; set; }
-        public double Altitude { get; set; }
-        public DateTime TimeStamp { get; set; }
-    }
+    [Column("latitude")]
+    public double Latitude { get; set; }
 
-    public class GpsTag : GpsTagEntity, IIdAvailable<int>
-    {
-        public Target Target { get; set; }
+    [Column("altitude")]
+    public double Altitude { get; set; }
 
-        public int GpsTagId { get; set; }
+    [Column("updated_at")]
+    public DateTime UpdatedAt { get; set; }
 
-        public int GetId()
-        {
-            return GpsTagId;
-        }
-    }
+    [Column("target_id")]
+    public int? TargetId { get; set; } // Foreign key to Target
+}
+
+[Table("gps_tag", Schema = SchemaNames.tracking)]
+public class GpsTag : GpsTagEntity
+{
+    public Target Target { get; set; }
 }

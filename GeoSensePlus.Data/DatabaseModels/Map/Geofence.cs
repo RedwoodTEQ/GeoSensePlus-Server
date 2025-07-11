@@ -1,32 +1,18 @@
-﻿using GeoSensePlus.Data.DatabaseModels.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GeoSensePlus.Data.DatabaseModels.Map
+namespace GeoSensePlus.Data.DatabaseModels.Map;
+
+public class GeofenceEntity : NamedEntity<int>
 {
-    public class GeofenceEntity
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Empty: indicate it's an outdoor POI or a map marker
-        /// Rectangle
-        /// Circle
-        /// </summary>
-        public string Shape { get; set; }
-    }
-
-    public class Geofence : GeofenceEntity, IIdAvailable<int>
-    {
-        public int GeofenceId { get; set; }
-
-        public int GetId()
-        {
-            return GeofenceId;
-        }
-    }
+    /// <summary>
+    /// Empty: indicate it's an outdoor POI or a map marker
+    /// Rectangle
+    /// Circle
+    /// </summary>
+    [Column("shape")]
+    public string Shape { get; set; }
+}
+[Table("geofence", Schema = SchemaNames.map)]
+public class Geofence : GeofenceEntity
+{
 }

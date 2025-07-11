@@ -41,7 +41,7 @@ namespace GeoSensePlus.WebApi.Controllers.Sensing
                 Type = value.Type,
                 Unit = value.Unit,
                 Value = value.Value,
-                TimeStamp = value.TimeStamp
+                CreatedAt = value.CreatedAt
             };
 
             return _controllerUtil.Post(sensor);
@@ -52,14 +52,14 @@ namespace GeoSensePlus.WebApi.Controllers.Sensing
         {
             var sensor = new Sensor
             {
-                SensorId = id,
+                Id = id,
                 Name = value.Name,
                 Description = value.Description,
                 Labels = value.Labels,
                 Type = value.Type,
                 Unit = value.Unit,
                 Value = value.Value,
-                TimeStamp = value.TimeStamp
+                CreatedAt = value.CreatedAt
             };
             return _controllerUtil.Put(sensor);
         }
