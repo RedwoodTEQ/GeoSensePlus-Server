@@ -16,7 +16,6 @@ public class BuildingEntity : NamedEntity<int>
 [Table("building", Schema = SchemaNames.location)]
 public class Building : BuildingEntity
 {
-    [ForeignKey("SiteId")]
     public Site Site { get; set; }
     public List<FloorPlan> FloorPlans { get; set; } = new List<FloorPlan>();
 

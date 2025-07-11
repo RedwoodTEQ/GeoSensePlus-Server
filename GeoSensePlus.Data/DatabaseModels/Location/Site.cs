@@ -15,7 +15,7 @@ public class SiteEntity : NamedEntity<int>
 /// <summary>
 /// A site is a gsv service deployment
 /// </summary>
-[Table("site", Schema = SchemaNames.location)]
+[Table("site", Schema = "location")]
 public class Site : SiteEntity
 {
     public List<Building> Buildings { get; set; }

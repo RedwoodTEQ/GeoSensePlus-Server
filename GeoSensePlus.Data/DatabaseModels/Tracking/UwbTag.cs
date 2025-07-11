@@ -21,6 +21,7 @@ public class UwbTagEntity : NamedEntity<int>
     public int TargetId { get; set; } // Foreign key to Target
 }
 
+[Table("uwb_tag", Schema = SchemaNames.tracking)]
 public class UwbTag : UwbTagEntity
 {
     public Target Target { get; set; }

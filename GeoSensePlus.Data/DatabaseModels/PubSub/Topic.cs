@@ -12,7 +12,7 @@ public class TopicEntity : NamedEntity<int>
 /// Subscription topic
 /// Used by MQTT or any other notification engines
 /// </summary>
-[Table("topic", Schema = SchemaNames.map)]
+[Table("topic", Schema = SchemaNames.pub_sub)]
 [Index(nameof(Name), IsUnique = true)]
 public class Topic : TopicEntity
 {

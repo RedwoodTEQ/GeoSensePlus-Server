@@ -20,6 +20,7 @@ public class CellAnchorEntity : NamedEntity<int>
 /// reads BLE beacon signal nearby and transmit the location messages via
 /// lora to a hub in the local building.
 /// </summary>
+[Table("cell_anchor", Schema = SchemaNames.tracking)]
 public class CellAnchor : CellAnchorEntity
 {
     public Area Area { get; set; }

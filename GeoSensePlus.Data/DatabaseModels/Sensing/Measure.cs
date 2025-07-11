@@ -13,6 +13,7 @@ public class MeasureEntity : NamedEntity<int>
     public string Labels { get; set; }
 }
 
+[Table("measure", Schema = SchemaNames.sensing)]
 public class Measure : MeasureEntity
 {
     //public Area CachedArea { get; set; }

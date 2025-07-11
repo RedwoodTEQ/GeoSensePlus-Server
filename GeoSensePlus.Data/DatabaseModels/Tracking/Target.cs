@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Tracking;
 
@@ -10,6 +11,7 @@ public class TargetEntity : NamedEntity<int>
 /// <summary>
 /// A target is a tracking target, which can be an asset or a person.
 /// </summary>
+[Table("target", Schema = SchemaNames.tracking)]
 public class Target : TargetEntity
 {
     //public Area CacheArea { get; set; }

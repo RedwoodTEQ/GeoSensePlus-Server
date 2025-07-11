@@ -15,6 +15,7 @@ public class CellTagEntity : NamedEntity<int>
 /// <summary>
 /// A cell tag is just a BLE beacon, which sends out BLE signals
 /// </summary>
+[Table("cell_tag", Schema = SchemaNames.tracking)]
 public class CellTag : CellTagEntity
 {
     public Target Target { get; set; }

@@ -42,6 +42,7 @@ public class SensorEntity: NamedEntity<long>
     public int? MeasureId { get; set; } // foreign key to Measure
 }
 
+[Table("sensor", Schema = SchemaNames.sensing)]
 public class Sensor: SensorEntity
 {
     //public Area CachedArea { get; set; }
