@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GeoSensePlus.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class _1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,16 @@ namespace GeoSensePlus.Data.Migrations
                 name: "location");
 
             migrationBuilder.EnsureSchema(
+                name: "tracking");
+
+            migrationBuilder.EnsureSchema(
                 name: "map");
+
+            migrationBuilder.EnsureSchema(
+                name: "sensing");
+
+            migrationBuilder.EnsureSchema(
+                name: "pub_sub");
 
             migrationBuilder.CreateTable(
                 name: "alarm",
@@ -79,7 +88,8 @@ namespace GeoSensePlus.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CellHubs",
+                name: "cell_hub",
+                schema: "tracking",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -89,7 +99,7 @@ namespace GeoSensePlus.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CellHubs", x => x.id);
+                    table.PrimaryKey("PK_cell_hub", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -124,7 +134,8 @@ namespace GeoSensePlus.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Measures",
+                name: "measure",
+                schema: "sensing",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -135,11 +146,12 @@ namespace GeoSensePlus.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Measures", x => x.id);
+                    table.PrimaryKey("PK_measure", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sites",
+                name: "site",
+                schema: "location",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -149,11 +161,12 @@ namespace GeoSensePlus.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sites", x => x.id);
+                    table.PrimaryKey("PK_site", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Targets",
+                name: "target",
+                schema: "tracking",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -163,12 +176,12 @@ namespace GeoSensePlus.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Targets", x => x.id);
+                    table.PrimaryKey("PK_target", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "topic",
-                schema: "map",
+                schema: "pub_sub",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -302,14 +315,16 @@ namespace GeoSensePlus.Data.Migrations
                 {
                     table.PrimaryKey("PK_building", x => x.id);
                     table.ForeignKey(
-                        name: "FK_building_Sites_site_id",
+                        name: "FK_building_site_site_id",
                         column: x => x.site_id,
-                        principalTable: "Sites",
+                        principalSchema: "location",
+                        principalTable: "site",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "GpsTags",
+                name: "gps_tag",
+                schema: "tracking",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -324,16 +339,18 @@ namespace GeoSensePlus.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GpsTags", x => x.id);
+                    table.PrimaryKey("PK_gps_tag", x => x.id);
                     table.ForeignKey(
-                        name: "FK_GpsTags_Targets_target_id",
+                        name: "FK_gps_tag_target_target_id",
                         column: x => x.target_id,
-                        principalTable: "Targets",
+                        principalSchema: "tracking",
+                        principalTable: "target",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "UwbTags",
+                name: "uwb_tag",
+                schema: "tracking",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -348,11 +365,12 @@ namespace GeoSensePlus.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UwbTags", x => x.id);
+                    table.PrimaryKey("PK_uwb_tag", x => x.id);
                     table.ForeignKey(
-                        name: "FK_UwbTags_Targets_target_id",
+                        name: "FK_uwb_tag_target_target_id",
                         column: x => x.target_id,
-                        principalTable: "Targets",
+                        principalSchema: "tracking",
+                        principalTable: "target",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -457,7 +475,8 @@ namespace GeoSensePlus.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UwbAnchors",
+                name: "uwb_anchor",
+                schema: "tracking",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -474,22 +493,24 @@ namespace GeoSensePlus.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UwbAnchors", x => x.id);
+                    table.PrimaryKey("PK_uwb_anchor", x => x.id);
                     table.ForeignKey(
-                        name: "FK_UwbAnchors_Sites_site_id",
-                        column: x => x.site_id,
-                        principalTable: "Sites",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_UwbAnchors_floor_plan_floor_plan_id",
+                        name: "FK_uwb_anchor_floor_plan_floor_plan_id",
                         column: x => x.floor_plan_id,
                         principalSchema: "location",
                         principalTable: "floor_plan",
                         principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_uwb_anchor_site_site_id",
+                        column: x => x.site_id,
+                        principalSchema: "location",
+                        principalTable: "site",
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "CellAnchors",
+                name: "cell_anchor",
+                schema: "tracking",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -501,22 +522,24 @@ namespace GeoSensePlus.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CellAnchors", x => x.id);
+                    table.PrimaryKey("PK_cell_anchor", x => x.id);
                     table.ForeignKey(
-                        name: "FK_CellAnchors_CellHubs_cell_hub_id",
-                        column: x => x.cell_hub_id,
-                        principalTable: "CellHubs",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_CellAnchors_area_area_id",
+                        name: "FK_cell_anchor_area_area_id",
                         column: x => x.area_id,
                         principalSchema: "location",
                         principalTable: "area",
                         principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_cell_anchor_cell_hub_cell_hub_id",
+                        column: x => x.cell_hub_id,
+                        principalSchema: "tracking",
+                        principalTable: "cell_hub",
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sensors",
+                name: "sensor",
+                schema: "sensing",
                 columns: table => new
                 {
                     id = table.Column<long>(type: "bigint", nullable: false)
@@ -533,22 +556,24 @@ namespace GeoSensePlus.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sensors", x => x.id);
+                    table.PrimaryKey("PK_sensor", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Sensors_Measures_measure_id",
-                        column: x => x.measure_id,
-                        principalTable: "Measures",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_Sensors_area_area_id",
+                        name: "FK_sensor_area_area_id",
                         column: x => x.area_id,
                         principalSchema: "location",
                         principalTable: "area",
                         principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_sensor_measure_measure_id",
+                        column: x => x.measure_id,
+                        principalSchema: "sensing",
+                        principalTable: "measure",
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "CellTags",
+                name: "cell_tag",
+                schema: "tracking",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -562,21 +587,24 @@ namespace GeoSensePlus.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CellTags", x => x.id);
+                    table.PrimaryKey("PK_cell_tag", x => x.id);
                     table.ForeignKey(
-                        name: "FK_CellTags_CellAnchors_CellAnchorId",
+                        name: "FK_cell_tag_cell_anchor_CellAnchorId",
                         column: x => x.CellAnchorId,
-                        principalTable: "CellAnchors",
+                        principalSchema: "tracking",
+                        principalTable: "cell_anchor",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_CellTags_CellHubs_CellHubId",
+                        name: "FK_cell_tag_cell_hub_CellHubId",
                         column: x => x.CellHubId,
-                        principalTable: "CellHubs",
+                        principalSchema: "tracking",
+                        principalTable: "cell_hub",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_CellTags_Targets_target_id",
+                        name: "FK_cell_tag_target_target_id",
                         column: x => x.target_id,
-                        principalTable: "Targets",
+                        principalSchema: "tracking",
+                        principalTable: "target",
                         principalColumn: "id");
                 });
 
@@ -630,29 +658,34 @@ namespace GeoSensePlus.Data.Migrations
                 column: "site_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CellAnchors_area_id",
-                table: "CellAnchors",
+                name: "IX_cell_anchor_area_id",
+                schema: "tracking",
+                table: "cell_anchor",
                 column: "area_id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CellAnchors_cell_hub_id",
-                table: "CellAnchors",
+                name: "IX_cell_anchor_cell_hub_id",
+                schema: "tracking",
+                table: "cell_anchor",
                 column: "cell_hub_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CellTags_CellAnchorId",
-                table: "CellTags",
+                name: "IX_cell_tag_CellAnchorId",
+                schema: "tracking",
+                table: "cell_tag",
                 column: "CellAnchorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CellTags_CellHubId",
-                table: "CellTags",
+                name: "IX_cell_tag_CellHubId",
+                schema: "tracking",
+                table: "cell_tag",
                 column: "CellHubId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CellTags_target_id",
-                table: "CellTags",
+                name: "IX_cell_tag_target_id",
+                schema: "tracking",
+                table: "cell_tag",
                 column: "target_id");
 
             migrationBuilder.CreateIndex(
@@ -674,8 +707,9 @@ namespace GeoSensePlus.Data.Migrations
                 column: "floor_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GpsTags_target_id",
-                table: "GpsTags",
+                name: "IX_gps_tag_target_id",
+                schema: "tracking",
+                table: "gps_tag",
                 column: "target_id");
 
             migrationBuilder.CreateIndex(
@@ -685,35 +719,40 @@ namespace GeoSensePlus.Data.Migrations
                 column: "floor_plan_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sensors_area_id",
-                table: "Sensors",
+                name: "IX_sensor_area_id",
+                schema: "sensing",
+                table: "sensor",
                 column: "area_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sensors_measure_id",
-                table: "Sensors",
+                name: "IX_sensor_measure_id",
+                schema: "sensing",
+                table: "sensor",
                 column: "measure_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_topic_name",
-                schema: "map",
+                schema: "pub_sub",
                 table: "topic",
                 column: "name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UwbAnchors_floor_plan_id",
-                table: "UwbAnchors",
+                name: "IX_uwb_anchor_floor_plan_id",
+                schema: "tracking",
+                table: "uwb_anchor",
                 column: "floor_plan_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UwbAnchors_site_id",
-                table: "UwbAnchors",
+                name: "IX_uwb_anchor_site_id",
+                schema: "tracking",
+                table: "uwb_anchor",
                 column: "site_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UwbTags_target_id",
-                table: "UwbTags",
+                name: "IX_uwb_tag_target_id",
+                schema: "tracking",
+                table: "uwb_tag",
                 column: "target_id");
         }
 
@@ -740,7 +779,8 @@ namespace GeoSensePlus.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CellTags");
+                name: "cell_tag",
+                schema: "tracking");
 
             migrationBuilder.DropTable(
                 name: "event_record",
@@ -751,24 +791,28 @@ namespace GeoSensePlus.Data.Migrations
                 schema: "map");
 
             migrationBuilder.DropTable(
-                name: "GpsTags");
+                name: "gps_tag",
+                schema: "tracking");
 
             migrationBuilder.DropTable(
                 name: "marker",
                 schema: "map");
 
             migrationBuilder.DropTable(
-                name: "Sensors");
+                name: "sensor",
+                schema: "sensing");
 
             migrationBuilder.DropTable(
                 name: "topic",
-                schema: "map");
+                schema: "pub_sub");
 
             migrationBuilder.DropTable(
-                name: "UwbAnchors");
+                name: "uwb_anchor",
+                schema: "tracking");
 
             migrationBuilder.DropTable(
-                name: "UwbTags");
+                name: "uwb_tag",
+                schema: "tracking");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -777,20 +821,24 @@ namespace GeoSensePlus.Data.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "CellAnchors");
+                name: "cell_anchor",
+                schema: "tracking");
 
             migrationBuilder.DropTable(
-                name: "Measures");
+                name: "measure",
+                schema: "sensing");
 
             migrationBuilder.DropTable(
-                name: "Targets");
-
-            migrationBuilder.DropTable(
-                name: "CellHubs");
+                name: "target",
+                schema: "tracking");
 
             migrationBuilder.DropTable(
                 name: "area",
                 schema: "location");
+
+            migrationBuilder.DropTable(
+                name: "cell_hub",
+                schema: "tracking");
 
             migrationBuilder.DropTable(
                 name: "floor_plan",
@@ -805,7 +853,8 @@ namespace GeoSensePlus.Data.Migrations
                 schema: "location");
 
             migrationBuilder.DropTable(
-                name: "Sites");
+                name: "site",
+                schema: "location");
         }
     }
 }
