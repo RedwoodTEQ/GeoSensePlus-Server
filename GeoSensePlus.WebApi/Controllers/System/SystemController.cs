@@ -32,5 +32,11 @@ namespace GeoSensePlus.WebApi.Controllers.System
         {
             return new SystemInfo().GetInfo();
         }
+
+        [HttpGet("{*product}")]
+        public string Product(string product)
+        {
+            return $"product: {product}";
+        }
     }
 }
