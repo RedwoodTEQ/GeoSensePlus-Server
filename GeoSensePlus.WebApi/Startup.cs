@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -58,7 +59,7 @@ namespace GeoSensePlus.WebApi
 
             services.AddFirestoreServices();
 
-            services.AddSingleton<SearchValueTransformer>();
+            services.AddTransient<SearchValueTransformer>();
 
             services.AddSwaggerGen(c =>
             {
