@@ -1,11 +1,12 @@
-﻿using GeoSensePlus.Data.DatabaseModels.Tracking;
+﻿using GeoSensePlus.Data.DatabaseModels.AlarmEvent;
 using GeoSensePlus.Data.DatabaseModels.Location;
 using GeoSensePlus.Data.DatabaseModels.Map;
+using GeoSensePlus.Data.DatabaseModels.Messaging;
 using GeoSensePlus.Data.DatabaseModels.Sensing;
+using GeoSensePlus.Data.DatabaseModels.Tracking;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using GeoSensePlus.Data.DatabaseModels.AlarmEvent;
-using GeoSensePlus.Data.DatabaseModels.PubSub;
+using System.Reflection.Emit;
 
 namespace GeoSensePlus.Data
 {
@@ -29,8 +30,10 @@ namespace GeoSensePlus.Data
         public DbSet<Marker> Markers { get; set; }
         #endregion
 
-        #region schema: pub_sub
+        #region schema: messaging
         public DbSet<Topic> Topics { get; set; }
+        public DbSet<Point> Points { get; set; }
+        public DbSet<PointGroup> PointGroups { get; set; }
         #endregion
 
         #region schema: sensing
@@ -51,6 +54,20 @@ namespace GeoSensePlus.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PointGroup>()
+                .HasOne(g => g.Parent)
+                .WithMany(g => g.Children)
+                .HasForeignKey(g => g.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Point>()
+                .HasOne(i => i.Group)
+                .WithMany(g => g.Items)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
