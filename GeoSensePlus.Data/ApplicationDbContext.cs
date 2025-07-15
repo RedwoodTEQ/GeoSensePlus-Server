@@ -58,6 +58,8 @@ namespace GeoSensePlus.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder); // Call the base method to ensure Identity tables are created
+
             modelBuilder.Entity<PointGroup>()
                 .HasOne(g => g.Parent)
                 .WithMany(g => g.Children)
