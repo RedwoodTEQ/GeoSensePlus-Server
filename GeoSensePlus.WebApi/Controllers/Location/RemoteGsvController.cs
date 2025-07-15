@@ -11,9 +11,9 @@ namespace GeoSensePlus.WebApi.Controllers.Location
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SitesController : MongoController<Site>
+    public class RemoteGsvController : MongoController<RemoteGsv>
     {
-        public SitesController(IMongoDocReader<Site> reader, IMongoDocWriter<Site> writer) : base(reader, writer)
+        public RemoteGsvController(IMongoDocReader<RemoteGsv> reader, IMongoDocWriter<RemoteGsv> writer) : base(reader, writer)
         { }
     }
 }

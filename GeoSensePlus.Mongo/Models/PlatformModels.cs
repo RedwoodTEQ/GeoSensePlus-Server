@@ -20,7 +20,7 @@ namespace GeoSensePlus.Mongo.Models.Platform
     /// <summary>
     /// A remote gsv service
     /// </summary>
-    public class Site : ModelBase
+    public class RemoteGsv : ModelBase
     {
         public string Location { get; set; }     // the swagger page url
         public bool Active { get; set; }
