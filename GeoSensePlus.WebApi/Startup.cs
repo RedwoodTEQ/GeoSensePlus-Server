@@ -84,7 +84,7 @@ namespace GeoSensePlus.WebApi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDynamicControllerRoute<SearchValueTransformer>("uns/{**product}");
+                endpoints.MapDynamicControllerRoute<SearchValueTransformer>("uns/{product}");
                 endpoints.MapControllers();
             });
         }

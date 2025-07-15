@@ -24,9 +24,8 @@ public class SearchValueTransformer : DynamicRouteValueTransformer
 
         //var id = await this._productLocator.FindProduct(“product”, out var controller);
 
-        values["controller"] = "system";
-        values["action"] = "Get";
-        values["id"] = "version";
+        values["controller"] = "System";  // Must match controller name
+        values["action"] = "Version";    // Must match action method name
 
         return new ValueTask<RouteValueDictionary>(values);
     }
