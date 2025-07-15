@@ -58,6 +58,8 @@ namespace GeoSensePlus.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            
             modelBuilder.Entity<PointGroup>()
                 .HasOne(g => g.Parent)
                 .WithMany(g => g.Children)
