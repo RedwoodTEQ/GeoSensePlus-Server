@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GeoSensePlus.Data.DatabaseModels.PubSub;
+namespace GeoSensePlus.Data.DatabaseModels.Messaging;
 
 public class TopicEntity : NamedEntity<int>
 {
@@ -12,7 +12,7 @@ public class TopicEntity : NamedEntity<int>
 /// Subscription topic
 /// Used by MQTT or any other notification engines
 /// </summary>
-[Table("topic", Schema = SchemaNames.pub_sub)]
+[Table("topic", Schema = SchemaNames.messaging)]
 [Index(nameof(Name), IsUnique = true)]
 public class Topic : TopicEntity
 {

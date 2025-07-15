@@ -21,7 +21,7 @@ public class GpsTagEntity : NamedEntity<int>
     public int? TargetId { get; set; } // Foreign key to Target
 }
 
-[Table("gps_tag", Schema = SchemaNames.tracking)]
+[Table("gps_tag", Schema = SchemaNames.positioning)]
 public class GpsTag : GpsTagEntity
 {
     public Target Target { get; set; }

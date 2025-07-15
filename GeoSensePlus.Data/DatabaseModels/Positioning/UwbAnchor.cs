@@ -35,7 +35,7 @@ public class UwbAnchorEntity : NamedEntity<int>
     public int? SiteId { get; set; }       // foreign key to Site
 }
 
-[Table("uwb_anchor", Schema = SchemaNames.tracking)]
+[Table("uwb_anchor", Schema = SchemaNames.positioning)]
 public class UwbAnchor : UwbAnchorEntity
 {
     public FloorPlan Floorplan { get; set; }
