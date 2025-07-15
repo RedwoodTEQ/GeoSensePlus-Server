@@ -24,6 +24,6 @@ public class PointGroup : PointGroupEntity
     public PointGroup? Parent { get; set; }
 
     public List<PointGroup> Children { get; set; } = new List<PointGroup>();
-    public List<Point> Items { get; set; } = new List<Point>();
+    public List<Point> Points { get; set; } = new List<Point>();
 
 }

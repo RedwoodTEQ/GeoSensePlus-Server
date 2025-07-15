@@ -9,8 +9,8 @@ public class PointEntity : NamedEntity<int>
     /// Group ID, must be set, at least set to root group
     /// </summary>
     [Required]
-    [Column("group_id")]
-    public int GroupId { get; set; }  // foreign key to PointGroup
+    [Column("parent_id")]
+    public int ParentId { get; set; }  // foreign key to PointGroup
 }
 
 /// <summary>
@@ -19,5 +19,5 @@ public class PointEntity : NamedEntity<int>
 [Table("point", Schema = SchemaNames.messaging)]
 public class Point : PointEntity
 {
-    public PointGroup Group { get; set; } = null!;
+    public PointGroup Parent { get; set; } = null!;
 }

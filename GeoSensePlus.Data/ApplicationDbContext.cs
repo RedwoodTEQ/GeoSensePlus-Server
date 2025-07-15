@@ -67,8 +67,9 @@ namespace GeoSensePlus.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Point>()
-                .HasOne(i => i.Group)
-                .WithMany(g => g.Items)
+                .HasOne(i => i.Parent)
+                .WithMany(g => g.Points)
+                .HasForeignKey(i => i.ParentId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
