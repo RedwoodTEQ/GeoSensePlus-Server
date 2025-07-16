@@ -33,6 +33,13 @@ public class PointService : IPointService
         _context = context;
     }
 
+    /// <summary>
+    /// Creates a new point group with optional parent group
+    /// </summary>
+    /// <param name="name">Name of the new group</param>
+    /// <param name="parentId">Optional parent group ID</param>
+    /// <returns>The created PointGroup</returns>
+    /// <exception cref="ArgumentException">Thrown if parent group doesn't exist</exception>
     public async Task<PointGroup> AddGroupAsync(string name, int? parentId = null)
     {
         if (parentId.HasValue && !await _context.Set<PointGroup>().AnyAsync(g => g.Id == parentId))
@@ -44,6 +51,14 @@ public class PointService : IPointService
         return group;
     }
 
+    /// <summary>
+    /// Removes a point group and optionally its children
+    /// </summary>
+    /// <param name="id">ID of group to remove</param>
+    /// <param name="deleteWithChildren">If true, removes child groups recursively</param>
+    /// <param name="cascade">If true, physically deletes records. If false, marks as deleted.</param>
+    /// <returns>True if group was found and removed</returns>
+    /// <exception cref="InvalidOperationException">Thrown if group has children but deleteWithChildren=false</exception>
     public async Task<bool> RemoveGroupAsync(int id, bool deleteWithChildren = false, bool cascade = false)
     {
         var group = await _context.Set<PointGroup>()
@@ -82,6 +97,14 @@ public class PointService : IPointService
         return true;
     }
 
+    /// <summary>
+    /// Moves a group to be under a new parent group
+    /// </summary>
+    /// <param name="groupId">ID of group to move</param>
+    /// <param name="newParentId">ID of new parent group (null for root)</param>
+    /// <returns>True if group was found and moved</returns>
+    /// <exception cref="ArgumentException">Thrown if trying to move under itself</exception>
+    /// <exception cref="InvalidOperationException">Thrown if trying to move under descendant</exception>
     public async Task<bool> MoveGroupAsync(int groupId, int? newParentId)
     {
         var group = await _context.Set<PointGroup>().FindAsync(groupId);
@@ -102,6 +125,11 @@ public class PointService : IPointService
         return true;
     }
 
+    /// <summary>
+    /// Gets the full path of a group as a string (e.g. "Root/Child/Grandchild")
+    /// </summary>
+    /// <param name="groupId">ID of group to get path for</param>
+    /// <returns>Full path string or null if group not found</returns>
     public async Task<string?> GetFullPathAsync(int groupId)
     {
         var sql = @"
@@ -122,6 +150,11 @@ public class PointService : IPointService
         return string.Join('/', names);
     }
 
+    /// <summary>
+    /// Gets all groups in a subtree (flat list) starting from rootId
+    /// </summary>
+    /// <param name="rootId">ID of root group</param>
+    /// <returns>List of all groups in subtree including root</returns>
     public async Task<List<PointGroup>> GetSubtreeAsync(int rootId)
     {
         var sql = @"
@@ -138,6 +171,11 @@ public class PointService : IPointService
         return await _context.Set<PointGroup>().FromSqlRaw(sql, rootId).ToListAsync();
     }
 
+    /// <summary>
+    /// Gets a nested tree structure starting from rootId
+    /// </summary>
+    /// <param name="rootId">ID of root group</param>
+    /// <returns>List of root groups with Children populated</returns>
     public async Task<List<PointGroup>> GetNestedTreeAsync(int rootId)
     {
         var flat = await GetSubtreeAsync(rootId);
@@ -162,6 +200,11 @@ public class PointService : IPointService
     /// <summary>
     /// Find a group by full path (e.g. "Root/Child")
     /// </summary>
+    /// <summary>
+    /// Finds a group by its full path (e.g. "Root/Child/Grandchild")
+    /// </summary>
+    /// <param name="path">Full path to group</param>
+    /// <returns>Found group or null</returns>
     public async Task<PointGroup?> FindGroupByPathAsync(string path)
     {
         if (string.IsNullOrWhiteSpace(path)) return null;
@@ -186,6 +229,11 @@ public class PointService : IPointService
     /// <summary>
     /// Find a point by full path (e.g. "Root/Child/Point")
     /// </summary>
+    /// <summary>
+    /// Finds a point by its full path (e.g. "Root/Child/PointName")
+    /// </summary>
+    /// <param name="path">Full path to point</param>
+    /// <returns>Found point or null</returns>
     public async Task<Point?> FindPointByPathAsync(string path)
     {
         if (string.IsNullOrWhiteSpace(path)) return null;
@@ -206,6 +254,13 @@ public class PointService : IPointService
         return point;
     }
 
+    /// <summary>
+    /// Creates multiple points under a parent group
+    /// </summary>
+    /// <param name="names">Names of points to create</param>
+    /// <param name="parentGroupId">ID of parent group</param>
+    /// <returns>List of created points</returns>
+    /// <exception cref="ArgumentException">Thrown if parent group doesn't exist</exception>
     public async Task<List<Point>> AddPointsAsync(IEnumerable<string> names, int parentGroupId)
     {
         if (!await _context.Set<PointGroup>().AnyAsync(g => g.Id == parentGroupId))
@@ -217,6 +272,11 @@ public class PointService : IPointService
         return points;
     }
 
+    /// <summary>
+    /// Removes multiple points by ID
+    /// </summary>
+    /// <param name="pointIds">IDs of points to remove</param>
+    /// <returns>True if any points were found and removed</returns>
     public async Task<bool> RemovePointsAsync(IEnumerable<int> pointIds)
     {
         var points = await _context.Set<Point>()
@@ -230,6 +290,13 @@ public class PointService : IPointService
         return true;
     }
 
+    /// <summary>
+    /// Moves multiple points to a new parent group
+    /// </summary>
+    /// <param name="pointIds">IDs of points to move</param>
+    /// <param name="targetGroupId">ID of new parent group</param>
+    /// <returns>True if any points were found and moved</returns>
+    /// <exception cref="ArgumentException">Thrown if target group doesn't exist</exception>
     public async Task<bool> MovePointsAsync(IEnumerable<int> pointIds, int targetGroupId)
     {
         if (!await _context.Set<PointGroup>().AnyAsync(g => g.Id == targetGroupId))
@@ -250,6 +317,11 @@ public class PointService : IPointService
         return true;
     }
 
+    /// <summary>
+    /// Gets the full path of a point (e.g. "Root/Child/PointName")
+    /// </summary>
+    /// <param name="pointId">ID of point</param>
+    /// <returns>Full path string or null if point not found</returns>
     public async Task<string?> GetFullPathOfPointAsync(int pointId)
     {
         var point = await _context.Set<Point>()
