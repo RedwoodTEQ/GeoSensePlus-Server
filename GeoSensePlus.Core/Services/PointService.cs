@@ -8,7 +8,23 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Core.Services;
 
-public class PointService
+public interface IPointService
+{
+    Task<PointGroup> AddGroupAsync(string name, int? parentId = null);
+    Task<List<Point>> AddPointsAsync(IEnumerable<string> names, int parentGroupId);
+    Task<PointGroup> FindGroupByPathAsync(string path);
+    Task<Point> FindPointByPathAsync(string path);
+    Task<string> GetFullPathAsync(int groupId);
+    Task<string> GetFullPathOfPointAsync(int pointId);
+    Task<List<PointGroup>> GetNestedTreeAsync(int rootId);
+    Task<List<PointGroup>> GetSubtreeAsync(int rootId);
+    Task<bool> MoveGroupAsync(int groupId, int? newParentId);
+    Task<bool> MovePointsAsync(IEnumerable<int> pointIds, int targetGroupId);
+    Task<bool> RemoveGroupAsync(int id, bool deleteWithChildren = false, bool cascade = false);
+    Task<bool> RemovePointsAsync(IEnumerable<int> pointIds);
+}
+
+public class PointService : IPointService
 {
     private readonly ApplicationDbContext _context;
 
@@ -110,9 +126,9 @@ public class PointService
     {
         var sql = @"
             WITH RECURSIVE group_tree AS (
-                SELECT id, name, parent_id, is_deleted FROM messaging.point_group WHERE id = {0}
+                SELECT id, name, parent_id, is_deleted, description FROM messaging.point_group WHERE id = {0}
                 UNION ALL
-                SELECT g.id, g.name, g.parent_id, g.is_deleted
+                SELECT g.id, g.name, g.parent_id, g.is_deleted, g.description
                 FROM messaging.point_group g
                 INNER JOIN group_tree gt ON g.parent_id = gt.id
             )

@@ -18,9 +18,9 @@ public record MovePointsRequest(int[] Ids, int NewGroupId);
 [Route("api/[controller]")]
 public class PointsController : ControllerBase
 {
-    private readonly PointService _service;
+    private readonly IPointService _service;
     ILogger<PointsController> _logger;
-    public PointsController(ILogger<PointsController> logger, PointService service)
+    public PointsController(ILogger<PointsController> logger, IPointService service)
     {
         _logger = logger;
         _service = service;
