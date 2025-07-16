@@ -5,10 +5,12 @@ using GeoSensePlus.Data;
 using GeoSensePlus.Firestore;
 using GeoSensePlus.Mqtt;
 using GeoSensePlus.WebApi.Controllers.Base;
+using GeoSensePlus.WebApi.DynamicRoute;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -57,6 +59,8 @@ namespace GeoSensePlus.WebApi
 
             services.AddFirestoreServices();
 
+            services.AddTransient<SearchValueTransformer>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeoSensePlus.WebApi", Version = "v1" });
@@ -81,6 +85,7 @@ namespace GeoSensePlus.WebApi
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDynamicControllerRoute<SearchValueTransformer>("uns/{**product}");
                 endpoints.MapControllers();
             });
         }
