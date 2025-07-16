@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.WebApi.DynamicRoute;
 
-public class SearchValueTransformer : DynamicRouteValueTransformer
+public class UnsPathTransformer : DynamicRouteValueTransformer
 {
-    ILogger<SearchValueTransformer> _logger;
+    ILogger<UnsPathTransformer> _logger;
     ApplicationDbContext _ctx;
 
-    public SearchValueTransformer(ILogger<SearchValueTransformer> logger, ApplicationDbContext ctx)
+    public UnsPathTransformer(ILogger<UnsPathTransformer> logger, ApplicationDbContext ctx)
     {
         _logger = logger;
         _ctx = ctx;
@@ -22,16 +22,18 @@ public class SearchValueTransformer : DynamicRouteValueTransformer
 
     public override ValueTask<RouteValueDictionary> TransformAsync(HttpContext httpContext, RouteValueDictionary values)
     {
-        var productString = values["product"] as string;
-        _logger.LogInformation("Product string: {ProductString}", productString);
+        var pathString = values["path"] as string;
+        _logger.LogInformation("Path string: {ProductString}", pathString);
 
+        // _todo: change to use PointService
         var sensor = _ctx.Sensors.FirstOrDefault();
         if(sensor != null)
             _logger.LogInformation($"1st sensor name: {sensor.Name}");
 
+        // _todo: change to PointsController
         values["controller"] = "System";
         values["action"] = "Product";
-        values["product"] = $"transformer modified product: {productString}";
+        values["product"] = $"transformer modified product: {pathString}";
 
         return new ValueTask<RouteValueDictionary>(values);
     }

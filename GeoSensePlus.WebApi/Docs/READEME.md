@@ -42,6 +42,18 @@ Example: <note>test note</note> <todo>test todo</todo>
   update-database.bat
   ```
 
+## Technical Notes
+
+### Dynamic Routing
+
+Purpose: when add an UNS point, it's hierachy path can be automatically turned into a REST API path.
+
+Key implementations:
+  - `public class UnsPathTransformer : DynamicRouteValueTransformer`
+  - in Startup.cs:  
+    `endpoints.MapDynamicControllerRoute<UnsPathTransformer>("uns/{**path}");` and  
+    `services.AddTransient<UnsPathTransformer>();`
+
 ## Release Notes
 
 ### v1.2.0-dev
