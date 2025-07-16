@@ -90,10 +90,10 @@ public class PointService
     {
         var sql = @"
             WITH RECURSIVE path_to_root AS (
-                SELECT id, name, parent_id FROM groups WHERE id = {0}
+                SELECT id, name, parent_id FROM messaging.point_group WHERE id = {0}
                 UNION ALL
                 SELECT g.id, g.name, g.parent_id
-                FROM groups g
+                FROM messaging.point_group g
                 INNER JOIN path_to_root pt ON pt.parent_id = g.id
             )
             SELECT name FROM path_to_root;
@@ -110,10 +110,10 @@ public class PointService
     {
         var sql = @"
             WITH RECURSIVE group_tree AS (
-                SELECT id, name, parent_id, is_deleted FROM groups WHERE id = {0}
+                SELECT id, name, parent_id, is_deleted FROM messaging.point_group WHERE id = {0}
                 UNION ALL
                 SELECT g.id, g.name, g.parent_id, g.is_deleted
-                FROM groups g
+                FROM messaging.point_group g
                 INNER JOIN group_tree gt ON g.parent_id = gt.id
             )
             SELECT * FROM group_tree;
