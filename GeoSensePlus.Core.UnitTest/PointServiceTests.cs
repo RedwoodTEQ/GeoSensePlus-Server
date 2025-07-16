@@ -73,11 +73,13 @@ public class PointServiceTests
         context.AddRange(points);
         await context.SaveChangesAsync();
 
+        Assert.Equal(2, group.Points.Count);
+
         var service = new PointService(context);
         var result = await service.RemovePointsAsync(points.Select(p => p.Id));
 
         Assert.True(result);
-        Assert.Empty(context.Set<Point>());
+        Assert.Empty(group.Points);
     }
 
     [Fact]
@@ -94,11 +96,13 @@ public class PointServiceTests
         context.AddRange(points);
         await context.SaveChangesAsync();
 
+        Assert.All(points, p => Assert.Equal(g1.Id, p.ParentId));
+
         var service = new PointService(context);
         var result = await service.MovePointsAsync(points.Select(p => p.Id), g2.Id);
 
         Assert.True(result);
-        Assert.All(context.Set<Point>(), p => Assert.Equal(g2.Id, p.ParentId));
+        Assert.All(points, p => Assert.Equal(g2.Id, p.ParentId));
     }
 
     [Fact]
