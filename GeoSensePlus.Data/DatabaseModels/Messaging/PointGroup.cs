@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace GeoSensePlus.Data.DatabaseModels.Messaging;
@@ -21,6 +22,7 @@ public class PointGroupEntity : NamedEntity<int>
 [Table("point_group", Schema = SchemaNames.messaging)]
 public class PointGroup : PointGroupEntity
 {
+    [JsonIgnore]
     public PointGroup? Parent { get; set; }
 
     public List<PointGroup> Children { get; set; } = new List<PointGroup>();
