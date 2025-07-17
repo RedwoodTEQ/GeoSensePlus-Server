@@ -22,6 +22,7 @@ public interface IStateService
     Task<bool> MovePointsAsync(IEnumerable<int> pointIds, int targetGroupId);
     Task<bool> RemoveGroupAsync(int id, bool deleteWithChildren = false, bool cascade = false);
     Task<bool> RemovePointsAsync(IEnumerable<int> pointIds);
+    Task<bool> AttachValueToPointAsync(int pointId, int valueId);
 }
 
 public class StateService : IStateService
@@ -322,6 +323,28 @@ public class StateService : IStateService
     /// </summary>
     /// <param name="pointId">ID of point</param>
     /// <returns>Full path string or null if point not found</returns>
+    /// <summary>
+    /// Attaches a value to a point
+    /// </summary>
+    /// <param name="pointId">ID of the point to attach to</param>
+    /// <param name="valueId">ID of the value to attach</param>
+    /// <returns>True if both point and value exist and were successfully attached</returns>
+    public async Task<bool> AttachValueToPointAsync(int pointId, int valueId)
+    {
+        var point = await _context.Set<Point>()
+            .FirstOrDefaultAsync(p => p.Id == pointId);
+        
+        var value = await _context.Set<Value>()
+            .FirstOrDefaultAsync(v => v.Id == valueId);
+
+        if (point == null || value == null)
+            return false;
+
+        point.ValueId = valueId;
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
     public async Task<string?> GetFullPathOfPointAsync(int pointId)
     {
         var point = await _context.Set<Point>()
