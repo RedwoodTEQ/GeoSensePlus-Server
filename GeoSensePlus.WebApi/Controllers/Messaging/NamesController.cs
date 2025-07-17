@@ -16,11 +16,11 @@ public record MovePointsRequest(int[] Ids, int NewGroupId);
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class NamespacesController : ControllerBase
+public class NamesController : ControllerBase
 {
     private readonly IPointService _service;
-    ILogger<NamespacesController> _logger;
-    public NamespacesController(ILogger<NamespacesController> logger, IPointService service)
+    ILogger<NamesController> _logger;
+    public NamesController(ILogger<NamesController> logger, IPointService service)
     {
         _logger = logger;
         _service = service;
