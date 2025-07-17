@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace GeoSensePlus.Data.DatabaseModels.Messaging;
 
@@ -23,6 +24,7 @@ public class PointEntity : NamedEntity<int>
 [Table("point", Schema = SchemaNames.messaging)]
 public class Point : PointEntity
 {
+    [JsonIgnore]    // ignore in web response serialization, to avoid circular references
     public PointGroup Parent { get; set; } = null!;
     public Value Value { get; set; } = null!;  // value associated with this point, e.g. "temperature", "humidity", etc.
     public List<Topic> Topics { get; set; } = new List<Topic>();  // may have multiple mqtt topics

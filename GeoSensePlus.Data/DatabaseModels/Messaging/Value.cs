@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels.Messaging;
@@ -31,5 +32,6 @@ public class ValueEntity : NamedEntity<int>
 [Table("value", Schema = SchemaNames.messaging)]
 public class Value : ValueEntity
 {
+    [JsonIgnore]    // ignore in web response serialization, to avoid circular references
     public List<Point> Points { get; set; } = new List<Point>();  // points that this value is associated with
 }

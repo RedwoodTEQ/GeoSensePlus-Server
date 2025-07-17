@@ -17,7 +17,6 @@ public interface IStateService
     Task<string> GetFullPathAsync(int groupId);
     Task<string> GetFullPathOfPointAsync(int pointId);
     Task<List<PointGroup>> GetNestedTreeAsync(int rootId);
-    Task<List<PointGroup>> GetSubtreeAsync(int rootId);
     Task<bool> MoveGroupAsync(int groupId, int? newParentId);
     Task<bool> MovePointsAsync(IEnumerable<int> pointIds, int targetGroupId);
     Task<bool> RemoveGroupAsync(int id, bool deleteWithChildren = false, bool cascade = false);
@@ -75,7 +74,7 @@ public class StateService : IStateService
 
         if (deleteWithChildren)
         {
-            var subtree = await GetSubtreeAsync(id);
+            var subtree = await GetAllChildGroupsFlatAsync(id);
 
             if (cascade)
             {
@@ -117,7 +116,7 @@ public class StateService : IStateService
 
         if (newParentId.HasValue)
         {
-            var subtree = await GetSubtreeAsync(groupId);
+            var subtree = await GetAllChildGroupsFlatAsync(groupId);
             if (subtree.Any(g => g.Id == newParentId))
                 throw new InvalidOperationException("Cannot move under its descendant.");
         }
@@ -157,8 +156,10 @@ public class StateService : IStateService
     /// </summary>
     /// <param name="rootId">ID of root group</param>
     /// <returns>List of all groups in subtree including root</returns>
-    public async Task<List<PointGroup>> GetSubtreeAsync(int rootId)
+    private async Task<List<PointGroup>> GetAllChildGroupsFlatAsync(int rootId, bool includePointValues = false)
     {
+        // NOTE: don't add ';' at the end of SQL queries in FromSqlRaw, otherwise when it's used with includes,
+        // it will throw an exception
         var sql = @"
             WITH RECURSIVE group_tree AS (
                 SELECT id, name, parent_id, is_deleted, description FROM messaging.point_group WHERE id = {0}
@@ -167,14 +168,22 @@ public class StateService : IStateService
                 FROM messaging.point_group g
                 INNER JOIN group_tree gt ON g.parent_id = gt.id
             )
-            SELECT g.* FROM group_tree g;
+            SELECT g.* FROM group_tree g
         ";
 
-        var groups = await _context.Set<PointGroup>()
-            .FromSqlRaw(sql, rootId)
-            .Include(g => g.Points)
-                .ThenInclude(p => p.Value)
-            .ToListAsync();
+        var groupQuery = _context.Set<PointGroup>().FromSqlRaw(sql, rootId);
+        List<PointGroup> groups;
+        if (includePointValues)
+        {
+            groups = await groupQuery
+                .Include(g => g.Points)
+                    .ThenInclude(p => p.Value)
+                .ToListAsync();
+        }
+        else
+        {
+            groups = await groupQuery.ToListAsync();
+        }
         return groups;
     }
 
@@ -185,7 +194,7 @@ public class StateService : IStateService
     /// <returns>List of root groups with Children populated</returns>
     public async Task<List<PointGroup>> GetNestedTreeAsync(int rootId)
     {
-        var flat = await GetSubtreeAsync(rootId);
+        var flat = await GetAllChildGroupsFlatAsync(rootId, true);
         var dict = flat.ToDictionary(g => g.Id);
 
         foreach (var group in flat)
