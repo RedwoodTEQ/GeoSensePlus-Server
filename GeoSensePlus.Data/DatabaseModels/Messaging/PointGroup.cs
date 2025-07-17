@@ -22,7 +22,7 @@ public class PointGroupEntity : NamedEntity<int>
 [Table("point_group", Schema = SchemaNames.messaging)]
 public class PointGroup : PointGroupEntity
 {
-    [JsonIgnore]
+    [JsonIgnore]    // ignore in web response serialization, to avoid circular references
     public PointGroup? Parent { get; set; }
 
     public List<PointGroup> Children { get; set; } = new List<PointGroup>();

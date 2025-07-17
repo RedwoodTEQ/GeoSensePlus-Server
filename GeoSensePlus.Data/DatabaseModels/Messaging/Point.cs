@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,13 +12,18 @@ public class PointEntity : NamedEntity<int>
     [Required]
     [Column("parent_id")]
     public int ParentId { get; set; }  // foreign key to PointGroup
+
+    [Column("value_id")]
+    public int? ValueId { get; set; }  // foreign key to Value, can be null if no value is associated
 }
 
 /// <summary>
-/// An UNS data point
+/// An UNS data point. A point can have one value and multiple topics.
 /// </summary>
 [Table("point", Schema = SchemaNames.messaging)]
 public class Point : PointEntity
 {
     public PointGroup Parent { get; set; } = null!;
+    public Value Value { get; set; } = null!;  // value associated with this point, e.g. "temperature", "humidity", etc.
+    public List<Topic> Topics { get; set; } = new List<Topic>();  // may have multiple mqtt topics
 }
