@@ -120,5 +120,80 @@ public class StateServiceTests
 
         Assert.Equal("Root/Child/Leaf", path);
     }
+
+    [Fact]
+    public async Task AttachValueToPointAsync_SuccessfullyAttachesValue()
+    {
+        using var context = CreateDbContext();
+        var group = new PointGroup { Name = "Group" };
+        var point = new Point { Name = "TestPoint", Parent = group };
+        var value = new Value { Name = "TestValue", Type = "string", ValueString = "test" };
+        
+        context.AddRange(group, point, value);
+        await context.SaveChangesAsync();
+
+        var service = new StateService(context);
+        var result = await service.AttachValueToPointAsync(point.Id, value.Id);
+
+        Assert.True(result);
+        
+        // Verify the attachment
+        var updatedPoint = await context.Set<Point>().FindAsync(point.Id);
+        Assert.Equal(value.Id, updatedPoint.ValueId);
+    }
+
+    [Fact]
+    public async Task AttachValueToPointAsync_FailsWhenPointNotFound()
+    {
+        using var context = CreateDbContext();
+        var value = new Value { Name = "TestValue", Type = "string", ValueString = "test" };
+        context.Add(value);
+        await context.SaveChangesAsync();
+
+        var service = new StateService(context);
+        var result = await service.AttachValueToPointAsync(999, value.Id); // Non-existent point ID
+
+        Assert.False(result);
+    }
+
+    [Fact]
+    public async Task AttachValueToPointAsync_FailsWhenValueNotFound()
+    {
+        using var context = CreateDbContext();
+        var group = new PointGroup { Name = "Group" };
+        var point = new Point { Name = "TestPoint", Parent = group };
+        context.AddRange(group, point);
+        await context.SaveChangesAsync();
+
+        var service = new StateService(context);
+        var result = await service.AttachValueToPointAsync(point.Id, 999); // Non-existent value ID
+
+        Assert.False(result);
+    }
+
+    [Fact]
+    public async Task GetPointsByValueIdAsync_ReturnsCorrectPoints()
+    {
+        using var context = CreateDbContext();
+        var group = new PointGroup { Name = "Group" };
+        var value = new Value { Name = "SharedValue", Type = "int", IntegerValue = 42 };
+        var points = new List<Point> {
+            new Point { Name = "Point1", Parent = group, Value = value },
+            new Point { Name = "Point2", Parent = group, Value = value },
+            new Point { Name = "Point3", Parent = group } // No value attached
+        };
+        
+        context.AddRange(group, value);
+        context.AddRange(points);
+        await context.SaveChangesAsync();
+
+        var service = new StateService(context);
+        var result = await service.GetPointsByValueIdAsync(value.Id);
+
+        Assert.Equal(2, result.Count);
+        Assert.All(result, p => Assert.Equal(value.Id, p.ValueId));
+        Assert.Contains(result, p => p.Name == "Point1");
+        Assert.Contains(result, p => p.Name == "Point2");
+    }
 }
 
