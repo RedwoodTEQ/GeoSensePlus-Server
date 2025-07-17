@@ -370,14 +370,4 @@ public class StateService : IStateService
             .Include(p => p.Parent)
             .ToListAsync();
     }
-    {
-        var point = await _context.Set<Point>()
-            .Include(p => p.Parent)
-            .FirstOrDefaultAsync(p => p.Id == pointId);
-
-        if (point == null) return null;
-
-        var groupPath = await GetFullPathAsync(point.ParentId);
-        return groupPath == null ? null : $"{groupPath}/{point.Name}";
-    }
 }
