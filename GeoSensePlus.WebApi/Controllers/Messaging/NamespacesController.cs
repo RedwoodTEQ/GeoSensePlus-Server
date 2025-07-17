@@ -12,28 +12,28 @@ public record AddPointsRequest(string[] Names, int GroupId);
 public record MovePointsRequest(int[] Ids, int NewGroupId);
 
 /// <summary>
-/// UNS points controller.
+/// UNS controller.
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class PointsController : ControllerBase
+public class NamespacesController : ControllerBase
 {
     private readonly IPointService _service;
-    ILogger<PointsController> _logger;
-    public PointsController(ILogger<PointsController> logger, IPointService service)
+    ILogger<NamespacesController> _logger;
+    public NamespacesController(ILogger<NamespacesController> logger, IPointService service)
     {
         _logger = logger;
         _service = service;
     }
 
     #region test methods
-    [HttpGet("{*path}")]
+    [HttpGet("test/{*path}")]
     public IActionResult Get(string path)
     {
         return Ok($"Received request for UNS with path: {path}");
     }
 
-    [HttpPost]
+    [HttpPost("test")]
     public IActionResult Post([FromBody] object data)
     {
         _logger.LogInformation("Received POST request for UNS with data: {Data}", data);
@@ -49,7 +49,7 @@ public class PointsController : ControllerBase
     }
 
     [HttpDelete("group/{id}")]
-    public async Task<IActionResult> DeleteGroup(int id, [FromQuery] bool deleteWithChildren = false, [FromQuery] bool cascade = false)
+    public async Task<IActionResult> RemoveGroup(int id, [FromQuery] bool deleteWithChildren = false, [FromQuery] bool cascade = false)
     {
         var result = await _service.RemoveGroupAsync(id, deleteWithChildren, cascade);
         return result ? Ok() : NotFound();
