@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels.Messaging;
 
-public class ValueEntity
+public class ValueEntity : NamedEntity<int>
 {
     [Column("type")]
     public string Type { get; set; } = string.Empty;  // e.g. "string", "int", "float", "bool", etc.
@@ -29,7 +29,7 @@ public class ValueEntity
 }
 
 [Table("value", Schema = SchemaNames.messaging)]
-public class Value : NamedEntity<int>
+public class Value : ValueEntity
 {
     public List<Point> Points { get; set; } = new List<Point>();  // points that this value is associated with
 }
