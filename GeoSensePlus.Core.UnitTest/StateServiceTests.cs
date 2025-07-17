@@ -48,14 +48,18 @@ public class StateServiceTests
     [Fact]
     public async Task AddPointsAsync_AddsPointsToGroup()
     {
+        // Arrange
         using var context = CreateDbContext();
         var group = new PointGroup { Name = "Root" };
         context.Add(group);
         await context.SaveChangesAsync();
 
         var service = new StateService(context);
+        
+        // Act
         var points = await service.AddPointsAsync(["P1", "P2"], group.Id);
 
+        // Assert
         Assert.Equal(2, points.Count);
         Assert.All(points, p => Assert.Equal(group.Id, p.ParentId));
     }
@@ -63,6 +67,7 @@ public class StateServiceTests
     [Fact]
     public async Task RemovePointsAsync_RemovesCorrectPoints()
     {
+        // Arrange
         using var context = CreateDbContext();
         var group = new PointGroup { Name = "Root" };
         var points = new[] {
@@ -76,8 +81,11 @@ public class StateServiceTests
         Assert.Equal(2, group.Points.Count);
 
         var service = new StateService(context);
+        
+        // Act
         var result = await service.RemovePointsAsync(points.Select(p => p.Id));
 
+        // Assert
         Assert.True(result);
         Assert.Empty(group.Points);
     }
@@ -85,6 +93,7 @@ public class StateServiceTests
     [Fact]
     public async Task MovePointsAsync_MovesPointsToNewGroup()
     {
+        // Arrange
         using var context = CreateDbContext();
         var g1 = new PointGroup { Name = "G1" };
         var g2 = new PointGroup { Name = "G2" };
@@ -99,8 +108,11 @@ public class StateServiceTests
         Assert.All(points, p => Assert.Equal(g1.Id, p.ParentId));
 
         var service = new StateService(context);
+        
+        // Act
         var result = await service.MovePointsAsync(points.Select(p => p.Id), g2.Id);
 
+        // Assert
         Assert.True(result);
         Assert.All(points, p => Assert.Equal(g2.Id, p.ParentId));
     }
@@ -108,6 +120,7 @@ public class StateServiceTests
     [Fact]
     public async Task GetFullPathOfPointAsync_ReturnsCorrectPath()
     {
+        // Arrange
         using var context = CreateDbContext();
         var root = new PointGroup { Name = "Root" };
         var child = new PointGroup { Name = "Child", Parent = root };
@@ -116,14 +129,18 @@ public class StateServiceTests
         await context.SaveChangesAsync();
 
         var service = new StateService(context);
+        
+        // Act
         var path = await service.GetFullPathOfPointAsync(point.Id);
 
+        // Assert
         Assert.Equal("Root/Child/Leaf", path);
     }
 
     [Fact]
     public async Task AttachValueToPointAsync_SuccessfullyAttachesValue()
     {
+        // Arrange
         using var context = CreateDbContext();
         var group = new PointGroup { Name = "Group" };
         var point = new Point { Name = "TestPoint", Parent = group };
@@ -133,11 +150,14 @@ public class StateServiceTests
         await context.SaveChangesAsync();
 
         var service = new StateService(context);
+        
+        // Act
         var result = await service.AttachValueToPointAsync(point.Id, value.Id);
 
+        // Assert
         Assert.True(result);
         
-        // Verify the attachment
+        // Assert (verify the attachment)
         var updatedPoint = await context.Set<Point>().FindAsync(point.Id);
         Assert.Equal(value.Id, updatedPoint.ValueId);
     }
@@ -145,20 +165,25 @@ public class StateServiceTests
     [Fact]
     public async Task AttachValueToPointAsync_FailsWhenPointNotFound()
     {
+        // Arrange
         using var context = CreateDbContext();
         var value = new Value { Name = "TestValue", Type = "string", ValueString = "test" };
         context.Add(value);
         await context.SaveChangesAsync();
 
         var service = new StateService(context);
+        
+        // Act
         var result = await service.AttachValueToPointAsync(999, value.Id); // Non-existent point ID
 
+        // Assert
         Assert.False(result);
     }
 
     [Fact]
     public async Task AttachValueToPointAsync_FailsWhenValueNotFound()
     {
+        // Arrange
         using var context = CreateDbContext();
         var group = new PointGroup { Name = "Group" };
         var point = new Point { Name = "TestPoint", Parent = group };
@@ -166,14 +191,18 @@ public class StateServiceTests
         await context.SaveChangesAsync();
 
         var service = new StateService(context);
+        
+        // Act
         var result = await service.AttachValueToPointAsync(point.Id, 999); // Non-existent value ID
 
+        // Assert
         Assert.False(result);
     }
 
     [Fact]
     public async Task GetPointsByValueIdAsync_ReturnsCorrectPoints()
     {
+        // Arrange
         using var context = CreateDbContext();
         var group = new PointGroup { Name = "Group" };
         var value = new Value { Name = "SharedValue", Type = "int", IntegerValue = 42 };
@@ -188,8 +217,11 @@ public class StateServiceTests
         await context.SaveChangesAsync();
 
         var service = new StateService(context);
+        
+        // Act
         var result = await service.GetPointsByValueIdAsync(value.Id);
 
+        // Assert
         Assert.Equal(2, result.Count);
         Assert.All(result, p => Assert.Equal(value.Id, p.ValueId));
         Assert.Contains(result, p => p.Name == "Point1");
