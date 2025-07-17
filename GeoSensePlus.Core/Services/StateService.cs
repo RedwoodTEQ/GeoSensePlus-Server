@@ -167,10 +167,15 @@ public class StateService : IStateService
                 FROM messaging.point_group g
                 INNER JOIN group_tree gt ON g.parent_id = gt.id
             )
-            SELECT * FROM group_tree;
+            SELECT g.* FROM group_tree g;
         ";
 
-        return await _context.Set<PointGroup>().FromSqlRaw(sql, rootId).ToListAsync();
+        var groups = await _context.Set<PointGroup>()
+            .FromSqlRaw(sql, rootId)
+            .Include(g => g.Points)
+                .ThenInclude(p => p.Value)
+            .ToListAsync();
+        return groups;
     }
 
     /// <summary>
