@@ -23,6 +23,7 @@ public interface IStateService
     Task<bool> RemoveGroupAsync(int id, bool deleteWithChildren = false, bool cascade = false);
     Task<bool> RemovePointsAsync(IEnumerable<int> pointIds);
     Task<bool> AttachValueToPointAsync(int pointId, int valueId);
+    Task<List<Point>> GetPointsByValueIdAsync(int valueId);
 }
 
 public class StateService : IStateService
@@ -346,6 +347,29 @@ public class StateService : IStateService
     }
 
     public async Task<string?> GetFullPathOfPointAsync(int pointId)
+    {
+        var point = await _context.Set<Point>()
+            .Include(p => p.Parent)
+            .FirstOrDefaultAsync(p => p.Id == pointId);
+
+        if (point == null) return null;
+
+        var groupPath = await GetFullPathAsync(point.ParentId);
+        return groupPath == null ? null : $"{groupPath}/{point.Name}";
+    }
+
+    /// <summary>
+    /// Gets all points that reference a specific value
+    /// </summary>
+    /// <param name="valueId">ID of the value to query</param>
+    /// <returns>List of points that reference this value</returns>
+    public async Task<List<Point>> GetPointsByValueIdAsync(int valueId)
+    {
+        return await _context.Set<Point>()
+            .Where(p => p.ValueId == valueId)
+            .Include(p => p.Parent)
+            .ToListAsync();
+    }
     {
         var point = await _context.Set<Point>()
             .Include(p => p.Parent)
