@@ -16,11 +16,11 @@ using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
-public class PointServiceTests
+public class StateServiceTests
 {
     ITestOutputHelper _output;
 
-    public PointServiceTests(ITestOutputHelper output)
+    public StateServiceTests(ITestOutputHelper output)
     {
         _output = output;
     }
@@ -53,7 +53,7 @@ public class PointServiceTests
         context.Add(group);
         await context.SaveChangesAsync();
 
-        var service = new PointService(context);
+        var service = new StateService(context);
         var points = await service.AddPointsAsync(["P1", "P2"], group.Id);
 
         Assert.Equal(2, points.Count);
@@ -75,7 +75,7 @@ public class PointServiceTests
 
         Assert.Equal(2, group.Points.Count);
 
-        var service = new PointService(context);
+        var service = new StateService(context);
         var result = await service.RemovePointsAsync(points.Select(p => p.Id));
 
         Assert.True(result);
@@ -98,7 +98,7 @@ public class PointServiceTests
 
         Assert.All(points, p => Assert.Equal(g1.Id, p.ParentId));
 
-        var service = new PointService(context);
+        var service = new StateService(context);
         var result = await service.MovePointsAsync(points.Select(p => p.Id), g2.Id);
 
         Assert.True(result);
@@ -115,7 +115,7 @@ public class PointServiceTests
         context.AddRange(root, child, point);
         await context.SaveChangesAsync();
 
-        var service = new PointService(context);
+        var service = new StateService(context);
         var path = await service.GetFullPathOfPointAsync(point.Id);
 
         Assert.Equal("Root/Child/Leaf", path);

@@ -12,15 +12,15 @@ public record AddPointsRequest(string[] Names, int GroupId);
 public record MovePointsRequest(int[] Ids, int NewGroupId);
 
 /// <summary>
-/// UNS controller.
+/// State directory service controller, which is actually an UNS implementation.
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class NamesController : ControllerBase
+public class StatesController : ControllerBase
 {
-    private readonly IPointService _service;
-    ILogger<NamesController> _logger;
-    public NamesController(ILogger<NamesController> logger, IPointService service)
+    private readonly IStateService _service;
+    ILogger<StatesController> _logger;
+    public StatesController(ILogger<StatesController> logger, IStateService service)
     {
         _logger = logger;
         _service = service;

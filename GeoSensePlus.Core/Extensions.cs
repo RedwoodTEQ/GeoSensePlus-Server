@@ -11,7 +11,7 @@ namespace GeoSensePlus.Core
             //services.AddTransient(typeof(IMessageProcessor<>), typeof(MessageProcessor<>));
             services.AddTransient<IMessageEngine, MessageEngine>();
             services.AddTransient<IDeviceService, DeviceService>();
-            services.AddTransient<IPointService, PointService>();
+            services.AddTransient<IStateService, StateService>();
         }
     }
 }

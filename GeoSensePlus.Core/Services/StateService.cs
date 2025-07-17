@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Core.Services;
 
-public interface IPointService
+public interface IStateService
 {
     Task<PointGroup> AddGroupAsync(string name, int? parentId = null);
     Task<List<Point>> AddPointsAsync(IEnumerable<string> names, int parentGroupId);
@@ -24,11 +24,11 @@ public interface IPointService
     Task<bool> RemovePointsAsync(IEnumerable<int> pointIds);
 }
 
-public class PointService : IPointService
+public class StateService : IStateService
 {
     private readonly ApplicationDbContext _context;
 
-    public PointService(ApplicationDbContext context)
+    public StateService(ApplicationDbContext context)
     {
         _context = context;
     }
