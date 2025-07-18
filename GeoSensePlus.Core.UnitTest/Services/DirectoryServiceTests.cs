@@ -382,26 +382,25 @@ public class DirectoryServiceTests
     }
 
     [Fact]
-    public async Task AddGroupAsync_ReturnsNullForDuplicateRootName()
+    public async Task AddGroupAsync_ThrowsForDuplicateRootName()
     {
         // Arrange
+        string rootName = $"Root_{Guid.NewGuid().ToString("N")[..6]}";
         using (var arrangeContext = CreateTestContext())
         {
-            var root = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
+            var root = new PointGroup { Name = rootName };
             arrangeContext.Add(root);
             await arrangeContext.SaveChangesAsync();
         }
 
-        // Act
-        PointGroup result;
+        // Act & Assert
         using (var actContext = CreateTestContext())
         {
             var service = CreateService(actContext);
-            result = await service.AddGroupAsync("Root"); // Try to add another root with same name
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => 
+                service.AddGroupAsync(rootName));
+            Assert.Contains($"A group with name '{rootName}' already exists", ex.Message);
         }
-
-        // Assert
-        Assert.Null(result);
     }
 }
 
