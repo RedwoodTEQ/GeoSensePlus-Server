@@ -65,7 +65,7 @@ public class DirectoryController : ControllerBase
     [HttpGet("group/{id}/path")]
     public async Task<IActionResult> GetGroupPath(int id)
     {
-        var path = await _service.GetFullPathAsync(id);
+        var path = await _service.GetFullPathOfGroupAsync(id);
         return path == null ? NotFound() : Ok(path);
     }
 

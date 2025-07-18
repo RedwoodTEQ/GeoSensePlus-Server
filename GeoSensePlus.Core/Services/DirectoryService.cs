@@ -14,7 +14,7 @@ public interface IDirectoryService
     Task<List<Point>> AddPointsAsync(IEnumerable<string> names, int parentGroupId);
     Task<PointGroup> FindGroupByPathAsync(string path);
     Task<Point> FindPointByPathAsync(string path);
-    Task<string> GetFullPathAsync(int groupId);
+    Task<string> GetFullPathOfGroupAsync(int groupId);
     Task<string> GetFullPathOfPointAsync(int pointId);
     Task<List<PointGroup>> GetNestedTreeAsync(int rootId);
     Task<bool> MoveGroupAsync(int groupId, int? newParentId);
@@ -131,7 +131,7 @@ public class DirectoryService : IDirectoryService
     /// </summary>
     /// <param name="groupId">ID of group to get path for</param>
     /// <returns>Full path string or null if group not found</returns>
-    public async Task<string?> GetFullPathAsync(int groupId)
+    public async Task<string> GetFullPathOfGroupAsync(int groupId)
     {
         var sql = @"
             WITH RECURSIVE path_to_root AS (
@@ -149,6 +149,18 @@ public class DirectoryService : IDirectoryService
 
         names.Reverse();
         return string.Join('/', names);
+    }
+    public async Task<string?> GetFullPathOfPointAsync(int pointId)
+    {
+        var point = await _context.Set<Point>()
+            .Include(p => p.Parent)
+            .FirstOrDefaultAsync(p => p.Id == pointId);
+
+        if (point == null)
+            return null;
+
+        var groupPath = await GetFullPathOfGroupAsync(point.ParentId);
+        return groupPath == null ? null : $"{groupPath}/{point.Name}";
     }
 
     /// <summary>
@@ -223,12 +235,14 @@ public class DirectoryService : IDirectoryService
     /// <returns>Found group or null</returns>
     public async Task<PointGroup> FindGroupByPathAsync(string path)
     {
-        if (string.IsNullOrWhiteSpace(path)) return null;
+        if (string.IsNullOrWhiteSpace(path))
+            return null;
 
         var segments = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
-        if (segments.Length == 0) return null;
+        if (segments.Length == 0)
+            return null;
 
-        PointGroup? current = null;
+        PointGroup current = null;
 
         foreach (var name in segments)
         {
@@ -236,7 +250,8 @@ public class DirectoryService : IDirectoryService
                 .Where(g => g.Name == name && g.ParentId == (current == null ? null : current.Id))
                 .FirstOrDefaultAsync();
 
-            if (current == null) return null;
+            if (current == null)
+                return null;
         }
 
         return current;
@@ -252,16 +267,19 @@ public class DirectoryService : IDirectoryService
     /// <returns>Found point or null</returns>
     public async Task<Point> FindPointByPathAsync(string path)
     {
-        if (string.IsNullOrWhiteSpace(path)) return null;
+        if (string.IsNullOrWhiteSpace(path))
+            return null;
 
         var segments = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
-        if (segments.Length < 2) return null;
+        if (segments.Length < 2)
+            return null;
 
         var groupPath = string.Join('/', segments.Take(segments.Length - 1));
         var pointName = segments.Last();
 
         var group = await FindGroupByPathAsync(groupPath);
-        if (group == null) return null;
+        if (group == null)
+            return null;
 
         var point = await _context.Set<Point>()
             .Include(p => p.Parent)
@@ -358,18 +376,6 @@ public class DirectoryService : IDirectoryService
         point.ValueId = valueId;
         await _context.SaveChangesAsync();
         return true;
-    }
-
-    public async Task<string?> GetFullPathOfPointAsync(int pointId)
-    {
-        var point = await _context.Set<Point>()
-            .Include(p => p.Parent)
-            .FirstOrDefaultAsync(p => p.Id == pointId);
-
-        if (point == null) return null;
-
-        var groupPath = await GetFullPathAsync(point.ParentId);
-        return groupPath == null ? null : $"{groupPath}/{point.Name}";
     }
 
     /// <summary>
