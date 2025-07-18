@@ -5,7 +5,9 @@ using GeoSensePlus.Data.DatabaseModels.Messaging;
 using GeoSensePlus.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestPlatform.Utilities;
+using Moq;
 using System;
 // Unit tests for PointService methods
 
@@ -75,8 +77,8 @@ public class DirectoryServiceTests
                 It.IsAny<EventId>(),
                 It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("Skipping duplicate point name")),
                 It.IsAny<Exception>(),
-                It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
-            Times.Never);
+                It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)
+            ),Times.Never);
     }
 
     [Fact]
@@ -103,7 +105,7 @@ public class DirectoryServiceTests
         // Act
         using (var actContext = CreateTestContext())
         {
-            var service = new DirectoryService(actContext);
+            var service = CreateService(actContext);
             await service.RemovePointsAsync(pointIds);
         }
 
@@ -142,7 +144,7 @@ public class DirectoryServiceTests
         // Act
         using (var actContext = CreateTestContext())
         {
-            var service = new DirectoryService(actContext);
+            var service = CreateService(actContext);
             await service.MovePointsAsync(pointIds, g2Id);
         }
 
@@ -173,7 +175,7 @@ public class DirectoryServiceTests
         string path;
         using (var actContext = CreateTestContext())
         {
-            var service = new DirectoryService(actContext);
+            var service = CreateService(actContext);
             path = await service.GetFullPathOfPointAsync(pointId);
         }
 
@@ -200,7 +202,7 @@ public class DirectoryServiceTests
         // Act
         using (var actContext = CreateTestContext())
         {
-            var service = new DirectoryService(actContext);
+            var service = CreateService(actContext);
             await service.AttachValueToPointAsync(pointId, valueId);
         }
 
@@ -229,7 +231,7 @@ public class DirectoryServiceTests
         bool result;
         using (var actContext = CreateTestContext())
         {
-            var service = new DirectoryService(actContext);
+            var service = CreateService(actContext);
             result = await service.AttachValueToPointAsync(999, valueId); // Non-existent point ID
         }
 
@@ -255,7 +257,7 @@ public class DirectoryServiceTests
         bool result;
         using (var actContext = CreateTestContext())
         {
-            var service = new DirectoryService(actContext);
+            var service = CreateService(actContext);
             result = await service.AttachValueToPointAsync(pointId, 999); // Non-existent value ID
         }
 
@@ -287,7 +289,7 @@ public class DirectoryServiceTests
         List<Point> result;
         using (var actContext = CreateTestContext())
         {
-            var service = new DirectoryService(actContext);
+            var service = CreateService(actContext);
             result = await service.GetPointsByValueIdAsync(valueId);
         }
 
@@ -316,7 +318,7 @@ public class DirectoryServiceTests
         Point foundPoint;
         using (var actContext = CreateTestContext())
         {
-            var service = new DirectoryService(actContext);
+            var service = CreateService(actContext);
             foundPoint = await service.FindPointByPathAsync("Root/Child/TestPoint");
         }
 
@@ -345,7 +347,7 @@ public class DirectoryServiceTests
         Point foundPoint;
         using (var actContext = CreateTestContext())
         {
-            var service = new DirectoryService(actContext);
+            var service = CreateService(actContext);
             foundPoint = await service.FindPointByPathAsync("Root/Child/NonExistentPoint");
         }
 
@@ -370,7 +372,7 @@ public class DirectoryServiceTests
         Point foundPoint;
         using (var actContext = CreateTestContext())
         {
-            var service = new DirectoryService(actContext);
+            var service = CreateService(actContext);
             foundPoint = await service.FindPointByPathAsync("Root/InvalidGroup/TestPoint");
         }
 
@@ -393,7 +395,7 @@ public class DirectoryServiceTests
         PointGroup result;
         using (var actContext = CreateTestContext())
         {
-            var service = new DirectoryService(actContext);
+            var service = CreateService(actContext);
             result = await service.AddGroupAsync("Root"); // Try to add another root with same name
         }
 

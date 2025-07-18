@@ -1,6 +1,7 @@
 using GeoSensePlus.Data.DatabaseModels.Messaging;
 using GeoSensePlus.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -309,9 +310,11 @@ public class DirectoryService : IDirectoryService
     /// <exception cref="ArgumentException">Thrown if parent group doesn't exist</exception>
     public async Task<List<Point>> AddPointsAsync(IEnumerable<string> names, int parentGroupId)
     {
+        // Ensure parent group exists
         if (!await _context.Set<PointGroup>().AnyAsync(g => g.Id == parentGroupId))
             throw new ArgumentException("Parent group not found");
 
+        // Ensure names is not empty or all whitespace
         var distinctNames = names.Distinct().ToList();
         if (!distinctNames.Any())
             return new List<Point>();
@@ -327,8 +330,7 @@ public class DirectoryService : IDirectoryService
 
         foreach (var duplicate in existingNames)
         {
-            _logger.LogInformation("Skipping duplicate point name '{Name}' under group {GroupId}", 
-                duplicate, parentGroupId);
+            _logger.LogInformation("Skipping duplicate point name '{Name}' under group {GroupId}", duplicate, parentGroupId);
         }
 
         if (!uniqueNames.Any())
