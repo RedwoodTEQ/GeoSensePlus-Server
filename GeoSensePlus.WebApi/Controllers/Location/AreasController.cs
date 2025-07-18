@@ -13,11 +13,11 @@ namespace GeoSensePlus.WebApi.Controllers.Location
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ZonesController : ControllerBase
+    public class AreasController : ControllerBase
     {
         IControllerUtil<Area> _controllerUtil;
 
-        public ZonesController(IControllerUtil<Area> controllerUtil)
+        public AreasController(IControllerUtil<Area> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }

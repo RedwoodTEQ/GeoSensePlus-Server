@@ -9,11 +9,11 @@ namespace GeoSensePlus.WebApi.Controllers.Positioning
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HubsController : ControllerBase
+    public class CellHubsController : ControllerBase
     {
         IControllerUtil<CellHub> _controllerUtil;
 
-        public HubsController(IControllerUtil<CellHub> controllerUtil)
+        public CellHubsController(IControllerUtil<CellHub> controllerUtil)
         {
             _controllerUtil = controllerUtil;
         }

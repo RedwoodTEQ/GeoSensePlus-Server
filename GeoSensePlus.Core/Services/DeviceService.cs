@@ -1,6 +1,6 @@
 ﻿using GeoSensePlus.Core.ServiceModels;
-using GeoSensePlus.Data;
 using GeoSensePlus.Data.DatabaseModels.Tracking;
+using GeoSensePlus.Data.DbContexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;

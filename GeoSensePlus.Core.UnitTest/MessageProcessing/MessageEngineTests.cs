@@ -1,12 +1,11 @@
 ﻿using GeoSensePlus.Core.MessageProcessing.Interfaces;
-using GeoSensePlus.Core.UnitTest.TestEnv;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace GeoSensePlus.Core.UnitTest
+namespace GeoSensePlus.Core.UnitTest.MessageProcessing
 {
     public class MessageEngineTests : IClassFixture<GlobalUtilFixture>
     {

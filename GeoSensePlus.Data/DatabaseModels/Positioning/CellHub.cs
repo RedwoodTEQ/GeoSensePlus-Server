@@ -13,7 +13,7 @@ public class CellHubEntity : NamedEntity<int>
 /// Used for collecting local cell id tracking messages via lora and communicating with cloud services.
 /// There is usually only one hub for a building.
 /// </summary>
-[Table("cell_hub", Schema = SchemaNames.tracking)]
+[Table("cell_hub", Schema = SchemaNames.positioning)]
 public class CellHub : CellHubEntity
 {
     public List<CellAnchor> CellAnchors { get; set; } = new List<CellAnchor>();

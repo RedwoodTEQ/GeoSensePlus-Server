@@ -1,4 +1,5 @@
 ﻿using GeoSensePlus.Data.DatabaseModels.Sensing;
+using GeoSensePlus.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Xunit.Abstractions;
@@ -12,30 +13,16 @@ public class DbContextTests
     {
         _output = output;
     }
-    private ApplicationDbContext CreateDbContext()
+    private ApplicationDbContext CreateTestContext()
     {
-        string appSettingsPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../../../../GeoSensePlus.WebApi"));
-        _output.WriteLine($"Using appsettings path: {appSettingsPath}");
-
-        var config = new ConfigurationBuilder()
-            .SetBasePath(appSettingsPath)
-            .AddJsonFile("appsettings.json") // if needed: AddJsonFile(@"..\..\..\ThirdProject\appsettings.json")
-            .Build();
-
-        var connectionString = config.GetConnectionString("PostgresConnection");
-
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseNpgsql(connectionString)
-            .Options;
-
-        return new ApplicationDbContext(options);
+        return ApplicationDbContext.CreateTestContext();
     }
 
     [Fact]
     public async Task AddSensorToDatabase_Successfully()
     {
         // Arrange
-        using var context = CreateDbContext();
+        using var context = CreateTestContext();
 
         var sensor = new Sensor
         {

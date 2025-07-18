@@ -7,12 +7,11 @@ using GeoSensePlus.Core.Codec;
 using GeoSensePlus.Core.CommandProcessing.MessageHandlers;
 using GeoSensePlus.Core.MessageProcessing;
 using GeoSensePlus.Core.MessageProcessing.Interfaces;
-using GeoSensePlus.Core.UnitTest.TestEnv;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace GeoSensePlus.Core.UnitTest
+namespace GeoSensePlus.Core.UnitTest.MessageProcessing
 {
     class TestChannelContext : ChannelContext<string> { }
 

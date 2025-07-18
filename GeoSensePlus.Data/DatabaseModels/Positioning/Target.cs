@@ -11,7 +11,7 @@ public class TargetEntity : NamedEntity<int>
 /// <summary>
 /// A target is a tracking target, which can be an asset or a person.
 /// </summary>
-[Table("target", Schema = SchemaNames.tracking)]
+[Table("target", Schema = SchemaNames.positioning)]
 public class Target : TargetEntity
 {
     //public Area CacheArea { get; set; }

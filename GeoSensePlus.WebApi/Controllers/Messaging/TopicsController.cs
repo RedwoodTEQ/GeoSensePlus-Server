@@ -1,4 +1,4 @@
-﻿using GeoSensePlus.Data.DatabaseModels.PubSub;
+﻿using GeoSensePlus.Data.DatabaseModels.Messaging;
 using GeoSensePlus.Data.DatabaseModels.Tracking;
 using GeoSensePlus.Mqtt;
 using GeoSensePlus.WebApi.Controllers.Base;
