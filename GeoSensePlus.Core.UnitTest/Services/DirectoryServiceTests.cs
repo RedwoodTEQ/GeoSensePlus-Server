@@ -20,14 +20,22 @@ public class DirectoryServiceTests
 {
     ITestOutputHelper _output;
 
+    private readonly Mock<ILogger<DirectoryService>> _mockLogger;
+
     public DirectoryServiceTests(ITestOutputHelper output)
     {
         _output = output;
+        _mockLogger = new Mock<ILogger<DirectoryService>>();
     }
 
     private ApplicationDbContext CreateTestContext()
     {
         return ApplicationDbContext.CreateTestContext();
+    }
+
+    private DirectoryService CreateService(ApplicationDbContext context)
+    {
+        return new DirectoryService(context, _mockLogger.Object);
     }
 
     [Fact]
@@ -47,7 +55,7 @@ public class DirectoryServiceTests
         List<Point> points;
         using (var actContext = CreateTestContext())
         {
-            var service = new DirectoryService(actContext);
+            var service = CreateService(actContext);
             points = await service.AddPointsAsync(["P1", "P2"], groupId);
         }
 
