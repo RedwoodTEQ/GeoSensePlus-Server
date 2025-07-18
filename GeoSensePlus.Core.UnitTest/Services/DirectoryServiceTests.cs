@@ -67,6 +67,16 @@ public class DirectoryServiceTests
             Assert.Equal(2, group.Points.Count);
             Assert.All(group.Points, p => Assert.Equal(groupId, p.ParentId));
         }
+
+        // Verify logging
+        _mockLogger.Verify(
+            x => x.Log(
+                LogLevel.Information,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("Skipping duplicate point name")),
+                It.IsAny<Exception>(),
+                It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
+            Times.Never);
     }
 
     [Fact]
