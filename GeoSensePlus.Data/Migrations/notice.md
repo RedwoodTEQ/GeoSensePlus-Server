@@ -9,10 +9,10 @@ and `Point` on (Name, ParentId?) are added manually.
 
 > NOTE: `NULLS NOT DISTINCT` is only available in PostgreSQL 15 and later.
 
-This is the migration code from file `20250718132222_5.cs`:
+This is the migration code from file `20250718145837_2.cs`:
 
 ```csharp
-public partial class _5 : Migration
+public partial class _2 : Migration
 {
     protected override void Up(MigrationBuilder migrationBuilder)
     {
