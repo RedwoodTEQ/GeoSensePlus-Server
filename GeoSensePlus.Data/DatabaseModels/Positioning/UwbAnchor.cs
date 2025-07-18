@@ -1,4 +1,5 @@
 ﻿using GeoSensePlus.Data.DatabaseModels.Location;
+using GeoSensePlus.Data.DbContexts;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Tracking;

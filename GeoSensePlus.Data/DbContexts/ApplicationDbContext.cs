@@ -6,9 +6,11 @@ using GeoSensePlus.Data.DatabaseModels.Sensing;
 using GeoSensePlus.Data.DatabaseModels.Tracking;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 using System.Reflection.Emit;
 
-namespace GeoSensePlus.Data
+namespace GeoSensePlus.Data.DbContexts
 {
     public class ApplicationDbContext : IdentityDbContext
     {
@@ -54,6 +56,28 @@ namespace GeoSensePlus.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
         {
+        }
+
+        /// <summary>
+        /// For unit tests, use the appsettings.json file from the startup project (GeoSensePlus.WebApi)
+        /// </summary>
+        static public ApplicationDbContext CreateTestContext()
+        {
+            string appSettingsPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../../../../GeoSensePlus.WebApi"));
+            //_output.WriteLine($"Using appsettings path: {appSettingsPath}");
+
+            var config = new ConfigurationBuilder()
+                .SetBasePath(appSettingsPath)
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var connectionString = config.GetConnectionString("PostgresConnection");
+
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseNpgsql(connectionString)
+                .Options;
+
+            return new ApplicationDbContext(options);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

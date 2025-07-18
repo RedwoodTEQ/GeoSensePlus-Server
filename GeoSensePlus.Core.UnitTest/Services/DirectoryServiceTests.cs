@@ -1,8 +1,8 @@
 ﻿namespace GeoSensePlus.Core.UnitTest.Services;
 
 using GeoSensePlus.Core.Services;
-using GeoSensePlus.Data;
 using GeoSensePlus.Data.DatabaseModels.Messaging;
+using GeoSensePlus.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestPlatform.Utilities;
@@ -25,32 +25,17 @@ public class DirectoryServiceTests
         _output = output;
     }
 
-    private ApplicationDbContext CreateDbContext()
+    private ApplicationDbContext CreateTestContext()
     {
-        string appSettingsPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../../../../GeoSensePlus.WebApi"));
-        _output.WriteLine($"Using appsettings path: {appSettingsPath}");
-
-        var config = new ConfigurationBuilder()
-            .SetBasePath(appSettingsPath)
-            .AddJsonFile("appsettings.json") // if needed: AddJsonFile(@"..\..\..\ThirdProject\appsettings.json")
-            .Build();
-
-        var connectionString = config.GetConnectionString("PostgresConnection");
-
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseNpgsql(connectionString)
-            .Options;
-
-        return new ApplicationDbContext(options);
+        return ApplicationDbContext.CreateTestContext();
     }
-
 
     [Fact]
     public async Task AddPointsAsync_AddsPointsToGroup()
     {
         // Arrange
         int groupId;
-        using (var arrangeContext = CreateDbContext())
+        using (var arrangeContext = CreateTestContext())
         {
             var group = new PointGroup { Name = "Root" };
             arrangeContext.Add(group);
@@ -60,14 +45,14 @@ public class DirectoryServiceTests
 
         // Act
         List<Point> points;
-        using (var actContext = CreateDbContext())
+        using (var actContext = CreateTestContext())
         {
             var service = new DirectoryService(actContext);
             points = await service.AddPointsAsync(["P1", "P2"], groupId);
         }
 
         // Assert
-        using (var assertContext = CreateDbContext())
+        using (var assertContext = CreateTestContext())
         {
             var group = await assertContext.PointGroups.Include(g => g.Points).FirstOrDefaultAsync(g => g.Id == groupId);
             Assert.NotNull(group);
@@ -82,7 +67,7 @@ public class DirectoryServiceTests
         // Arrange
         int groupId;
         int[] pointIds;
-        using (var arrangeContext = CreateDbContext())
+        using (var arrangeContext = CreateTestContext())
         {
             var group = new PointGroup { Name = "Root" };
             var points = new[] {
@@ -98,14 +83,14 @@ public class DirectoryServiceTests
         }
 
         // Act
-        using (var actContext = CreateDbContext())
+        using (var actContext = CreateTestContext())
         {
             var service = new DirectoryService(actContext);
             await service.RemovePointsAsync(pointIds);
         }
 
         // Assert
-        using (var assertContext = CreateDbContext())
+        using (var assertContext = CreateTestContext())
         {
             var group = await assertContext.PointGroups.Include(g => g.Points).FirstOrDefaultAsync(g => g.Id == groupId);
             Assert.NotNull(group);
@@ -119,7 +104,7 @@ public class DirectoryServiceTests
         // Arrange
         int g1Id, g2Id;
         int[] pointIds;
-        using (var arrangeContext = CreateDbContext())
+        using (var arrangeContext = CreateTestContext())
         {
             var g1 = new PointGroup { Name = "G1" };
             var g2 = new PointGroup { Name = "G2" };
@@ -137,14 +122,14 @@ public class DirectoryServiceTests
         }
 
         // Act
-        using (var actContext = CreateDbContext())
+        using (var actContext = CreateTestContext())
         {
             var service = new DirectoryService(actContext);
             await service.MovePointsAsync(pointIds, g2Id);
         }
 
         // Assert
-        using (var assertContext = CreateDbContext())
+        using (var assertContext = CreateTestContext())
         {
             var points = await assertContext.Points.Where(p => pointIds.Contains(p.Id)).ToListAsync();
             Assert.All(points, p => Assert.Equal(g2Id, p.ParentId));
@@ -156,7 +141,7 @@ public class DirectoryServiceTests
     {
         // Arrange
         int pointId;
-        using (var arrangeContext = CreateDbContext())
+        using (var arrangeContext = CreateTestContext())
         {
             var root = new PointGroup { Name = "Root" };
             var child = new PointGroup { Name = "Child", Parent = root };
@@ -168,7 +153,7 @@ public class DirectoryServiceTests
 
         // Act
         string path;
-        using (var actContext = CreateDbContext())
+        using (var actContext = CreateTestContext())
         {
             var service = new DirectoryService(actContext);
             path = await service.GetFullPathOfPointAsync(pointId);
@@ -183,7 +168,7 @@ public class DirectoryServiceTests
     {
         // Arrange
         int pointId, valueId;
-        using (var arrangeContext = CreateDbContext())
+        using (var arrangeContext = CreateTestContext())
         {
             var group = new PointGroup { Name = "Group" };
             var point = new Point { Name = "TestPoint", Parent = group };
@@ -195,14 +180,14 @@ public class DirectoryServiceTests
         }
 
         // Act
-        using (var actContext = CreateDbContext())
+        using (var actContext = CreateTestContext())
         {
             var service = new DirectoryService(actContext);
             await service.AttachValueToPointAsync(pointId, valueId);
         }
 
         // Assert
-        using (var assertContext = CreateDbContext())
+        using (var assertContext = CreateTestContext())
         {
             var updatedPoint = await assertContext.Points.FindAsync(pointId);
             Assert.Equal(valueId, updatedPoint.ValueId);
@@ -214,7 +199,7 @@ public class DirectoryServiceTests
     {
         // Arrange
         int valueId;
-        using (var arrangeContext = CreateDbContext())
+        using (var arrangeContext = CreateTestContext())
         {
             var value = new Value { Name = "TestValue", Type = "string", ValueString = "test" };
             arrangeContext.Add(value);
@@ -224,7 +209,7 @@ public class DirectoryServiceTests
 
         // Act
         bool result;
-        using (var actContext = CreateDbContext())
+        using (var actContext = CreateTestContext())
         {
             var service = new DirectoryService(actContext);
             result = await service.AttachValueToPointAsync(999, valueId); // Non-existent point ID
@@ -239,7 +224,7 @@ public class DirectoryServiceTests
     {
         // Arrange
         int pointId;
-        using (var arrangeContext = CreateDbContext())
+        using (var arrangeContext = CreateTestContext())
         {
             var group = new PointGroup { Name = "Group" };
             var point = new Point { Name = "TestPoint", Parent = group };
@@ -250,7 +235,7 @@ public class DirectoryServiceTests
 
         // Act
         bool result;
-        using (var actContext = CreateDbContext())
+        using (var actContext = CreateTestContext())
         {
             var service = new DirectoryService(actContext);
             result = await service.AttachValueToPointAsync(pointId, 999); // Non-existent value ID
@@ -265,7 +250,7 @@ public class DirectoryServiceTests
     {
         // Arrange
         int valueId;
-        using (var arrangeContext = CreateDbContext())
+        using (var arrangeContext = CreateTestContext())
         {
             var group = new PointGroup { Name = "Group" };
             var value = new Value { Name = "SharedValue", Type = "int", IntegerValue = 42 };
@@ -282,7 +267,7 @@ public class DirectoryServiceTests
 
         // Act
         List<Point> result;
-        using (var actContext = CreateDbContext())
+        using (var actContext = CreateTestContext())
         {
             var service = new DirectoryService(actContext);
             result = await service.GetPointsByValueIdAsync(valueId);
@@ -300,7 +285,7 @@ public class DirectoryServiceTests
     {
         // Arrange
         Point testPoint;
-        using (var arrangeContext = CreateDbContext())
+        using (var arrangeContext = CreateTestContext())
         {
             var root = new PointGroup { Name = "Root" };
             var child = new PointGroup { Name = "Child", Parent = root };
@@ -311,7 +296,7 @@ public class DirectoryServiceTests
 
         // Act
         Point foundPoint;
-        using (var actContext = CreateDbContext())
+        using (var actContext = CreateTestContext())
         {
             var service = new DirectoryService(actContext);
             foundPoint = await service.FindPointByPathAsync("Root/Child/TestPoint");
@@ -329,7 +314,7 @@ public class DirectoryServiceTests
     public async Task FindPointByPathAsync_ReturnsNullForInvalidPath()
     {
         // Arrange
-        using (var arrangeContext = CreateDbContext())
+        using (var arrangeContext = CreateTestContext())
         {
             var root = new PointGroup { Name = "Root" };
             var child = new PointGroup { Name = "Child", Parent = root };
@@ -340,7 +325,7 @@ public class DirectoryServiceTests
 
         // Act
         Point foundPoint;
-        using (var actContext = CreateDbContext())
+        using (var actContext = CreateTestContext())
         {
             var service = new DirectoryService(actContext);
             foundPoint = await service.FindPointByPathAsync("Root/Child/NonExistentPoint");
@@ -354,7 +339,7 @@ public class DirectoryServiceTests
     public async Task FindPointByPathAsync_ReturnsNullForInvalidGroupPath()
     {
         // Arrange
-        using (var arrangeContext = CreateDbContext())
+        using (var arrangeContext = CreateTestContext())
         {
             var root = new PointGroup { Name = "Root" };
             var child = new PointGroup { Name = "Child", Parent = root };
@@ -365,7 +350,7 @@ public class DirectoryServiceTests
 
         // Act
         Point foundPoint;
-        using (var actContext = CreateDbContext())
+        using (var actContext = CreateTestContext())
         {
             var service = new DirectoryService(actContext);
             foundPoint = await service.FindPointByPathAsync("Root/InvalidGroup/TestPoint");

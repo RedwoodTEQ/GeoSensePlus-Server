@@ -2,6 +2,7 @@ using GeoSensePlus.App.AssetTracking;
 using GeoSensePlus.App.ProgressTracking;
 using GeoSensePlus.Core;
 using GeoSensePlus.Data;
+using GeoSensePlus.Data.DbContexts;
 using GeoSensePlus.Firestore;
 using GeoSensePlus.Mqtt;
 using GeoSensePlus.WebApi.Controllers.Base;
