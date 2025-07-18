@@ -294,5 +294,117 @@ public class StateServiceTests
         Assert.Contains(result, p => p.Name == "Point1");
         Assert.Contains(result, p => p.Name == "Point2");
     }
+
+    [Fact]
+    public async Task FindPointByPathAsync_ReturnsCorrectPoint()
+    {
+        // Arrange
+        Point testPoint;
+        using (var arrangeContext = CreateDbContext())
+        {
+            var root = new PointGroup { Name = "Root" };
+            var child = new PointGroup { Name = "Child", Parent = root };
+            testPoint = new Point { Name = "TestPoint", Parent = child };
+            arrangeContext.AddRange(root, child, testPoint);
+            await arrangeContext.SaveChangesAsync();
+        }
+
+        // Act
+        Point foundPoint;
+        using (var actContext = CreateDbContext())
+        {
+            var service = new StateService(actContext);
+            foundPoint = await service.FindPointByPathAsync("Root/Child/TestPoint");
+        }
+
+        // Assert
+        Assert.NotNull(foundPoint);
+        Assert.Equal(testPoint.Id, foundPoint.Id);
+        Assert.Equal(testPoint.Name, foundPoint.Name);
+        Assert.Equal("Child", foundPoint.Parent.Name);
+        Assert.Equal("Root", foundPoint.Parent.Parent.Name);
+    }
+
+    [Fact]
+    public async Task FindPointByPathAsync_ReturnsNullForInvalidPath()
+    {
+        // Arrange
+        using (var arrangeContext = CreateDbContext())
+        {
+            var root = new PointGroup { Name = "Root" };
+            var child = new PointGroup { Name = "Child", Parent = root };
+            var point = new Point { Name = "TestPoint", Parent = child };
+            arrangeContext.AddRange(root, child, point);
+            await arrangeContext.SaveChangesAsync();
+        }
+
+        // Act
+        Point foundPoint;
+        using (var actContext = CreateDbContext())
+        {
+            var service = new StateService(actContext);
+            foundPoint = await service.FindPointByPathAsync("Root/Child/NonExistentPoint");
+        }
+
+        // Assert
+        Assert.Null(foundPoint);
+    }
+
+    [Fact]
+    public async Task FindPointByPathAsync_ReturnsNullForInvalidGroupPath()
+    {
+        // Arrange
+        using (var arrangeContext = CreateDbContext())
+        {
+            var root = new PointGroup { Name = "Root" };
+            var child = new PointGroup { Name = "Child", Parent = root };
+            var point = new Point { Name = "TestPoint", Parent = child };
+            arrangeContext.AddRange(root, child, point);
+            await arrangeContext.SaveChangesAsync();
+        }
+
+        // Act
+        Point foundPoint;
+        using (var actContext = CreateDbContext())
+        {
+            var service = new StateService(actContext);
+            foundPoint = await service.FindPointByPathAsync("Root/InvalidGroup/TestPoint");
+        }
+
+        // Assert
+        Assert.Null(foundPoint);
+    }
+    {
+        // Arrange
+        int valueId;
+        using (var arrangeContext = CreateDbContext())
+        {
+            var group = new PointGroup { Name = "Group" };
+            var value = new Value { Name = "SharedValue", Type = "int", IntegerValue = 42 };
+            var points = new List<Point> {
+                new Point { Name = "Point1", Parent = group, Value = value },
+                new Point { Name = "Point2", Parent = group, Value = value },
+                new Point { Name = "Point3", Parent = group } // No value attached
+            };
+            arrangeContext.AddRange(group, value);
+            arrangeContext.AddRange(points);
+            await arrangeContext.SaveChangesAsync();
+            valueId = value.Id;
+        }
+
+        // Act
+        List<Point> result;
+        using (var actContext = CreateDbContext())
+        {
+            var service = new StateService(actContext);
+            result = await service.GetPointsByValueIdAsync(valueId);
+        }
+
+        // Assert
+        Assert.Equal(2, result.Count);
+        Assert.All(result, p => Assert.Equal(valueId, p.ValueId));
+        Assert.Contains(result, p => p.Name == "Point1");
+        Assert.Contains(result, p => p.Name == "Point2");
+    }
 }
 
