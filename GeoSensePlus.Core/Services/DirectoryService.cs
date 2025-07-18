@@ -61,7 +61,7 @@ public class DirectoryService : IDirectoryService
             throw new ArgumentException("Parent not found");
 
         if (await GroupNameExistsAsync(name, parentId))
-            return null;
+            throw new InvalidOperationException($"A group with name '{name}' already exists under this parent");
 
         var group = new PointGroup { Name = name, ParentId = parentId };
         _context.Set<PointGroup>().Add(group);
@@ -322,6 +322,8 @@ public class DirectoryService : IDirectoryService
         {
             if (!await PointNameExistsAsync(name, parentGroupId))
                 uniqueNames.Add(name);
+            else
+                _output.WriteLine($"Skipping duplicate point name '{name}' under group {parentGroupId}");
         }
 
         if (!uniqueNames.Any())

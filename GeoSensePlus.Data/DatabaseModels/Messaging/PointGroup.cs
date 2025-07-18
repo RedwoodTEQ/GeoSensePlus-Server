@@ -20,6 +20,7 @@ public class PointGroupEntity : NamedEntity<int>
 /// UNS point group
 /// </summary>
 [Table("point_group", Schema = SchemaNames.messaging)]
+[Index(nameof(Name), nameof(ParentId), IsUnique = true)]
 public class PointGroup : PointGroupEntity
 {
     [JsonIgnore]    // ignore in web response serialization, to avoid circular references
