@@ -21,9 +21,11 @@ public class PointEntity : NamedEntity<int>
 
 /// <summary>
 /// An UNS data point. A point can have one value and multiple topics.
+/// 
+/// NOTE:
+/// A unique index of (name, parent_id) with "NULLS NOT DISTINCT" is add in the migration.
 /// </summary>
 [Table("point", Schema = SchemaNames.messaging)]
-[Index(nameof(Name), nameof(ParentId), IsUnique = true)]
 public class Point : PointEntity
 {
     [JsonIgnore]    // ignore in web response serialization, to avoid circular references

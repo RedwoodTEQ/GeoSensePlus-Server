@@ -17,14 +17,16 @@ public class PointGroupEntity : NamedEntity<int>
 }
 
 /// <summary>
-/// UNS point group
+/// UNS point group.
+/// 
+/// NOTE:
+/// A unique index of (name, parent_id) with "NULLS NOT DISTINCT" is add in the migration.
 /// </summary>
 [Table("point_group", Schema = SchemaNames.messaging)]
-[Index(nameof(Name), nameof(ParentId), IsUnique = true)]
 public class PointGroup : PointGroupEntity
 {
     [JsonIgnore]    // ignore in web response serialization, to avoid circular references
-    public PointGroup? Parent { get; set; }
+    public PointGroup Parent { get; set; }
 
     public List<PointGroup> Children { get; set; } = new List<PointGroup>();
     public List<Point> Points { get; set; } = new List<Point>();
