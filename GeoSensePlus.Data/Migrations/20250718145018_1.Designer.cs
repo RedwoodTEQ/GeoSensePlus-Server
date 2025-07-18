@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GeoSensePlus.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250715164746_3")]
-    partial class _3
+    [Migration("20250718145018_1")]
+    partial class _1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -310,9 +310,15 @@ namespace GeoSensePlus.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("parent_id");
 
+                    b.Property<int?>("ValueId")
+                        .HasColumnType("integer")
+                        .HasColumnName("value_id");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ParentId");
+
+                    b.HasIndex("ValueId");
 
                     b.ToTable("point", "messaging");
                 });
@@ -366,12 +372,63 @@ namespace GeoSensePlus.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
+                    b.Property<int?>("PointId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
 
+                    b.HasIndex("PointId");
+
                     b.ToTable("topic", "messaging");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Messaging.Value", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool?>("BooleanValue")
+                        .HasColumnType("boolean")
+                        .HasColumnName("boolean_value");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<float?>("FloatValue")
+                        .HasColumnType("real")
+                        .HasColumnName("float_value");
+
+                    b.Property<int?>("IntegerValue")
+                        .HasColumnType("integer")
+                        .HasColumnName("integer_value");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text")
+                        .HasColumnName("type");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("ValueString")
+                        .HasColumnType("text")
+                        .HasColumnName("value_string");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("value", "messaging");
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Sensing.Measure", b =>
@@ -974,7 +1031,13 @@ namespace GeoSensePlus.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Messaging.Value", "Value")
+                        .WithMany("Points")
+                        .HasForeignKey("ValueId");
+
                     b.Navigation("Parent");
+
+                    b.Navigation("Value");
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Messaging.PointGroup", b =>
@@ -985,6 +1048,13 @@ namespace GeoSensePlus.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Messaging.Topic", b =>
+                {
+                    b.HasOne("GeoSensePlus.Data.DatabaseModels.Messaging.Point", null)
+                        .WithMany("Topics")
+                        .HasForeignKey("PointId");
                 });
 
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Sensing.Sensor", b =>
@@ -1145,10 +1215,20 @@ namespace GeoSensePlus.Data.Migrations
                     b.Navigation("Buildings");
                 });
 
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Messaging.Point", b =>
+                {
+                    b.Navigation("Topics");
+                });
+
             modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Messaging.PointGroup", b =>
                 {
                     b.Navigation("Children");
 
+                    b.Navigation("Points");
+                });
+
+            modelBuilder.Entity("GeoSensePlus.Data.DatabaseModels.Messaging.Value", b =>
+                {
                     b.Navigation("Points");
                 });
 
