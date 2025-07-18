@@ -3,7 +3,7 @@ using GeoSensePlus.App.ProgressTracking;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace GeoSensePlus.Core.UnitTest.TestEnv
+namespace GeoSensePlus.Core.UnitTest
 {
     public class GlobalUtilFixture : IDisposable
     {
@@ -15,7 +15,7 @@ namespace GeoSensePlus.Core.UnitTest.TestEnv
             serviceCollection.AddAssetTracking();
             serviceCollection.AddProgressTracking();
             serviceCollection.AddGeoSensePlusCore();
-            this._serviceProvider = serviceCollection.BuildServiceProvider();
+            _serviceProvider = serviceCollection.BuildServiceProvider();
         }
 
         /// <summary>
@@ -23,18 +23,18 @@ namespace GeoSensePlus.Core.UnitTest.TestEnv
         /// </summary>
         public T GetServiceNewScope<T>()
         {
-            this.ResetServiceProvider();
-            return this.GetService<T>();
+            ResetServiceProvider();
+            return GetService<T>();
         }
 
         public void ResetServiceProvider()
         {
-            this._serviceProvider = this._serviceProvider.CreateScope().ServiceProvider;
+            _serviceProvider = _serviceProvider.CreateScope().ServiceProvider;
         }
 
         public T GetService<T>()
         {
-            return this._serviceProvider.GetService<T>();
+            return _serviceProvider.GetService<T>();
         }
 
         public void Dispose() { }

@@ -1,4 +1,4 @@
-﻿namespace GeoSensePlus.Core.UnitTest;
+﻿namespace GeoSensePlus.Core.UnitTest.Services;
 
 using GeoSensePlus.Core.Services;
 using GeoSensePlus.Data;

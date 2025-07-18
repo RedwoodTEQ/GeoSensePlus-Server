@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace GeoSensePlus.Core.UnitTest
+namespace GeoSensePlus.Core.UnitTest.Codec
 {
     public class PayloadEncodingDecodingTests
     {
