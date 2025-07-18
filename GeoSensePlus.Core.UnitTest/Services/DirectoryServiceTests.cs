@@ -306,9 +306,10 @@ public class DirectoryServiceTests
     {
         // Arrange
         Point testPoint;
+        string rootName = $"Root_{Guid.NewGuid().ToString("N")[..6]}";
         using (var arrangeContext = CreateTestContext())
         {
-            var root = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
+            var root = new PointGroup { Name = rootName };
             var child = new PointGroup { Name = "Child", Parent = root };
             testPoint = new Point { Name = "TestPoint", Parent = child };
             arrangeContext.AddRange(root, child, testPoint);
@@ -320,7 +321,7 @@ public class DirectoryServiceTests
         using (var actContext = CreateTestContext())
         {
             var service = CreateService(actContext);
-            foundPoint = await service.FindPointByPathAsync("Root/Child/TestPoint");
+            foundPoint = await service.FindPointByPathAsync($"{rootName}/Child/TestPoint");
         }
 
         // Assert
@@ -328,7 +329,7 @@ public class DirectoryServiceTests
         Assert.Equal(testPoint.Id, foundPoint.Id);
         Assert.Equal(testPoint.Name, foundPoint.Name);
         Assert.Equal("Child", foundPoint.Parent.Name);
-        Assert.Equal("Root", foundPoint.Parent.Parent.Name);
+        Assert.Equal(rootName, foundPoint.Parent.Parent.Name);
     }
 
     [Fact]
