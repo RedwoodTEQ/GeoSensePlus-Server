@@ -47,7 +47,7 @@ public class DirectoryServiceTests
         int groupId;
         using (var arrangeContext = CreateTestContext())
         {
-            var group = new PointGroup { Name = "Root" };
+            var group = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
             arrangeContext.Add(group);
             await arrangeContext.SaveChangesAsync();
             groupId = group.Id;
@@ -89,7 +89,7 @@ public class DirectoryServiceTests
         int[] pointIds;
         using (var arrangeContext = CreateTestContext())
         {
-            var group = new PointGroup { Name = "Root" };
+            var group = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
             var points = new[] {
                 new Point { Name = "P1", Parent = group },
                 new Point { Name = "P2", Parent = group }
@@ -126,8 +126,8 @@ public class DirectoryServiceTests
         int[] pointIds;
         using (var arrangeContext = CreateTestContext())
         {
-            var g1 = new PointGroup { Name = "G1" };
-            var g2 = new PointGroup { Name = "G2" };
+            var g1 = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
+            var g2 = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
             var points = new[] {
                 new Point { Name = "P1", Parent = g1 },
                 new Point { Name = "P2", Parent = g1 }
@@ -161,9 +161,10 @@ public class DirectoryServiceTests
     {
         // Arrange
         int pointId;
+        string rootName = $"Root_{Guid.NewGuid().ToString("N")[..6]}";
         using (var arrangeContext = CreateTestContext())
         {
-            var root = new PointGroup { Name = "Root" };
+            var root = new PointGroup { Name =  rootName};
             var child = new PointGroup { Name = "Child", Parent = root };
             var point = new Point { Name = "Leaf", Parent = child };
             arrangeContext.AddRange(root, child, point);
@@ -180,7 +181,7 @@ public class DirectoryServiceTests
         }
 
         // Assert
-        Assert.Equal("Root/Child/Leaf", path);
+        Assert.Equal($"{rootName}/Child/Leaf", path);
     }
 
     [Fact]
@@ -190,7 +191,7 @@ public class DirectoryServiceTests
         int pointId, valueId;
         using (var arrangeContext = CreateTestContext())
         {
-            var group = new PointGroup { Name = "Group" };
+            var group = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
             var point = new Point { Name = "TestPoint", Parent = group };
             var value = new Value { Name = "TestValue", Type = "string", ValueString = "test" };
             arrangeContext.AddRange(group, point, value);
@@ -246,7 +247,7 @@ public class DirectoryServiceTests
         int pointId;
         using (var arrangeContext = CreateTestContext())
         {
-            var group = new PointGroup { Name = "Group" };
+            var group = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
             var point = new Point { Name = "TestPoint", Parent = group };
             arrangeContext.AddRange(group, point);
             await arrangeContext.SaveChangesAsync();
@@ -270,9 +271,9 @@ public class DirectoryServiceTests
     {
         // Arrange
         int valueId;
+        var group = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
         using (var arrangeContext = CreateTestContext())
         {
-            var group = new PointGroup { Name = "Group" };
             var value = new Value { Name = "SharedValue", Type = "int", IntegerValue = 42 };
             var points = new List<Point> {
                 new Point { Name = "Point1", Parent = group, Value = value },
@@ -307,7 +308,7 @@ public class DirectoryServiceTests
         Point testPoint;
         using (var arrangeContext = CreateTestContext())
         {
-            var root = new PointGroup { Name = "Root" };
+            var root = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
             var child = new PointGroup { Name = "Child", Parent = root };
             testPoint = new Point { Name = "TestPoint", Parent = child };
             arrangeContext.AddRange(root, child, testPoint);
@@ -336,7 +337,7 @@ public class DirectoryServiceTests
         // Arrange
         using (var arrangeContext = CreateTestContext())
         {
-            var root = new PointGroup { Name = "Root" };
+            var root = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
             var child = new PointGroup { Name = "Child", Parent = root };
             var point = new Point { Name = "TestPoint", Parent = child };
             arrangeContext.AddRange(root, child, point);
@@ -361,7 +362,7 @@ public class DirectoryServiceTests
         // Arrange
         using (var arrangeContext = CreateTestContext())
         {
-            var root = new PointGroup { Name = "Root" };
+            var root = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
             var child = new PointGroup { Name = "Child", Parent = root };
             var point = new Point { Name = "TestPoint", Parent = child };
             arrangeContext.AddRange(root, child, point);
@@ -386,7 +387,7 @@ public class DirectoryServiceTests
         // Arrange
         using (var arrangeContext = CreateTestContext())
         {
-            var root = new PointGroup { Name = "Root" };
+            var root = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
             arrangeContext.Add(root);
             await arrangeContext.SaveChangesAsync();
         }
