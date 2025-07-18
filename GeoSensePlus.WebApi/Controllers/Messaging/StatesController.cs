@@ -18,9 +18,9 @@ public record MovePointsRequest(int[] Ids, int NewGroupId);
 [Route("api/[controller]")]
 public class StatesController : ControllerBase
 {
-    private readonly IStateService _service;
+    private readonly IDirectoryService _service;
     ILogger<StatesController> _logger;
-    public StatesController(ILogger<StatesController> logger, IStateService service)
+    public StatesController(ILogger<StatesController> logger, IDirectoryService service)
     {
         _logger = logger;
         _service = service;

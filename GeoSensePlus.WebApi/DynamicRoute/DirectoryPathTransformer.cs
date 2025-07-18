@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.WebApi.DynamicRoute;
 
-public class UnsPathTransformer : DynamicRouteValueTransformer
+public class DirectoryPathTransformer : DynamicRouteValueTransformer
 {
-    ILogger<UnsPathTransformer> _logger;
+    ILogger<DirectoryPathTransformer> _logger;
     ApplicationDbContext _ctx;
 
-    public UnsPathTransformer(ILogger<UnsPathTransformer> logger, ApplicationDbContext ctx)
+    public DirectoryPathTransformer(ILogger<DirectoryPathTransformer> logger, ApplicationDbContext ctx)
     {
         _logger = logger;
         _ctx = ctx;

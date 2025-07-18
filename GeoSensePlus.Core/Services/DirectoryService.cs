@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Core.Services;
 
-public interface IStateService
+public interface IDirectoryService
 {
     Task<PointGroup> AddGroupAsync(string name, int? parentId = null);
     Task<List<Point>> AddPointsAsync(IEnumerable<string> names, int parentGroupId);
@@ -25,11 +25,11 @@ public interface IStateService
     Task<List<Point>> GetPointsByValueIdAsync(int valueId);
 }
 
-public class StateService : IStateService
+public class DirectoryService : IDirectoryService
 {
     private readonly ApplicationDbContext _context;
 
-    public StateService(ApplicationDbContext context)
+    public DirectoryService(ApplicationDbContext context)
     {
         _context = context;
     }
@@ -221,7 +221,7 @@ public class StateService : IStateService
     /// </summary>
     /// <param name="path">Full path to group</param>
     /// <returns>Found group or null</returns>
-    public async Task<PointGroup?> FindGroupByPathAsync(string path)
+    public async Task<PointGroup> FindGroupByPathAsync(string path)
     {
         if (string.IsNullOrWhiteSpace(path)) return null;
 
@@ -250,7 +250,7 @@ public class StateService : IStateService
     /// </summary>
     /// <param name="path">Full path to point</param>
     /// <returns>Found point or null</returns>
-    public async Task<Point?> FindPointByPathAsync(string path)
+    public async Task<Point> FindPointByPathAsync(string path)
     {
         if (string.IsNullOrWhiteSpace(path)) return null;
 

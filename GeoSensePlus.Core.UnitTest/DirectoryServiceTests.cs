@@ -16,11 +16,11 @@ using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
-public class StateServiceTests
+public class DirectoryServiceTests
 {
     ITestOutputHelper _output;
 
-    public StateServiceTests(ITestOutputHelper output)
+    public DirectoryServiceTests(ITestOutputHelper output)
     {
         _output = output;
     }
@@ -62,7 +62,7 @@ public class StateServiceTests
         List<Point> points;
         using (var actContext = CreateDbContext())
         {
-            var service = new StateService(actContext);
+            var service = new DirectoryService(actContext);
             points = await service.AddPointsAsync(["P1", "P2"], groupId);
         }
 
@@ -100,7 +100,7 @@ public class StateServiceTests
         // Act
         using (var actContext = CreateDbContext())
         {
-            var service = new StateService(actContext);
+            var service = new DirectoryService(actContext);
             await service.RemovePointsAsync(pointIds);
         }
 
@@ -139,7 +139,7 @@ public class StateServiceTests
         // Act
         using (var actContext = CreateDbContext())
         {
-            var service = new StateService(actContext);
+            var service = new DirectoryService(actContext);
             await service.MovePointsAsync(pointIds, g2Id);
         }
 
@@ -170,7 +170,7 @@ public class StateServiceTests
         string path;
         using (var actContext = CreateDbContext())
         {
-            var service = new StateService(actContext);
+            var service = new DirectoryService(actContext);
             path = await service.GetFullPathOfPointAsync(pointId);
         }
 
@@ -197,7 +197,7 @@ public class StateServiceTests
         // Act
         using (var actContext = CreateDbContext())
         {
-            var service = new StateService(actContext);
+            var service = new DirectoryService(actContext);
             await service.AttachValueToPointAsync(pointId, valueId);
         }
 
@@ -226,7 +226,7 @@ public class StateServiceTests
         bool result;
         using (var actContext = CreateDbContext())
         {
-            var service = new StateService(actContext);
+            var service = new DirectoryService(actContext);
             result = await service.AttachValueToPointAsync(999, valueId); // Non-existent point ID
         }
 
@@ -252,7 +252,7 @@ public class StateServiceTests
         bool result;
         using (var actContext = CreateDbContext())
         {
-            var service = new StateService(actContext);
+            var service = new DirectoryService(actContext);
             result = await service.AttachValueToPointAsync(pointId, 999); // Non-existent value ID
         }
 
@@ -284,7 +284,7 @@ public class StateServiceTests
         List<Point> result;
         using (var actContext = CreateDbContext())
         {
-            var service = new StateService(actContext);
+            var service = new DirectoryService(actContext);
             result = await service.GetPointsByValueIdAsync(valueId);
         }
 
@@ -313,7 +313,7 @@ public class StateServiceTests
         Point foundPoint;
         using (var actContext = CreateDbContext())
         {
-            var service = new StateService(actContext);
+            var service = new DirectoryService(actContext);
             foundPoint = await service.FindPointByPathAsync("Root/Child/TestPoint");
         }
 
@@ -342,7 +342,7 @@ public class StateServiceTests
         Point foundPoint;
         using (var actContext = CreateDbContext())
         {
-            var service = new StateService(actContext);
+            var service = new DirectoryService(actContext);
             foundPoint = await service.FindPointByPathAsync("Root/Child/NonExistentPoint");
         }
 
@@ -367,7 +367,7 @@ public class StateServiceTests
         Point foundPoint;
         using (var actContext = CreateDbContext())
         {
-            var service = new StateService(actContext);
+            var service = new DirectoryService(actContext);
             foundPoint = await service.FindPointByPathAsync("Root/InvalidGroup/TestPoint");
         }
 

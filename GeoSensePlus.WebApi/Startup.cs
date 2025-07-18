@@ -59,7 +59,7 @@ namespace GeoSensePlus.WebApi
 
             services.AddFirestoreServices();
 
-            services.AddTransient<UnsPathTransformer>();
+            services.AddTransient<DirectoryPathTransformer>();
 
             services.AddSwaggerGen(c =>
             {
@@ -85,7 +85,7 @@ namespace GeoSensePlus.WebApi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDynamicControllerRoute<UnsPathTransformer>("uns/{**path}");
+                endpoints.MapDynamicControllerRoute<DirectoryPathTransformer>("dir/{**path}");
                 endpoints.MapControllers();
             });
         }
