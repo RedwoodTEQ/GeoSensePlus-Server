@@ -141,7 +141,7 @@ public class DirectoryService : IDirectoryService
                 FROM messaging.point_group g
                 INNER JOIN path_to_root pt ON pt.parent_id = g.id
             )
-            SELECT name FROM path_to_root;
+            SELECT name FROM path_to_root
         ";
 
         var names = await _context.Database.SqlQueryRaw<string>(sql, groupId).ToListAsync();
@@ -170,7 +170,7 @@ public class DirectoryService : IDirectoryService
     /// <returns>List of all groups in subtree including root</returns>
     private async Task<List<PointGroup>> GetAllChildGroupsFlatAsync(int rootId, bool includePointValues = false)
     {
-        // NOTE: don't add ';' at the end of SQL queries in FromSqlRaw, otherwise when it's used with includes,
+        // NOTE: don't add ';' at the end of SQL queries in FromSqlRaw, otherwise when it's used with Include(),
         // it will throw an exception
         var sql = @"
             WITH RECURSIVE group_tree AS (
