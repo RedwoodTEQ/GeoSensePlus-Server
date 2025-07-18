@@ -41,10 +41,25 @@ public class DirectoryService : IDirectoryService
     /// <param name="parentId">Optional parent group ID</param>
     /// <returns>The created PointGroup</returns>
     /// <exception cref="ArgumentException">Thrown if parent group doesn't exist</exception>
+    private async Task<bool> GroupNameExistsAsync(string name, int? parentId)
+    {
+        return await _context.Set<PointGroup>()
+            .AnyAsync(g => g.Name == name && g.ParentId == parentId && !g.IsDeleted);
+    }
+
+    private async Task<bool> PointNameExistsAsync(string name, int parentId)
+    {
+        return await _context.Set<Point>()
+            .AnyAsync(p => p.Name == name && p.ParentId == parentId);
+    }
+
     public async Task<PointGroup> AddGroupAsync(string name, int? parentId = null)
     {
         if (parentId.HasValue && !await _context.Set<PointGroup>().AnyAsync(g => g.Id == parentId))
             throw new ArgumentException("Parent not found");
+
+        if (await GroupNameExistsAsync(name, parentId))
+            return null;
 
         var group = new PointGroup { Name = name, ParentId = parentId };
         _context.Set<PointGroup>().Add(group);
@@ -300,7 +315,17 @@ public class DirectoryService : IDirectoryService
         if (!await _context.Set<PointGroup>().AnyAsync(g => g.Id == parentGroupId))
             throw new ArgumentException("Parent group not found");
 
-        var points = names.Select(n => new Point { Name = n, ParentId = parentGroupId }).ToList();
+        var uniqueNames = new List<string>();
+        foreach (var name in names.Distinct())
+        {
+            if (!await PointNameExistsAsync(name, parentGroupId))
+                uniqueNames.Add(name);
+        }
+
+        if (!uniqueNames.Any())
+            return new List<Point>();
+
+        var points = uniqueNames.Select(n => new Point { Name = n, ParentId = parentGroupId }).ToList();
         _context.Set<Point>().AddRange(points);
         await _context.SaveChangesAsync();
         return points;
