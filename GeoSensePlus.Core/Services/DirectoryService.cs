@@ -28,10 +28,12 @@ public interface IDirectoryService
 public class DirectoryService : IDirectoryService
 {
     private readonly ApplicationDbContext _context;
+    private readonly ILogger<DirectoryService> _logger;
 
-    public DirectoryService(ApplicationDbContext context)
+    public DirectoryService(ApplicationDbContext context, ILogger<DirectoryService> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     /// <summary>
@@ -47,11 +49,6 @@ public class DirectoryService : IDirectoryService
             .AnyAsync(g => g.Name == name && g.ParentId == parentId && !g.IsDeleted);
     }
 
-    private async Task<bool> PointNameExistsAsync(string name, int parentId)
-    {
-        return await _context.Set<Point>()
-            .AnyAsync(p => p.Name == name && p.ParentId == parentId);
-    }
 
     public async Task<PointGroup> AddGroupAsync(string name, int? parentId = null)
     {
@@ -315,13 +312,23 @@ public class DirectoryService : IDirectoryService
         if (!await _context.Set<PointGroup>().AnyAsync(g => g.Id == parentGroupId))
             throw new ArgumentException("Parent group not found");
 
-        var uniqueNames = new List<string>();
-        foreach (var name in names.Distinct())
+        var distinctNames = names.Distinct().ToList();
+        if (!distinctNames.Any())
+            return new List<Point>();
+
+        // Get all existing points in one query
+        var existingNames = await _context.Set<Point>()
+            .Where(p => p.ParentId == parentGroupId && distinctNames.Contains(p.Name))
+            .Select(p => p.Name)
+            .ToListAsync();
+
+        var duplicates = existingNames.ToHashSet();
+        var uniqueNames = distinctNames.Except(duplicates).ToList();
+
+        foreach (var duplicate in existingNames)
         {
-            if (!await PointNameExistsAsync(name, parentGroupId))
-                uniqueNames.Add(name);
-            else
-                _output.WriteLine($"Skipping duplicate point name '{name}' under group {parentGroupId}");
+            _logger.LogInformation("Skipping duplicate point name '{Name}' under group {GroupId}", 
+                duplicate, parentGroupId);
         }
 
         if (!uniqueNames.Any())
