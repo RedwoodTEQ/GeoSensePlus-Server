@@ -374,37 +374,5 @@ public class StateServiceTests
         // Assert
         Assert.Null(foundPoint);
     }
-    {
-        // Arrange
-        int valueId;
-        using (var arrangeContext = CreateDbContext())
-        {
-            var group = new PointGroup { Name = "Group" };
-            var value = new Value { Name = "SharedValue", Type = "int", IntegerValue = 42 };
-            var points = new List<Point> {
-                new Point { Name = "Point1", Parent = group, Value = value },
-                new Point { Name = "Point2", Parent = group, Value = value },
-                new Point { Name = "Point3", Parent = group } // No value attached
-            };
-            arrangeContext.AddRange(group, value);
-            arrangeContext.AddRange(points);
-            await arrangeContext.SaveChangesAsync();
-            valueId = value.Id;
-        }
-
-        // Act
-        List<Point> result;
-        using (var actContext = CreateDbContext())
-        {
-            var service = new StateService(actContext);
-            result = await service.GetPointsByValueIdAsync(valueId);
-        }
-
-        // Assert
-        Assert.Equal(2, result.Count);
-        Assert.All(result, p => Assert.Equal(valueId, p.ValueId));
-        Assert.Contains(result, p => p.Name == "Point1");
-        Assert.Contains(result, p => p.Name == "Point2");
-    }
 }
 
