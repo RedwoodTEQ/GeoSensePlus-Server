@@ -16,11 +16,11 @@ public record MovePointsRequest(int[] Ids, int NewGroupId);
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class StatesController : ControllerBase
+public class DirectoryController : ControllerBase
 {
     private readonly IDirectoryService _service;
-    ILogger<StatesController> _logger;
-    public StatesController(ILogger<StatesController> logger, IDirectoryService service)
+    ILogger<DirectoryController> _logger;
+    public DirectoryController(ILogger<DirectoryController> logger, IDirectoryService service)
     {
         _logger = logger;
         _service = service;
