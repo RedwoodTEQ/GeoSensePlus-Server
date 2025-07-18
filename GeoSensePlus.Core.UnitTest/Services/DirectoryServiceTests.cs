@@ -382,27 +382,5 @@ public class DirectoryServiceTests
         // Assert
         Assert.Null(result);
     }
-    {
-        // Arrange
-        using (var arrangeContext = CreateTestContext())
-        {
-            var root = new PointGroup { Name = "Root" };
-            var child = new PointGroup { Name = "Child", Parent = root };
-            var point = new Point { Name = "TestPoint", Parent = child };
-            arrangeContext.AddRange(root, child, point);
-            await arrangeContext.SaveChangesAsync();
-        }
-
-        // Act
-        Point foundPoint;
-        using (var actContext = CreateTestContext())
-        {
-            var service = new DirectoryService(actContext);
-            foundPoint = await service.FindPointByPathAsync("Root/InvalidGroup/TestPoint");
-        }
-
-        // Assert
-        Assert.Null(foundPoint);
-    }
 }
 
