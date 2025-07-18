@@ -359,5 +359,50 @@ public class DirectoryServiceTests
         // Assert
         Assert.Null(foundPoint);
     }
+
+    [Fact]
+    public async Task AddGroupAsync_ReturnsNullForDuplicateRootName()
+    {
+        // Arrange
+        using (var arrangeContext = CreateTestContext())
+        {
+            var root = new PointGroup { Name = "Root" };
+            arrangeContext.Add(root);
+            await arrangeContext.SaveChangesAsync();
+        }
+
+        // Act
+        PointGroup result;
+        using (var actContext = CreateTestContext())
+        {
+            var service = new DirectoryService(actContext);
+            result = await service.AddGroupAsync("Root"); // Try to add another root with same name
+        }
+
+        // Assert
+        Assert.Null(result);
+    }
+    {
+        // Arrange
+        using (var arrangeContext = CreateTestContext())
+        {
+            var root = new PointGroup { Name = "Root" };
+            var child = new PointGroup { Name = "Child", Parent = root };
+            var point = new Point { Name = "TestPoint", Parent = child };
+            arrangeContext.AddRange(root, child, point);
+            await arrangeContext.SaveChangesAsync();
+        }
+
+        // Act
+        Point foundPoint;
+        using (var actContext = CreateTestContext())
+        {
+            var service = new DirectoryService(actContext);
+            foundPoint = await service.FindPointByPathAsync("Root/InvalidGroup/TestPoint");
+        }
+
+        // Assert
+        Assert.Null(foundPoint);
+    }
 }
 
