@@ -44,9 +44,7 @@ public class DirectoryService : IDirectoryService
     private async Task<bool> GroupNameExistsAsync(string name, int? parentId)
     {
         return await _context.Set<PointGroup>()
-            .AnyAsync(g => g.Name == name && 
-                         g.ParentId == parentId && 
-                         !g.IsDeleted);
+            .AnyAsync(g => g.Name == name && g.ParentId == parentId && !g.IsDeleted);
     }
 
     private async Task<bool> PointNameExistsAsync(string name, int parentId)
