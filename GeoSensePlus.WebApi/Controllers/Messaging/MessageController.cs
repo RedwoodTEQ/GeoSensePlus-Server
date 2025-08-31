@@ -39,12 +39,14 @@ namespace GeoSensePlus.WebApi.Controllers.Messaging
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] object data)
         {
-            if (data != null)
-            {
-                _messageEngine.Process(data.ToString(), new RestChannelContext(HttpContext));
-                await _mqttSvc.PublishAsync("RawMessage", data.ToString());
-            }
-            return Ok("ok");
+            // _todo_2509010311: temporarily commented, fix it later
+            //if (data != null)
+            //{
+            //    _messageEngine.Process(data.ToString(), new RestChannelContext(HttpContext));
+            //    await _mqttSvc.PublishAsync("RawMessage", data.ToString());
+            //}
+            //return Ok("ok");
+            return Ok(data.ToString());
         }
     }
 }

@@ -11,6 +11,7 @@
 
 ## TODO
 
+- Temporarily commented code, search: _todo_2509010311
 - Add an angular front end project
 - Test Dockerfile
 - Test controllers
