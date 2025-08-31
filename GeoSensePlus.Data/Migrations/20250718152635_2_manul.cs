@@ -15,6 +15,8 @@ namespace GeoSensePlus.Data.Migrations
              * 
              * By manully creating the unique indexes with this option, it's
              * not needed to use [index] in the model classes.
+             * 
+             * Search doc for: nulls_not_distinct-2509010319
              */
 
             migrationBuilder.Sql(

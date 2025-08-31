@@ -1,6 +1,6 @@
 # Notice for GeoSensePlus.Data.Migrations
 
-## NULLS NOT DISTINCT 
+## NULLS NOT DISTINCT {#nulls_not_distinct-2509010319}
 
 In order to ensure that NULL values are treated as distinct in PostgreSQL by
 applying `NULLS NOT DISTINCT` on index creation so that  the unique index for 2
@@ -39,3 +39,5 @@ public partial class _2 : Migration
     }
 }
 ```
+
+
