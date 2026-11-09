@@ -1,6 +1,12 @@
 ﻿using GeoSensePlus.App.AssetTracking;
 using GeoSensePlus.App.ProgressTracking;
+using GeoSensePlus.Core.Services;
+using GeoSensePlus.Firestore;
+using GeoSensePlus.Firestore.Models;
+using GeoSensePlus.Firestore.Repositories.Common;
+using GeoSensePlus.Firestore.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using System;
 
 namespace GeoSensePlus.Core.UnitTest
@@ -15,6 +21,13 @@ namespace GeoSensePlus.Core.UnitTest
             serviceCollection.AddAssetTracking();
             serviceCollection.AddProgressTracking();
             serviceCollection.AddGeoSensePlusCore();
+
+            /** Mocks for firebase/firestore, might be obsolete, but keeping it for now. **/
+            //sc.AddSingleton(new Mock<IAssetService>().Object);
+            //sc.AddSingleton(new Mock<IFirebaseClient>().Object);
+            //sc.AddSingleton(new Mock<IRepository<EdgeData>>().Object);
+            //sc.AddSingleton(new Mock<IRepository<AssetData>>().Object);
+
             _serviceProvider = serviceCollection.BuildServiceProvider();
         }
 

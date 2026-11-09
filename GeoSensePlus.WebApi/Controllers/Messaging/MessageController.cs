@@ -37,7 +37,8 @@ namespace GeoSensePlus.WebApi.Controllers.Messaging
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] object data)
+        //public async IActionResult Post([FromBody] object data)
+        public IActionResult Post([FromBody] object data)
         {
             // _todo_2509010311: temporarily commented, fix it later
             //if (data != null)
