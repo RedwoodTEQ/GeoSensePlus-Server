@@ -43,6 +43,15 @@ Example: <note>test note</note> <todo>test todo</todo>
   update-database.bat
   ```
 
+Note:
+
+  The first migration will get the following error:
+
+  An error occurred using the connection to database 'geosenseplus' on server 'tcp://localhost:5432'.
+
+  Still not sure why, but the migration seems to work, so just igoore it.
+
+
 ## Technical Notes
 
 ### Duplicated Point/PointGroup Names Not Allowed
