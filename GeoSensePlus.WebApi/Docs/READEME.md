@@ -79,7 +79,7 @@ Working:
 
 Done:
 
-- Upgrade to .net9
+- Upgrade to .net10
 - Rename "CoordinationTagsController" to "UwbTagsController"
 - Rename "MetricsController" to "InfluxdbController"
 - Add more REST API controllers (not fully implemented)

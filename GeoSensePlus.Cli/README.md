@@ -13,7 +13,7 @@
 
 - [#67](https://gitlab.com/outdoor-asset-tracking-solution/app-front-end/issues/67) Update .gs.config.json set/register/unregister logic
 
-- Upgrade to .net7
+- Upgrade to .net10
 
 - Add aws iot core command "thing"
 
