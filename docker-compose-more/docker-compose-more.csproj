@@ -4,4 +4,10 @@
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="Archived\gsv-ttn.override.yml">
+      <DependentUpon>gsv-ttn.yml</DependentUpon>
+    </None>
+  </ItemGroup>
+
 </Project>

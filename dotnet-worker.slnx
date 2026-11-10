@@ -1,0 +1,30 @@
+<Solution>
+  <Folder Name="/Archived/">
+    <Project Path="GeoSensePlus.App.AssetTracking/GeoSensePlus.App.AssetTracking.csproj" />
+    <Project Path="GeoSensePlus.App.ProgressTracking/GeoSensePlus.App.ProgressTracking.csproj" />
+  </Folder>
+  <Folder Name="/Database/">
+    <Project Path="GeoSensePlus.Data/GeoSensePlus.Data.csproj" />
+    <Project Path="GeoSensePlus.Firestore/GeoSensePlus.Firestore.csproj" />
+    <Project Path="GeoSensePlus.Mongo/GeoSensePlus.Mongo.csproj" />
+  </Folder>
+  <Folder Name="/Protocol Supports/">
+    <Project Path="GeoSensePlus.Mqtt/GeoSensePlus.Mqtt.csproj" />
+    <Project Path="GeoSensePlus.OpcUa.WinForm/GeoSensePlus.OpcUa.WinForm.csproj" />
+    <Project Path="GeoSensePlus.OpcUa/GeoSensePlus.OpcUa.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+    <File Path="TODOs.md" />
+  </Folder>
+  <Folder Name="/Unit Tests/">
+    <Project Path="GeoSensePlus.Core.UnitTest/GeoSensePlus.Core.UnitTest.csproj" />
+    <Project Path="GeoSensePlus.Data.UnitTest/GeoSensePlus.Data.UnitTest.csproj" />
+    <Project Path="GeoSensePlus.Firestore.UnitTest/GeoSensePlus.Firestore.UnitTest.csproj" />
+  </Folder>
+  <Project Path="docker-compose-more/docker-compose-more.csproj" />
+  <Project Path="GeoSensePlus.Aws.IoT/GeoSensePlus.Aws.IoT.csproj" />
+  <Project Path="GeoSensePlus.Cli/GeoSensePlus.Cli.csproj" />
+  <Project Path="GeoSensePlus.Core/GeoSensePlus.Core.csproj" />
+  <Project Path="GeoSensePlus.WebApi/GeoSensePlus.WebApi.csproj" />
+</Solution>
