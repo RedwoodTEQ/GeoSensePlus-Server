@@ -3,6 +3,7 @@ using GeoSensePlus.Data.DatabaseModels.Tracking;
 using GeoSensePlus.Mqtt;
 using GeoSensePlus.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.WebApi.Controllers.Messaging
 {
+    [Obsolete("Use ChannelsController instead")]
     [Route("api/[controller]")]
     [ApiController]
     public class TopicsController : ControllerBase

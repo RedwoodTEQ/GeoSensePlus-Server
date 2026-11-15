@@ -19,12 +19,8 @@ public class TopicEntity : BaseEntity<int>
 }
 
 /// <summary>
-/// Subscription topic
-/// Used by MQTT or any other notification engines
+/// A channel is a message source (inbound) or target (outbound), e.g. a MQ server, blockchain, ROS, TTN etc.
 /// </summary>
-[Obsolete("Rename to Channel")]     // _todo: Rename to Channel
-//[Table("topic", Schema = SchemaNames.messaging)]
-//[Index(nameof(Name), IsUnique = true)]
 public class Topic : TopicEntity
 {
 }
