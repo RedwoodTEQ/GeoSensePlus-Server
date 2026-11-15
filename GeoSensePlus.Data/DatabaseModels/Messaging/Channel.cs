@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace GeoSensePlus.Data.DatabaseModels.Messaging;
 
-public class TopicEntity : BaseEntity<int>
+public class ChannelEntity : BaseEntity<int>
 {
     //public MessageDirection Direction { get; set; }
 
@@ -21,13 +21,13 @@ public class TopicEntity : BaseEntity<int>
 /// <summary>
 /// A channel is a message source (inbound) or target (outbound), e.g. a MQ server, blockchain, ROS, TTN etc.
 /// </summary>
-public class Topic : TopicEntity
+public class Channel : ChannelEntity
 {
 }
 
-public class TopicConfiguration : IEntityTypeConfiguration<Topic>
+public class TopicConfiguration : IEntityTypeConfiguration<Channel>
 {
-    public void Configure(EntityTypeBuilder<Topic> builder)
+    public void Configure(EntityTypeBuilder<Channel> builder)
     {
         builder.ToTable("topic", SchemaNames.messaging);
         builder.HasKey(o => o.Id);

@@ -11,36 +11,36 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.WebApi.Controllers.Messaging
 {
-    [Obsolete("Use ChannelsController instead")]
+    [Obsolete("Topic has been renamed to Channel, use ChannelsController instead")]
     [Route("api/[controller]")]
     [ApiController]
     public class TopicsController : ControllerBase
     {
-        IControllerUtil<Topic> _controllerUtil;
+        IControllerUtil<Channel> _controllerUtil;
         IMqttService _mqttSvc;
 
-        public TopicsController(IControllerUtil<Topic> controllerUtil, IMqttService mqttSvc)
+        public TopicsController(IControllerUtil<Channel> controllerUtil, IMqttService mqttSvc)
         {
             _controllerUtil = controllerUtil;
             _mqttSvc = mqttSvc;
         }
 
         [HttpGet]
-        public IEnumerable<Topic> Get()
+        public IEnumerable<Channel> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Topic> Get(int id)
+        public ActionResult<Channel> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<TopicEntity> Post([FromBody] TopicEntity value)
+        public ActionResult<ChannelEntity> Post([FromBody] ChannelEntity value)
         {
-            var topic = new Topic { Name = value.Name, Description = value.Description };
+            var topic = new Channel { Name = value.Name, Description = value.Description };
             return _controllerUtil.Post(topic);
         }
 
@@ -54,7 +54,7 @@ namespace GeoSensePlus.WebApi.Controllers.Messaging
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] TargetEntity value)
         {
-            var topic = new Topic { Id = id, Name = value.Name, Description = value.Description };
+            var topic = new Channel { Id = id, Name = value.Name, Description = value.Description };
             return _controllerUtil.Put(topic);
         }
 

@@ -34,6 +34,5 @@ public class Point : PointEntity
 {
     [JsonIgnore]    // ignore in web response serialization, to avoid circular references
     public PointGroup Parent { get; set; } = null!;
-    public Value Value { get; set; } = null!;  // value associated with this point, e.g. "temperature", "humidity", etc.
-    public List<Topic> Topics { get; set; } = new List<Topic>();  // may have multiple mqtt topics
+    public List<Channel> Channels { get; set; } = new List<Channel>();  // may have multiple mqtt topics
 }
