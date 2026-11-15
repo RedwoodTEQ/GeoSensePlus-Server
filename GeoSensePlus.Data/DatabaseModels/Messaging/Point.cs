@@ -17,10 +17,14 @@ public class PointEntity : BaseEntity<int>
 
     [Column("value_id")]
     public int? ValueId { get; set; }  // foreign key to Value, can be null if no value is associated
+
+    // Current Value
+    [Column("scalar_value")]    // will add a VectorValue column later
+    public double? ScalarValue { get; set; }
 }
 
 /// <summary>
-/// An UNS data point. A point can have one value and multiple topics.
+/// An UNS data point. A point contains a final value's data type, which is different from the income value's data type defined in a message channel.
 /// 
 /// NOTE:
 /// A unique index of (name, parent_id) with "NULLS NOT DISTINCT" is add in the migration.
