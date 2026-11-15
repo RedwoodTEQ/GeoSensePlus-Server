@@ -2,7 +2,7 @@
 
 namespace GeoSensePlus.Data.DatabaseModels.AlarmEvent;
 
-public class  EventDetailEntity : NamedEntity<int>
+public class  EventDetailEntity : BaseEntity<int>
 {
 }
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels.Location;
 
-public class AreaEntity : NamedEntity<int>
+public class AreaEntity : BaseEntity<int>
 {
     [Column("floor_plan_id")]
     public int? FloorPlanId { get; set; }   // foreign key to FloorPlan

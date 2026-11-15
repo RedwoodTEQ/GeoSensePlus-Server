@@ -7,11 +7,8 @@ using Microsoft.EntityFrameworkCore;
 namespace GeoSensePlus.Data.DatabaseModels.Messaging;
 
 [Index(nameof(ParentId))]
-public class PointGroupEntity : NamedEntity<int>
+public class PointGroupEntity : BaseEntity<int>
 {
-    [Column("is_deleted")]
-    public bool IsDeleted { get; set; } = false;   // if don't want to cascade delete all children, just set this to true
-
     [Column("parent_id")]
     public int? ParentId { get; set; }
 }

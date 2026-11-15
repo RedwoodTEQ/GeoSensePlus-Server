@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Map;
 
-public class MarkerEntity : NamedEntity<int>
+public class MarkerEntity : BaseEntity<int>
 {
     [Column("axis_x")]
     public double AxisX { get; set; } = -1;

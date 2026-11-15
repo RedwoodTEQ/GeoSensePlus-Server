@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels.Location;
 
-public class SiteEntity : NamedEntity<int>
+public class SiteEntity : BaseEntity<int>
 {
     // This class can be extended with additional properties if needed
 }

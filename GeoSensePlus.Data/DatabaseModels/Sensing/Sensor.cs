@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Sensing;
 
-public class SensorEntity: NamedEntity<long>
+public class SensorEntity: BaseEntity<long>
 {
     /// <summary>
     /// Temperature, humidity etc.
@@ -32,9 +32,6 @@ public class SensorEntity: NamedEntity<long>
     [Column("unit")]
     public string Unit { get; set; }
 
-    [Column("created_at")]
-    public DateTime CreatedAt { get; set; }
-
     [Column("area_id")]
     public int? AreaId { get; set; } // foreign key to Area
 
@@ -42,6 +39,7 @@ public class SensorEntity: NamedEntity<long>
     public int? MeasureId { get; set; } // foreign key to Measure
 }
 
+[Obsolete("This class is deprecated and will be removed.")]     // _todo: Remove the Sensor class
 [Table("sensor", Schema = SchemaNames.sensing)]
 public class Sensor: SensorEntity
 {

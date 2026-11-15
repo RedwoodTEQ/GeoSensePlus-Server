@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Tracking;
 
-public class CellAnchorEntity : NamedEntity<int>
+public class CellAnchorEntity : BaseEntity<int>
 {
     [Column("area_id")]
     public int? AreaId { get; set; }  // foreign key to Area

@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace GeoSensePlus.Data.DatabaseModels.Messaging;
 
-public class PointEntity : NamedEntity<int>
+public class PointEntity : BaseEntity<int>
 {
     /// <summary>
     /// Group ID, must be set, at least set to root group

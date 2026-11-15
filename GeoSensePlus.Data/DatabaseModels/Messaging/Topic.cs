@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Messaging;
 
-public class TopicEntity : NamedEntity<int>
+public class TopicEntity : BaseEntity<int>
 {
     // This class is used for API requests, so it does not need any additional properties.
 }

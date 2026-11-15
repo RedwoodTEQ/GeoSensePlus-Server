@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Location;
 
-public class FloorEntity : NamedEntity<int>
+public class FloorEntity : BaseEntity<int>
 {
     [Column("level_number")]
     public int LevelNumber { get; set; }
@@ -13,7 +13,7 @@ public class FloorEntity : NamedEntity<int>
 }
 
 [Table("floor", Schema = SchemaNames.location)]
-public class Floor : NamedEntity<int>
+public class Floor : BaseEntity<int>
 {
     public Building Building { get; set; }
 

@@ -8,16 +8,13 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels.Messaging;
 
-public class ValueEntity : NamedEntity<int>
+public class ValueEntity : BaseEntity<int>
 {
     [Column("type")]
     public string Type { get; set; } = string.Empty;  // e.g. "string", "int", "float", "bool", etc.
 
     [Column("value_string")]
     public string ValueString { get; set; } = string.Empty;  // serialized value, e.g. "123", "true", "hello world"
-
-    [Column("updated_at")]
-    public DateTime UpdatedAt { get; set; }
 
     [Column("integer_value")]
     public int? IntegerValue { get; set; }
@@ -29,6 +26,8 @@ public class ValueEntity : NamedEntity<int>
     public bool? BooleanValue { get; set; }
 }
 
+// _todo: Merge this class into Point class, and remove the Value class.
+[Obsolete("This class is deprecated and will be merged into the Point class.")]
 [Table("value", Schema = SchemaNames.messaging)]
 public class Value : ValueEntity
 {
