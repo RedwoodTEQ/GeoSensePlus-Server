@@ -22,8 +22,6 @@ public interface IDirectoryService
     Task<bool> MovePointsAsync(IEnumerable<int> pointIds, int targetGroupId);
     Task<bool> RemoveGroupAsync(int id, bool deleteWithChildren = false, bool cascade = false);
     Task<bool> RemovePointsAsync(IEnumerable<int> pointIds);
-    Task<bool> AttachValueToPointAsync(int pointId, int valueId);
-    Task<List<Point>> GetPointsByValueIdAsync(int valueId);
 }
 
 public class DirectoryService : IDirectoryService
@@ -202,7 +200,7 @@ public class DirectoryService : IDirectoryService
         {
             groups = await groupQuery
                 .Include(g => g.Points)
-                    .ThenInclude(p => p.Value)
+                    .ThenInclude(p => p.Channels)
                 .ToListAsync();
         }
         else
@@ -393,37 +391,6 @@ public class DirectoryService : IDirectoryService
     /// <param name="pointId">ID of point</param>
     /// <returns>Full path string or null if point not found</returns>
     /// <summary>
-    /// Attaches a value to a point
+    /// Gets the full path of a point (e.g. "Root/Child/PointName")
     /// </summary>
-    /// <param name="pointId">ID of the point to attach to</param>
-    /// <param name="valueId">ID of the value to attach</param>
-    /// <returns>True if both point and value exist and were successfully attached</returns>
-    public async Task<bool> AttachValueToPointAsync(int pointId, int valueId)
-    {
-        var point = await _context.Set<Point>()
-            .FirstOrDefaultAsync(p => p.Id == pointId);
-        
-        var value = await _context.Set<Value>()
-            .FirstOrDefaultAsync(v => v.Id == valueId);
-
-        if (point == null || value == null)
-            return false;
-
-        point.ValueId = valueId;
-        await _context.SaveChangesAsync();
-        return true;
-    }
-
-    /// <summary>
-    /// Gets all points that reference a specific value
-    /// </summary>
-    /// <param name="valueId">ID of the value to query</param>
-    /// <returns>List of points that reference this value</returns>
-    public async Task<List<Point>> GetPointsByValueIdAsync(int valueId)
-    {
-        return await _context.Set<Point>()
-            .Where(p => p.ValueId == valueId)
-            .Include(p => p.Parent)
-            .ToListAsync();
-    }
 }

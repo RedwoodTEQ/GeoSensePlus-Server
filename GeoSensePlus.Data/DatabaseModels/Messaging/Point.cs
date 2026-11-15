@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,9 +16,6 @@ public class PointEntity : BaseEntity<int>
     [Column("parent_id")]
     public int ParentId { get; set; }  // foreign key to PointGroup
 
-    [Column("value_id")]
-    public int? ValueId { get; set; }  // foreign key to Value, can be null if no value is associated
-
     // Current Value
     [Column("scalar_value")]    // will add a VectorValue column later
     public double? ScalarValue { get; set; }
@@ -29,10 +27,23 @@ public class PointEntity : BaseEntity<int>
 /// NOTE:
 /// A unique index of (name, parent_id) with "NULLS NOT DISTINCT" is add in the migration.
 /// </summary>
-[Table("point", Schema = SchemaNames.messaging)]
 public class Point : PointEntity
 {
     [JsonIgnore]    // ignore in web response serialization, to avoid circular references
     public PointGroup Parent { get; set; } = null!;
     public List<Channel> Channels { get; set; } = new List<Channel>();  // may have multiple mqtt topics
+}
+
+public class PointConfiguration : BaseEntityConfiguration<Point, int>
+{
+    public override void Configure(EntityTypeBuilder<Point> builder)
+    {
+        base.Configure(builder);
+
+        builder.ToTable("point", SchemaNames.messaging);
+        builder.HasOne(i => i.Parent)
+            .WithMany(g => g.Points)
+            .HasForeignKey(i => i.ParentId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
 }

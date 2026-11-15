@@ -25,12 +25,13 @@ public class Channel : ChannelEntity
 {
 }
 
-public class TopicConfiguration : IEntityTypeConfiguration<Channel>
+public class ChannelConfiguration : BaseEntityConfiguration<Channel, int>
 {
-    public void Configure(EntityTypeBuilder<Channel> builder)
+    public override void Configure(EntityTypeBuilder<Channel> builder)
     {
-        builder.ToTable("topic", SchemaNames.messaging);
-        builder.HasKey(o => o.Id);
+        base.Configure(builder);
+
+        builder.ToTable("channel", SchemaNames.messaging);
         builder.HasIndex(o => o.Name).IsUnique();
         builder.Property(x => x.Configuration)
             .HasColumnType("jsonb")

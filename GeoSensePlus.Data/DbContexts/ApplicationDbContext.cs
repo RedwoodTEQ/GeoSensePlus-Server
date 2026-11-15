@@ -84,17 +84,9 @@ namespace GeoSensePlus.Data.DbContexts
         {
             base.OnModelCreating(modelBuilder); // Call the base method to ensure Identity tables are created
 
-            modelBuilder.Entity<PointGroup>()
-                .HasOne(g => g.Parent)
-                .WithMany(g => g.Children)
-                .HasForeignKey(g => g.ParentId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Point>()
-                .HasOne(i => i.Parent)
-                .WithMany(g => g.Points)
-                .HasForeignKey(i => i.ParentId)
-                .OnDelete(DeleteBehavior.Cascade);
+            // apply all IEntityTypeConfiguration<> classes in this assembly,
+            // e.g. ChannelConfiguration, PointGroupConfiguration, PointConfiguration
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
     }
 }
