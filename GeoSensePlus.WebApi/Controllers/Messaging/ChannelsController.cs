@@ -2,19 +2,18 @@
 using GeoSensePlus.Mongo.Models.Platform;
 using GeoSensePlus.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NetCoreUtils.Database.MongoDb;
 
 namespace GeoSensePlus.WebApi.Controllers.Messaging
 {
 
     /// <summary>
-    /// A channel is a message source/server, e.g. a MQ server, blockchain, ROS, TTN etc.
+    /// A channel is a message source (inbound) or target (outbound), e.g. a MQ server, blockchain, ROS, TTN etc.
     /// </summary>
-    [Route("api/[controller]")]
     [ApiController]
-    public class ChannelsController : MongoController<Channel>
+    [Route("api/[controller]")]
+    public class ChannelsController(ILogger<ChannelsController> logger) : ControllerBase
     {
-        public ChannelsController(IMongoDocReader<Channel> reader, IMongoDocWriter<Channel> writer) : base(reader, writer)
-        { }
     }
 }
