@@ -16,13 +16,18 @@ public class ChannelEntity : BaseEntity<int>
     public JsonDocument Configuration { get; set; } = JsonDocument.Parse("{}");
 
     //public bool Enabled { get; set; } = true;
+
+    [Column("point_id")]
+    public int PointId { get; set; }
 }
 
 /// <summary>
 /// A channel is a message source (inbound) or target (outbound), e.g. a MQ server, blockchain, ROS, TTN etc.
 /// </summary>
+[Table("channel", Schema = SchemaNames.messaging)]
 public class Channel : ChannelEntity
 {
+    public Point Point { get; set; } = null!;
 }
 
 public class ChannelConfiguration : BaseEntityConfiguration<Channel, int>
@@ -31,10 +36,6 @@ public class ChannelConfiguration : BaseEntityConfiguration<Channel, int>
     {
         base.Configure(builder);
 
-        builder.ToTable("channel", SchemaNames.messaging);
-        builder.HasIndex(o => o.Name).IsUnique();
-        builder.Property(x => x.Configuration)
-            .HasColumnType("jsonb")
-            .IsRequired();
+        builder.Property(x => x.Configuration).HasColumnType("jsonb").IsRequired();
     }
 }

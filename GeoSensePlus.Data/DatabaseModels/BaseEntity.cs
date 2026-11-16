@@ -22,8 +22,8 @@ public class BaseEntity<T>
     [Column("updated_at")]
     public DateTimeOffset UpdatedAt { get; set; }
 
-    [Column("is_deleted")]
-    public bool IsDeleted { get; set; } = false;   // if don't want to cascade delete all children, just set this to true
+    //[Column("is_deleted")]
+    //public bool IsDeleted { get; set; } = false;   // if don't want to cascade delete all children, just set this to true
 }
 
 /// <summary>
@@ -36,6 +36,6 @@ public abstract class BaseEntityConfiguration<TEntity, TKey> : IEntityTypeConfig
 {
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        builder.HasKey(o => o.Id);
+        builder.HasKey(x => x.Id).HasName("pk_id");
     }
 }

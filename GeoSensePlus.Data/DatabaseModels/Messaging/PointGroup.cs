@@ -18,6 +18,7 @@ public class PointGroupEntity : BaseEntity<int>
 /// NOTE:
 /// A unique index of (name, parent_id) with "NULLS NOT DISTINCT" is add in the migration.
 /// </summary>
+[Table("point_group", Schema = SchemaNames.messaging)]
 public class PointGroup : PointGroupEntity
 {
     [JsonIgnore]    // ignore in web response serialization, to avoid circular references
@@ -33,11 +34,7 @@ public class PointGroupConfiguration : BaseEntityConfiguration<PointGroup, int>
     {
         base.Configure(builder);
 
-        builder.ToTable("point_group", SchemaNames.messaging);
-        builder.HasIndex(g => g.ParentId);
-        builder.HasOne(g => g.Parent)
-            .WithMany(g => g.Children)
-            .HasForeignKey(g => g.ParentId)
-            .OnDelete(DeleteBehavior.Restrict);
+        builder.HasIndex(p => new { p.Name, p.ParentId }).HasDatabaseName("idx_point_name_parent_id").IsUnique();
+        builder.HasOne(g => g.Parent).WithMany(g => g.Children).HasForeignKey(g => g.ParentId).OnDelete(DeleteBehavior.Restrict);
     }
 }

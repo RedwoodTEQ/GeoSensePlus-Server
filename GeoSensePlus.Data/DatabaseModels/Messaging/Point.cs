@@ -22,11 +22,13 @@ public class PointEntity : BaseEntity<int>
 }
 
 /// <summary>
-/// An UNS data point. A point contains a final value's data type, which is different from the income value's data type defined in a message channel.
+/// An UNS data point. A point contains a final value's data type, which is
+/// different from the income value's data type defined in a message channel.
 /// 
 /// NOTE:
 /// A unique index of (name, parent_id) with "NULLS NOT DISTINCT" is add in the migration.
 /// </summary>
+[Table("point", Schema = SchemaNames.messaging)]
 public class Point : PointEntity
 {
     [JsonIgnore]    // ignore in web response serialization, to avoid circular references
@@ -40,10 +42,7 @@ public class PointConfiguration : BaseEntityConfiguration<Point, int>
     {
         base.Configure(builder);
 
-        builder.ToTable("point", SchemaNames.messaging);
-        builder.HasOne(i => i.Parent)
-            .WithMany(g => g.Points)
-            .HasForeignKey(i => i.ParentId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.HasIndex(p => new { p.Name, p.ParentId }).HasDatabaseName("idx_point_name_parent_id").IsUnique();
+        builder.HasOne(i => i.Parent).WithMany(g => g.Points).HasForeignKey(i => i.ParentId).OnDelete(DeleteBehavior.Cascade);
     }
 }

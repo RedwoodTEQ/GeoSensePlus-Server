@@ -82,10 +82,12 @@ namespace GeoSensePlus.Data.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder); // Call the base method to ensure Identity tables are created
+            base.OnModelCreating(modelBuilder);
 
-            // apply all IEntityTypeConfiguration<> classes in this assembly,
-            // e.g. ChannelConfiguration, PointGroupConfiguration, PointConfiguration
+            /**
+             * Apply all IEntityTypeConfiguration<> classes in this assembly.
+             * Note: all IEntityTypeConfiguration<> classes' constructors must be parameterless.
+             */
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
     }
