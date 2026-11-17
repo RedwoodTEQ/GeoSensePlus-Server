@@ -12,9 +12,9 @@ namespace GeoSensePlus.Core.Services;
 public interface IDirectoryService
 {
     Task<PointGroup> AddGroupAsync(string name, int? parentId = null);
-    Task<List<Point>> AddPointsAsync(IEnumerable<string> names, int parentGroupId);
+    Task<List<DataPoint>> AddPointsAsync(IEnumerable<string> names, int parentGroupId);
     Task<PointGroup> FindGroupByPathAsync(string path);
-    Task<Point> FindPointByPathAsync(string path);
+    Task<DataPoint> FindPointByPathAsync(string path);
     Task<string> GetFullPathOfGroupAsync(int groupId);
     Task<string> GetFullPathOfPointAsync(int pointId);
     Task<List<PointGroup>> GetNestedTreeAsync(int rootId);
@@ -163,7 +163,7 @@ public class DirectoryService : IDirectoryService
     }
     public async Task<string?> GetFullPathOfPointAsync(int pointId)
     {
-        var point = await _context.Set<Point>()
+        var point = await _context.Set<DataPoint>()
             .Include(p => p.Parent)
             .FirstOrDefaultAsync(p => p.Id == pointId);
 
@@ -199,8 +199,8 @@ public class DirectoryService : IDirectoryService
         if (includePointValues)
         {
             groups = await groupQuery
-                .Include(g => g.Points)
-                    .ThenInclude(p => p.Channels)
+                .Include(g => g.DataPoints)
+                    .ThenInclude(p => p.DataChannels)
                 .ToListAsync();
         }
         else
@@ -276,7 +276,7 @@ public class DirectoryService : IDirectoryService
     /// </summary>
     /// <param name="path">Full path to point</param>
     /// <returns>Found point or null</returns>
-    public async Task<Point> FindPointByPathAsync(string path)
+    public async Task<DataPoint> FindPointByPathAsync(string path)
     {
         if (string.IsNullOrWhiteSpace(path))
             return null;
@@ -292,7 +292,7 @@ public class DirectoryService : IDirectoryService
         if (group == null)
             return null;
 
-        var point = await _context.Set<Point>()
+        var point = await _context.Set<DataPoint>()
             .Include(p => p.Parent)
             .FirstOrDefaultAsync(p => p.Name == pointName && p.ParentId == group.Id);
 
@@ -306,7 +306,7 @@ public class DirectoryService : IDirectoryService
     /// <param name="parentGroupId">ID of parent group</param>
     /// <returns>List of created points</returns>
     /// <exception cref="ArgumentException">Thrown if parent group doesn't exist</exception>
-    public async Task<List<Point>> AddPointsAsync(IEnumerable<string> names, int parentGroupId)
+    public async Task<List<DataPoint>> AddPointsAsync(IEnumerable<string> names, int parentGroupId)
     {
         // Ensure parent group exists
         if (!await _context.Set<PointGroup>().AnyAsync(g => g.Id == parentGroupId))
@@ -315,10 +315,10 @@ public class DirectoryService : IDirectoryService
         // Ensure names is not empty or all whitespace
         var distinctNames = names.Distinct().ToList();
         if (!distinctNames.Any())
-            return new List<Point>();
+            return new List<DataPoint>();
 
         // Get all existing points in one query
-        var existingNames = await _context.Set<Point>()
+        var existingNames = await _context.Set<DataPoint>()
             .Where(p => p.ParentId == parentGroupId && distinctNames.Contains(p.Name))
             .Select(p => p.Name)
             .ToListAsync();
@@ -332,10 +332,10 @@ public class DirectoryService : IDirectoryService
         }
 
         if (!uniqueNames.Any())
-            return new List<Point>();
+            return new List<DataPoint>();
 
-        var points = uniqueNames.Select(n => new Point { Name = n, ParentId = parentGroupId }).ToList();
-        _context.Set<Point>().AddRange(points);
+        var points = uniqueNames.Select(n => new DataPoint { Name = n, ParentId = parentGroupId }).ToList();
+        _context.Set<DataPoint>().AddRange(points);
         await _context.SaveChangesAsync();
         return points;
     }
@@ -347,13 +347,13 @@ public class DirectoryService : IDirectoryService
     /// <returns>True if any points were found and removed</returns>
     public async Task<bool> RemovePointsAsync(IEnumerable<int> pointIds)
     {
-        var points = await _context.Set<Point>()
+        var points = await _context.Set<DataPoint>()
             .Where(p => pointIds.Contains(p.Id))
             .ToListAsync();
 
         if (!points.Any()) return false;
 
-        _context.Set<Point>().RemoveRange(points);
+        _context.Set<DataPoint>().RemoveRange(points);
         await _context.SaveChangesAsync();
         return true;
     }
@@ -370,7 +370,7 @@ public class DirectoryService : IDirectoryService
         if (!await _context.Set<PointGroup>().AnyAsync(g => g.Id == targetGroupId))
             throw new ArgumentException("Target group not found");
 
-        var points = await _context.Set<Point>()
+        var points = await _context.Set<DataPoint>()
             .Where(p => pointIds.Contains(p.Id))
             .ToListAsync();
 

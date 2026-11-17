@@ -33,8 +33,8 @@ namespace GeoSensePlus.Data.DbContexts
         #endregion
 
         #region schema: messaging
-        public DbSet<Channel> Channels { get; set; }
-        public DbSet<Point> Points { get; set; }
+        public DbSet<DataChannel> DataChannels { get; set; }
+        public DbSet<DataPoint> DataPoints { get; set; }
         public DbSet<PointGroup> PointGroups { get; set; }
         #endregion
 

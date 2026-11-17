@@ -11,36 +11,36 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.WebApi.Controllers.Messaging
 {
-    [Obsolete("Topic has been renamed to Channel, use ChannelsController instead")]
+    [Obsolete("Topic has been renamed to DataChannel, use ChannelsController instead")]
     [Route("api/[controller]")]
     [ApiController]
     public class TopicsController : ControllerBase
     {
-        IControllerUtil<Channel> _controllerUtil;
+        IControllerUtil<DataChannel> _controllerUtil;
         IMqttService _mqttSvc;
 
-        public TopicsController(IControllerUtil<Channel> controllerUtil, IMqttService mqttSvc)
+        public TopicsController(IControllerUtil<DataChannel> controllerUtil, IMqttService mqttSvc)
         {
             _controllerUtil = controllerUtil;
             _mqttSvc = mqttSvc;
         }
 
         [HttpGet]
-        public IEnumerable<Channel> Get()
+        public IEnumerable<DataChannel> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Channel> Get(int id)
+        public ActionResult<DataChannel> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<ChannelEntity> Post([FromBody] ChannelEntity value)
+        public ActionResult<DataChannelEntity> Post([FromBody] DataChannelEntity value)
         {
-            var topic = new Channel { Name = value.Name, Description = value.Description };
+            var topic = new DataChannel { Name = value.Name, Description = value.Description };
             return _controllerUtil.Post(topic);
         }
 
@@ -54,7 +54,7 @@ namespace GeoSensePlus.WebApi.Controllers.Messaging
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] TargetEntity value)
         {
-            var topic = new Channel { Id = id, Name = value.Name, Description = value.Description };
+            var topic = new DataChannel { Id = id, Name = value.Name, Description = value.Description };
             return _controllerUtil.Put(topic);
         }
 

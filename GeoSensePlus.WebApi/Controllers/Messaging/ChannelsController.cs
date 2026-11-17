@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 namespace GeoSensePlus.WebApi.Controllers.Messaging;
 
 /// <summary>
-/// <see cref="GeoSensePlus.Data.DatabaseModels.Messaging.Channel"/>
+/// <see cref="GeoSensePlus.Data.DatabaseModels.Messaging.DataChannel"/>
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]

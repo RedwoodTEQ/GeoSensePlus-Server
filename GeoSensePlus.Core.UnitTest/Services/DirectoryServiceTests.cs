@@ -54,7 +54,7 @@ public class DirectoryServiceTests
         }
 
         // Act
-        List<Point> points;
+        List<DataPoint> points;
         using (var actContext = CreateTestContext())
         {
             var service = CreateService(actContext);
@@ -64,10 +64,10 @@ public class DirectoryServiceTests
         // Assert
         using (var assertContext = CreateTestContext())
         {
-            var group = await assertContext.PointGroups.Include(g => g.Points).FirstOrDefaultAsync(g => g.Id == groupId);
+            var group = await assertContext.PointGroups.Include(g => g.DataPoints).FirstOrDefaultAsync(g => g.Id == groupId);
             Assert.NotNull(group);
-            Assert.Equal(2, group.Points.Count);
-            Assert.All(group.Points, p => Assert.Equal(groupId, p.ParentId));
+            Assert.Equal(2, group.DataPoints.Count);
+            Assert.All(group.DataPoints, p => Assert.Equal(groupId, p.ParentId));
         }
 
         // Verify logging
@@ -91,15 +91,15 @@ public class DirectoryServiceTests
         {
             var group = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
             var points = new[] {
-                new Point { Name = "P1", Parent = group },
-                new Point { Name = "P2", Parent = group }
+                new DataPoint { Name = "P1", Parent = group },
+                new DataPoint { Name = "P2", Parent = group }
             };
             arrangeContext.Add(group);
             arrangeContext.AddRange(points);
             await arrangeContext.SaveChangesAsync();
             groupId = group.Id;
             pointIds = points.Select(p => p.Id).ToArray();
-            Assert.Equal(2, group.Points.Count);
+            Assert.Equal(2, group.DataPoints.Count);
         }
 
         // Act
@@ -112,9 +112,9 @@ public class DirectoryServiceTests
         // Assert
         using (var assertContext = CreateTestContext())
         {
-            var group = await assertContext.PointGroups.Include(g => g.Points).FirstOrDefaultAsync(g => g.Id == groupId);
+            var group = await assertContext.PointGroups.Include(g => g.DataPoints).FirstOrDefaultAsync(g => g.Id == groupId);
             Assert.NotNull(group);
-            Assert.Empty(group.Points);
+            Assert.Empty(group.DataPoints);
         }
     }
 
@@ -129,8 +129,8 @@ public class DirectoryServiceTests
             var g1 = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
             var g2 = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
             var points = new[] {
-                new Point { Name = "P1", Parent = g1 },
-                new Point { Name = "P2", Parent = g1 }
+                new DataPoint { Name = "P1", Parent = g1 },
+                new DataPoint { Name = "P2", Parent = g1 }
             };
             arrangeContext.AddRange(g1, g2);
             arrangeContext.AddRange(points);
@@ -151,7 +151,7 @@ public class DirectoryServiceTests
         // Assert
         using (var assertContext = CreateTestContext())
         {
-            var points = await assertContext.Points.Where(p => pointIds.Contains(p.Id)).ToListAsync();
+            var points = await assertContext.DataPoints.Where(p => pointIds.Contains(p.Id)).ToListAsync();
             Assert.All(points, p => Assert.Equal(g2Id, p.ParentId));
         }
     }
@@ -166,7 +166,7 @@ public class DirectoryServiceTests
         {
             var root = new PointGroup { Name =  rootName};
             var child = new PointGroup { Name = "Child", Parent = root };
-            var point = new Point { Name = "Leaf", Parent = child };
+            var point = new DataPoint { Name = "Leaf", Parent = child };
             arrangeContext.AddRange(root, child, point);
             await arrangeContext.SaveChangesAsync();
             pointId = point.Id;
@@ -188,19 +188,19 @@ public class DirectoryServiceTests
     public async Task FindPointByPathAsync_ReturnsCorrectPoint()
     {
         // Arrange
-        Point testPoint;
+        DataPoint testPoint;
         string rootName = $"Root_{Guid.NewGuid().ToString("N")[..6]}";
         using (var arrangeContext = CreateTestContext())
         {
             var root = new PointGroup { Name = rootName };
             var child = new PointGroup { Name = "Child", Parent = root };
-            testPoint = new Point { Name = "TestPoint", Parent = child };
+            testPoint = new DataPoint { Name = "TestPoint", Parent = child };
             arrangeContext.AddRange(root, child, testPoint);
             await arrangeContext.SaveChangesAsync();
         }
 
         // Act
-        Point foundPoint;
+        DataPoint foundPoint;
         using (var actContext = CreateTestContext())
         {
             var service = CreateService(actContext);
@@ -223,13 +223,13 @@ public class DirectoryServiceTests
         {
             var root = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
             var child = new PointGroup { Name = "Child", Parent = root };
-            var point = new Point { Name = "TestPoint", Parent = child };
+            var point = new DataPoint { Name = "TestPoint", Parent = child };
             arrangeContext.AddRange(root, child, point);
             await arrangeContext.SaveChangesAsync();
         }
 
         // Act
-        Point foundPoint;
+        DataPoint foundPoint;
         using (var actContext = CreateTestContext())
         {
             var service = CreateService(actContext);
@@ -248,13 +248,13 @@ public class DirectoryServiceTests
         {
             var root = new PointGroup { Name = $"Root_{Guid.NewGuid().ToString("N")[..6]}" };
             var child = new PointGroup { Name = "Child", Parent = root };
-            var point = new Point { Name = "TestPoint", Parent = child };
+            var point = new DataPoint { Name = "TestPoint", Parent = child };
             arrangeContext.AddRange(root, child, point);
             await arrangeContext.SaveChangesAsync();
         }
 
         // Act
-        Point foundPoint;
+        DataPoint foundPoint;
         using (var actContext = CreateTestContext())
         {
             var service = CreateService(actContext);

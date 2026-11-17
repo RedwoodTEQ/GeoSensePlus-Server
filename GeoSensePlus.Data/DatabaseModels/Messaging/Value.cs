@@ -26,11 +26,11 @@ public class ValueEntity : BaseEntity<int>
     public bool? BooleanValue { get; set; }
 }
 
-// _todo: Merge this class into Point class, and remove the Value class.
-[Obsolete("This class is deprecated and will be merged into the Point class.")]
+// _todo: Merge this class into DataPoint class, and remove the Value class.
+[Obsolete("This class is deprecated and will be merged into the DataPoint class.")]
 [Table("value", Schema = SchemaNames.messaging)]
 public class Value : ValueEntity
 {
     [JsonIgnore]    // ignore in web response serialization, to avoid circular references
-    public List<Point> Points { get; set; } = new List<Point>();  // points that this value is associated with
+    public List<DataPoint> Points { get; set; } = new List<DataPoint>();  // data points that this value is associated with
 }

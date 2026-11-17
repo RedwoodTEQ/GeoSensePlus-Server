@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace GeoSensePlus.Data.DatabaseModels.Messaging;
 
-public class PointEntity : BaseEntity<int>
+public class DataPointEntity : BaseEntity<int>
 {
     /// <summary>
     /// Group ID, must be set, at least set to root group
@@ -22,33 +22,33 @@ public class PointEntity : BaseEntity<int>
 }
 
 /// <summary>
-/// An UNS data point. A point contains a final value's data type, which is
+/// An UNS data point. A data point contains a final value's data type, which is
 /// different from the income value's data type defined in a message channel.
-/// 
-/// A point must belong to a point group.
+///
+/// A data point must belong to a point group.
 /// </summary>
-[Table("point", Schema = SchemaNames.messaging)]
-public class Point : PointEntity
+[Table("data_point", Schema = SchemaNames.messaging)]
+public class DataPoint : DataPointEntity
 {
     [JsonIgnore]    // ignore in web response serialization, to avoid circular references
     public PointGroup Parent { get; set; } = null!;
-    public List<Channel> Channels { get; set; } = new List<Channel>();  // may have multiple mqtt topics
+    public List<DataChannel> DataChannels { get; set; } = new List<DataChannel>();  // may have multiple mqtt topics
 }
 
-public class PointConfiguration : BaseEntityConfiguration<Point, int>
+public class DataPointConfiguration : BaseEntityConfiguration<DataPoint, int>
 {
-    public override void Configure(EntityTypeBuilder<Point> builder)
+    public override void Configure(EntityTypeBuilder<DataPoint> builder)
     {
         base.Configure(builder);
 
         builder.HasIndex(p => new { p.Name, p.ParentId })
-            .HasDatabaseName($"idx_{nameof(Point)}_{nameof(Point.Name)}_{nameof(Point.ParentId)}".ToSnakeCase())
+            .HasDatabaseName($"idx_{nameof(DataPoint)}_{nameof(DataPoint.Name)}_{nameof(DataPoint.ParentId)}".ToSnakeCase())
             .IsUnique();
 
         builder.HasOne(i => i.Parent)
-            .WithMany(g => g.Points)
+            .WithMany(g => g.DataPoints)
             .HasForeignKey(i => i.ParentId)
-            .HasConstraintName($"fk_{nameof(Point)}_{nameof(Point.ParentId)}".ToSnakeCase())   // fk_point_parent_id
+            .HasConstraintName($"fk_{nameof(DataPoint)}_{nameof(DataPoint.ParentId)}".ToSnakeCase())   // fk_data_point_parent_id
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

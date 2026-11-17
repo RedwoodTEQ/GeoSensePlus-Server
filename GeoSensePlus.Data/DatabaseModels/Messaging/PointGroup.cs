@@ -25,7 +25,7 @@ public class PointGroup : PointGroupEntity
     public PointGroup Parent { get; set; }
 
     public List<PointGroup> Children { get; set; } = new List<PointGroup>();
-    public List<Point> Points { get; set; } = new List<Point>();
+    public List<DataPoint> DataPoints { get; set; } = new List<DataPoint>();
 }
 
 public class PointGroupConfiguration : BaseEntityConfiguration<PointGroup, int>
@@ -35,7 +35,7 @@ public class PointGroupConfiguration : BaseEntityConfiguration<PointGroup, int>
         base.Configure(builder);
 
         builder.HasIndex(p => new { p.Name, p.ParentId })
-            .IsUnique().AreNullsDistinct(false)   // Apply "NULLs NOT DISTINCT" (for PostgreSQL v15+) - Two same names with null parent shouldn't be allowed 
+            .IsUnique().AreNullsDistinct(false)   // Apply "NULLs NOT DISTINCT" (for PostgreSQL v15+) - Two same names with null parent shouldn't be allowed
             .HasDatabaseName($"idx_{nameof(PointGroup)}_{nameof(PointGroup.Name)}_{nameof(PointGroup.ParentId)}".ToSnakeCase());
 
         builder.HasOne(g => g.Parent)
