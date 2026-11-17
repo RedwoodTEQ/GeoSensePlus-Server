@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace GeoSensePlus.Data.DatabaseModels;
 
@@ -22,8 +23,8 @@ public class BaseEntity<T>
     [Column("updated_at")]
     public DateTimeOffset UpdatedAt { get; set; }
 
-    //[Column("is_deleted")]
-    //public bool IsDeleted { get; set; } = false;   // if don't want to cascade delete all children, just set this to true
+    [Column("is_deleted")]
+    public bool IsDeleted { get; set; } = false;   // if don't want to cascade delete all children, just set this to true
 }
 
 /// <summary>
@@ -36,6 +37,17 @@ public abstract class BaseEntityConfiguration<TEntity, TKey> : IEntityTypeConfig
 {
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        builder.HasKey(x => x.Id).HasName("pk_id");
+        string TableName = typeof(TEntity).Name.ToSnakeCase();
+        builder.HasKey(x => x.Id).HasName($"pk_{TableName}");   // PostgreSQL needs unique constraint name for primary key in the same schema
+
+        //builder.HasIndex(x => x.Name).HasDatabaseName($"idx_{TableName}_name");
+        //builder.HasIndex(x => x.UpdatedAt).HasDatabaseName($"idx_{TableName}_updated_at");
     }
+}
+
+public static class StringExtensions
+{
+    public static string ToSnakeCase(this string s) =>
+        string.Concat(s.Select((c, i) =>
+            i > 0 && char.IsUpper(c) ? "_" + char.ToLowerInvariant(c) : char.ToLowerInvariant(c).ToString()));
 }
