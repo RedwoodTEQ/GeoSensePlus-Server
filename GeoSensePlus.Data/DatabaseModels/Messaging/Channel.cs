@@ -37,5 +37,11 @@ public class ChannelConfiguration : BaseEntityConfiguration<Channel, int>
         base.Configure(builder);
 
         builder.Property(x => x.Configuration).HasColumnType("jsonb").IsRequired();
+
+        builder.HasOne(c => c.Point)
+            .WithMany(p => p.Channels)
+            .HasForeignKey(c => c.PointId)
+            .HasConstraintName($"fk_{nameof(Channel)}_{nameof(Channel.PointId)}".ToSnakeCase())   // fk_channel_point_id
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

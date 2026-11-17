@@ -41,7 +41,14 @@ public class PointConfiguration : BaseEntityConfiguration<Point, int>
     {
         base.Configure(builder);
 
-        builder.HasIndex(p => new { p.Name, p.ParentId }).HasDatabaseName("idx_point_name_parent_id").IsUnique();
-        builder.HasOne(i => i.Parent).WithMany(g => g.Points).HasForeignKey(i => i.ParentId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasIndex(p => new { p.Name, p.ParentId })
+            .HasDatabaseName($"idx_{nameof(Point)}_{nameof(Point.Name)}_{nameof(Point.ParentId)}".ToSnakeCase())
+            .IsUnique();
+
+        builder.HasOne(i => i.Parent)
+            .WithMany(g => g.Points)
+            .HasForeignKey(i => i.ParentId)
+            .HasConstraintName($"fk_{nameof(Point)}_{nameof(Point.ParentId)}".ToSnakeCase())   // fk_point_parent_id
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

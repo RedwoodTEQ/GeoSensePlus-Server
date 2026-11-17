@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace GeoSensePlus.Data.DatabaseModels;
 
@@ -43,11 +42,4 @@ public abstract class BaseEntityConfiguration<TEntity, TKey> : IEntityTypeConfig
         //builder.HasIndex(x => x.Name).HasDatabaseName($"idx_{TableName}_name");
         //builder.HasIndex(x => x.UpdatedAt).HasDatabaseName($"idx_{TableName}_updated_at");
     }
-}
-
-public static class StringExtensions
-{
-    public static string ToSnakeCase(this string s) =>
-        string.Concat(s.Select((c, i) =>
-            i > 0 && char.IsUpper(c) ? "_" + char.ToLowerInvariant(c) : char.ToLowerInvariant(c).ToString()));
 }

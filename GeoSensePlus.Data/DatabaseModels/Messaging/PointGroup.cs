@@ -16,7 +16,7 @@ public class PointGroupEntity : BaseEntity<int>
 /// UNS point group.
 ///
 /// NOTE:
-/// A unique index of (name, parent_id) with "NULLS NOT DISTINCT" is add in the migration.
+/// A unique index of (name, parent_id) with "NULLS NOT DISTINCT" is defined in PointGroupConfiguration.
 /// </summary>
 [Table("point_group", Schema = SchemaNames.messaging)]
 public class PointGroup : PointGroupEntity
@@ -38,6 +38,10 @@ public class PointGroupConfiguration : BaseEntityConfiguration<PointGroup, int>
             .IsUnique().AreNullsDistinct(false)   // Apply "NULLs NOT DISTINCT" (for PostgreSQL v15+) - Two same names with null parent shouldn't be allowed 
             .HasDatabaseName($"idx_{nameof(PointGroup)}_{nameof(PointGroup.Name)}_{nameof(PointGroup.ParentId)}".ToSnakeCase());
 
-        builder.HasOne(g => g.Parent).WithMany(g => g.Children).HasForeignKey(g => g.ParentId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(g => g.Parent)
+            .WithMany(g => g.Children)
+            .HasForeignKey(g => g.ParentId)
+            .HasConstraintName($"fk_{nameof(PointGroup)}_{nameof(PointGroup.ParentId)}".ToSnakeCase())   // fk_point_group_parent_id
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
