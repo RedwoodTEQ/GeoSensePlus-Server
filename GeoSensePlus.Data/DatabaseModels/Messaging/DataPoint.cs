@@ -45,6 +45,9 @@ public class DataPointConfiguration : BaseEntityConfiguration<DataPoint, int>
             .HasDatabaseName($"idx{nameof(DataPoint)}{nameof(DataPoint.Name)}{nameof(DataPoint.ParentId)}".ToSnakeCase())   // idx_data_point_name_parent_id
             .IsUnique();
 
+        builder.HasIndex(p => p.ParentId)
+            .HasDatabaseName($"idx{nameof(DataPoint)}{nameof(DataPoint.ParentId)}".ToSnakeCase());   // idx_data_point_parent_id
+
         builder.HasOne(i => i.Parent)
             .WithMany(g => g.DataPoints)
             .HasForeignKey(i => i.ParentId)

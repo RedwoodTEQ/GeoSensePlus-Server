@@ -38,6 +38,9 @@ public class DataChannelConfiguration : BaseEntityConfiguration<DataChannel, int
 
         builder.Property(x => x.Configuration).HasColumnType("jsonb").IsRequired();
 
+        builder.HasIndex(c => c.DataPointId)
+            .HasDatabaseName($"idx{nameof(DataChannel)}{nameof(DataChannel.DataPointId)}".ToSnakeCase());   // idx_data_channel_data_point_id
+
         builder.HasOne(c => c.DataPoint)
             .WithMany(p => p.DataChannels)
             .HasForeignKey(c => c.DataPointId)

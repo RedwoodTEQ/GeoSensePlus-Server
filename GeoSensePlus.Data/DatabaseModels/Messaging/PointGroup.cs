@@ -38,6 +38,9 @@ public class PointGroupConfiguration : BaseEntityConfiguration<PointGroup, int>
             .IsUnique().AreNullsDistinct(false)   // Apply "NULLs NOT DISTINCT" (for PostgreSQL v15+) - Two same names with null parent shouldn't be allowed
             .HasDatabaseName($"idx{nameof(PointGroup)}{nameof(PointGroup.Name)}{nameof(PointGroup.ParentId)}".ToSnakeCase());   // idx_point_group_name_parent_id
 
+        builder.HasIndex(g => g.ParentId)
+            .HasDatabaseName($"idx{nameof(PointGroup)}{nameof(PointGroup.ParentId)}".ToSnakeCase());   // idx_point_group_parent_id
+
         builder.HasOne(g => g.Parent)
             .WithMany(g => g.Children)
             .HasForeignKey(g => g.ParentId)

@@ -17,7 +17,7 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261118140501_3";
+    public override string LastMigrationId => "20261118152642_1";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -441,7 +441,8 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
                 b.HasKey("Id")
                     .HasName("pk_data_channel");
 
-                b.HasIndex("DataPointId");
+                b.HasIndex("DataPointId")
+                    .HasDatabaseName("idx_data_channel_data_point_id");
 
                 b.ToTable("data_channel", "messaging");
             });
@@ -486,11 +487,12 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
                 b.HasKey("Id")
                     .HasName("pk_data_point");
 
-                b.HasIndex("ParentId");
+                b.HasIndex("ParentId")
+                    .HasDatabaseName("idx_data_point_parent_id");
 
                 b.HasIndex("Name", "ParentId")
                     .IsUnique()
-                    .HasDatabaseName("idx__data_point__name__parent_id");
+                    .HasDatabaseName("idx_data_point_name_parent_id");
 
                 b.ToTable("data_point", "messaging");
             });
@@ -531,11 +533,12 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
                 b.HasKey("Id")
                     .HasName("pk_point_group");
 
-                b.HasIndex("ParentId");
+                b.HasIndex("ParentId")
+                    .HasDatabaseName("idx_point_group_parent_id");
 
                 var index = b.HasIndex("Name", "ParentId")
                     .IsUnique()
-                    .HasDatabaseName("idx__point_group__name__parent_id");
+                    .HasDatabaseName("idx_point_group_name_parent_id");
 
                 NpgsqlIndexBuilderExtensions.AreNullsDistinct(index, false);
 
@@ -1233,7 +1236,7 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
                     .HasForeignKey("DataPointId")
                     .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired()
-                    .HasConstraintName("fk__data_channel__data_point_id");
+                    .HasConstraintName("fk_data_channel_data_point_id");
 
                 b.Navigation("DataPoint");
             });
@@ -1245,7 +1248,7 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
                     .HasForeignKey("ParentId")
                     .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired()
-                    .HasConstraintName("fk__data_point__parent_id");
+                    .HasConstraintName("fk_data_point_parent_id");
 
                 b.Navigation("Parent");
             });
@@ -1256,7 +1259,7 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
                     .WithMany("Children")
                     .HasForeignKey("ParentId")
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("fk__point_group__parent_id");
+                    .HasConstraintName("fk_point_group_parent_id");
 
                 b.Navigation("Parent");
             });

@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GeoSensePlus.Data.Migrations;
 
 [DbContext(typeof(ApplicationDbContext))]
-[Migration("20261118140501_3")]
-partial class _20261118140501_3
+[Migration("20261118152642_1")]
+partial class _20261118152642_1
 {
     /// <inheritdoc />
     protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -439,7 +439,8 @@ partial class _20261118140501_3
                 b.HasKey("Id")
                     .HasName("pk_data_channel");
 
-                b.HasIndex("DataPointId");
+                b.HasIndex("DataPointId")
+                    .HasDatabaseName("idx_data_channel_data_point_id");
 
                 b.ToTable("data_channel", "messaging");
             });
@@ -484,11 +485,12 @@ partial class _20261118140501_3
                 b.HasKey("Id")
                     .HasName("pk_data_point");
 
-                b.HasIndex("ParentId");
+                b.HasIndex("ParentId")
+                    .HasDatabaseName("idx_data_point_parent_id");
 
                 b.HasIndex("Name", "ParentId")
                     .IsUnique()
-                    .HasDatabaseName("idx__data_point__name__parent_id");
+                    .HasDatabaseName("idx_data_point_name_parent_id");
 
                 b.ToTable("data_point", "messaging");
             });
@@ -529,11 +531,12 @@ partial class _20261118140501_3
                 b.HasKey("Id")
                     .HasName("pk_point_group");
 
-                b.HasIndex("ParentId");
+                b.HasIndex("ParentId")
+                    .HasDatabaseName("idx_point_group_parent_id");
 
                 var index = b.HasIndex("Name", "ParentId")
                     .IsUnique()
-                    .HasDatabaseName("idx__point_group__name__parent_id");
+                    .HasDatabaseName("idx_point_group_name_parent_id");
 
                 NpgsqlIndexBuilderExtensions.AreNullsDistinct(index, false);
 
@@ -1231,7 +1234,7 @@ partial class _20261118140501_3
                     .HasForeignKey("DataPointId")
                     .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired()
-                    .HasConstraintName("fk__data_channel__data_point_id");
+                    .HasConstraintName("fk_data_channel_data_point_id");
 
                 b.Navigation("DataPoint");
             });
@@ -1243,7 +1246,7 @@ partial class _20261118140501_3
                     .HasForeignKey("ParentId")
                     .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired()
-                    .HasConstraintName("fk__data_point__parent_id");
+                    .HasConstraintName("fk_data_point_parent_id");
 
                 b.Navigation("Parent");
             });
@@ -1254,7 +1257,7 @@ partial class _20261118140501_3
                     .WithMany("Children")
                     .HasForeignKey("ParentId")
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("fk__point_group__parent_id");
+                    .HasConstraintName("fk_point_group_parent_id");
 
                 b.Navigation("Parent");
             });
