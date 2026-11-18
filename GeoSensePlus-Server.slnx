@@ -21,7 +21,6 @@
   <Folder Name="/Unit Tests/">
     <Project Path="GeoSensePlus.Core.UnitTest/GeoSensePlus.Core.UnitTest.csproj" />
     <Project Path="GeoSensePlus.Data.UnitTest/GeoSensePlus.Data.UnitTest.csproj" />
-    <Project Path="GeoSensePlus.Firestore.UnitTest/GeoSensePlus.Firestore.UnitTest.csproj" />
   </Folder>
   <Project Path="docker-compose-more/docker-compose-more.csproj" />
   <Project Path="GeoSensePlus.Aws.IoT/GeoSensePlus.Aws.IoT.csproj" />
