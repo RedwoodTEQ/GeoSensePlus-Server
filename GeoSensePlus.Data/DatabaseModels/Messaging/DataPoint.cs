@@ -42,13 +42,13 @@ public class DataPointConfiguration : BaseEntityConfiguration<DataPoint, int>
         base.Configure(builder);
 
         builder.HasIndex(p => new { p.Name, p.ParentId })
-            .HasDatabaseName($"idx_{nameof(DataPoint)}_{nameof(DataPoint.Name)}_{nameof(DataPoint.ParentId)}".ToSnakeCase())
+            .HasDatabaseName($"idx{nameof(DataPoint)}{nameof(DataPoint.Name)}{nameof(DataPoint.ParentId)}".ToSnakeCase())   // idx_data_point_name_parent_id
             .IsUnique();
 
         builder.HasOne(i => i.Parent)
             .WithMany(g => g.DataPoints)
             .HasForeignKey(i => i.ParentId)
-            .HasConstraintName($"fk_{nameof(DataPoint)}_{nameof(DataPoint.ParentId)}".ToSnakeCase())   // fk_data_point_parent_id
+            .HasConstraintName($"fk{nameof(DataPoint)}{nameof(DataPoint.ParentId)}".ToSnakeCase())   // fk_data_point_parent_id
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

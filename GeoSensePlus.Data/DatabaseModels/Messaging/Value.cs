@@ -27,7 +27,7 @@ public class ValueEntity : BaseEntity<int>
 }
 
 // _todo: Merge this class into DataPoint class, and remove the Value class.
-[Obsolete("This class is deprecated and will be merged into the DataPoint class.")]
+[Obsolete("This class is deprecated and will be removed.")]
 [Table("value", Schema = SchemaNames.messaging)]
 public class Value : ValueEntity
 {

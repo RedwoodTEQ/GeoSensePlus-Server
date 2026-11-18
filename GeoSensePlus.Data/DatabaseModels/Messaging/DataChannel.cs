@@ -41,7 +41,7 @@ public class DataChannelConfiguration : BaseEntityConfiguration<DataChannel, int
         builder.HasOne(c => c.DataPoint)
             .WithMany(p => p.DataChannels)
             .HasForeignKey(c => c.DataPointId)
-            .HasConstraintName($"fk_{nameof(DataChannel)}_{nameof(DataChannel.DataPointId)}".ToSnakeCase())   // fk_data_channel_data_point_id
+            .HasConstraintName($"fk{nameof(DataChannel)}{nameof(DataChannel.DataPointId)}".ToSnakeCase())   // fk_data_channel_data_point_id
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
