@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Tracking;
 
-public class CellTagEntity : NamedEntity<int>
+public class CellTagEntity : BaseEntity<int>
 {
-    [Column("updated_at")]
-    public DateTime UpdatedAt { get; set; }
-
     [Column("target_id")]
     public int? TargetId { get; set; }   // foreign key to Target
 }

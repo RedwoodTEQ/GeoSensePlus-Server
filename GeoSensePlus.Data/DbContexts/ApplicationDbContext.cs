@@ -33,8 +33,8 @@ namespace GeoSensePlus.Data.DbContexts
         #endregion
 
         #region schema: messaging
-        public DbSet<Topic> Topics { get; set; }
-        public DbSet<Point> Points { get; set; }
+        public DbSet<DataChannel> DataChannels { get; set; }
+        public DbSet<DataPoint> DataPoints { get; set; }
         public DbSet<PointGroup> PointGroups { get; set; }
         #endregion
 
@@ -82,19 +82,13 @@ namespace GeoSensePlus.Data.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder); // Call the base method to ensure Identity tables are created
+            base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<PointGroup>()
-                .HasOne(g => g.Parent)
-                .WithMany(g => g.Children)
-                .HasForeignKey(g => g.ParentId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Point>()
-                .HasOne(i => i.Parent)
-                .WithMany(g => g.Points)
-                .HasForeignKey(i => i.ParentId)
-                .OnDelete(DeleteBehavior.Cascade);
+            /**
+             * Apply all IEntityTypeConfiguration<> classes in this assembly.
+             * Note: all IEntityTypeConfiguration<> classes' constructors must be parameterless.
+             */
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
     }
 }

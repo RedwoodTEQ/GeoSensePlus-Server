@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Location;
 
-public class FloorPlanEntity : NamedEntity<int>
+public class FloorPlanEntity : BaseEntity<int>
 {
     [Column("file_location")]
     public string FileLocation { get; set; } // Path to the floor plan image or file

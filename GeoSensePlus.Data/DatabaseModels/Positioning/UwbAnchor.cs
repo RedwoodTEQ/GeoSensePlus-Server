@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Tracking;
 
-public class UwbAnchorEntity : NamedEntity<int>
+public class UwbAnchorEntity : BaseEntity<int>
 {
     [Column("axis_x")]
     public double AxisX { get; set; } = -1;

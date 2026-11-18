@@ -3,7 +3,7 @@
 namespace GeoSensePlus.Data.DatabaseModels.AlarmEvent;
 
 
-public class AlarmEntity : NamedEntity<int>
+public class AlarmEntity : BaseEntity<int>
 {
     /// <summary>
     /// Values:

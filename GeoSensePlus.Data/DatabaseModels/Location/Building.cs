@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DatabaseModels.Location;
 
-public class BuildingEntity : NamedEntity<int>
+public class BuildingEntity : BaseEntity<int>
 {
     [Column("site_id")]
     public int? SiteId { get; set; } // Foreign key to Site

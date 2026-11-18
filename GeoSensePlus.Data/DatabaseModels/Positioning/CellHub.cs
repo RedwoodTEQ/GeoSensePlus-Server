@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels.Tracking;
 
-public class CellHubEntity : NamedEntity<int>
+public class CellHubEntity : BaseEntity<int>
 {
     // This class is used for API requests, so it does not need any additional properties.
 }

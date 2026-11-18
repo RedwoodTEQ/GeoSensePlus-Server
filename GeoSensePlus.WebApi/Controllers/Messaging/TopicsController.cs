@@ -3,6 +3,7 @@ using GeoSensePlus.Data.DatabaseModels.Tracking;
 using GeoSensePlus.Mqtt;
 using GeoSensePlus.WebApi.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,35 +11,36 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.WebApi.Controllers.Messaging
 {
+    [Obsolete("Topic has been renamed to DataChannel, use ChannelsController instead")]
     [Route("api/[controller]")]
     [ApiController]
     public class TopicsController : ControllerBase
     {
-        IControllerUtil<Topic> _controllerUtil;
+        IControllerUtil<DataChannel> _controllerUtil;
         IMqttService _mqttSvc;
 
-        public TopicsController(IControllerUtil<Topic> controllerUtil, IMqttService mqttSvc)
+        public TopicsController(IControllerUtil<DataChannel> controllerUtil, IMqttService mqttSvc)
         {
             _controllerUtil = controllerUtil;
             _mqttSvc = mqttSvc;
         }
 
         [HttpGet]
-        public IEnumerable<Topic> Get()
+        public IEnumerable<DataChannel> Get()
         {
             return _controllerUtil.Get();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Topic> Get(int id)
+        public ActionResult<DataChannel> Get(int id)
         {
             return _controllerUtil.Get(id);
         }
 
         [HttpPost]
-        public ActionResult<TopicEntity> Post([FromBody] TopicEntity value)
+        public ActionResult<DataChannelEntity> Post([FromBody] DataChannelEntity value)
         {
-            var topic = new Topic { Name = value.Name, Description = value.Description };
+            var topic = new DataChannel { Name = value.Name, Description = value.Description };
             return _controllerUtil.Post(topic);
         }
 
@@ -52,7 +54,7 @@ namespace GeoSensePlus.WebApi.Controllers.Messaging
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] TargetEntity value)
         {
-            var topic = new Topic { Id = id, Name = value.Name, Description = value.Description };
+            var topic = new DataChannel { Id = id, Name = value.Name, Description = value.Description };
             return _controllerUtil.Put(topic);
         }
 

@@ -16,7 +16,7 @@ public record MovePointsRequest(int[] Ids, int NewGroupId);
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class DirectoryController : ControllerBase
+public class DirectoryController : ControllerBase // _todo: rename to PointsController or UNSController
 {
     private readonly IDirectoryService _service;
     ILogger<DirectoryController> _logger;

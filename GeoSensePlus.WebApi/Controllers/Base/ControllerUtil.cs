@@ -17,7 +17,7 @@ namespace GeoSensePlus.WebApi.Controllers.Base
         ActionResult Put(TEntity entity);
     }
 
-    public class ControllerUtil<TEntity> : ControllerBase, IControllerUtil<TEntity> where TEntity : NamedEntity<int>
+    public class ControllerUtil<TEntity> : ControllerBase, IControllerUtil<TEntity> where TEntity : BaseEntity<int>
     {
         private readonly IRepository<TEntity> _repo;
 

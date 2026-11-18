@@ -2,7 +2,7 @@
 
 namespace GeoSensePlus.Data.DatabaseModels.Map;
 
-public class GeofenceEntity : NamedEntity<int>
+public class GeofenceEntity : BaseEntity<int>
 {
     /// <summary>
     /// Empty: indicate it's an outdoor POI or a map marker
