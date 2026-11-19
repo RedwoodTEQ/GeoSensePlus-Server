@@ -7,6 +7,10 @@ using NetCoreUtils.Database.MongoDb;
 
 namespace GeoSensePlus.WebApi.Controllers.Base
 {
+    /// <summary>
+    /// Usage: use MongoController<TDoc> as a base class for API controllers
+    /// </summary>
+    /// <typeparam name="TDoc">An entity class</typeparam>
     public class MongoController<TDoc> : ControllerBase where TDoc : MongoDoc
     {
         IMongoDocReader<TDoc> _reader;

@@ -1,13 +1,28 @@
 ﻿using GeoSensePlus.Data.DatabaseModels;
+using GeoSensePlus.Data.DatabaseModels.Location;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreUtils.Database;
 using System.Collections.Generic;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace GeoSensePlus.WebApi.Controllers.Base
 {
+    /// <summary>
+    /// Usage: 
+    /// 1. use IControllerUtil<T> as DI is preferred, as the type used in post body may not be the
+    ///    same as the entity type, e.g. AreaEntity vs Area:
+    /// 
+    ///    [HttpPost]
+    ///    public ActionResult<AreaEntity> Post([FromBody] AreaEntity value)
+    ///    {
+    ///        var area = new Area { Name = value.Name, Description = value.Description };
+    ///        return _controllerUtil.Post(area);
+    ///    }
+    /// 
+    /// 2. or use ControllerUtil<T> as a base class for an API controller if just want have a temporary
+    ///    quick and dirty implementation with no DI
+    /// </summary>
+    /// <typeparam name="TEntity">An EF core entity class</typeparam>
     public interface IControllerUtil<TEntity> where TEntity : class
     {
         ActionResult Delete(int id);
@@ -35,11 +50,13 @@ namespace GeoSensePlus.WebApi.Controllers.Base
             _repo = repo;
         }
 
+        [HttpGet]
         public IEnumerable<TEntity> Get()
         {
             return _repo.GetAllNoTracking();
         }
 
+        [HttpGet("{id}")]
         public ActionResult<TEntity> Get(int id)
         {
             var result = _repo.Get(id);
@@ -48,6 +65,7 @@ namespace GeoSensePlus.WebApi.Controllers.Base
             return result;
         }
 
+        [HttpPost]
         public CreatedAtActionResult Post(TEntity entity)
         {
             _repo.Add(entity);
@@ -56,6 +74,7 @@ namespace GeoSensePlus.WebApi.Controllers.Base
             return CreatedAtAction(nameof(Get), new { id = entity.Id }, entity);
         }
 
+        [HttpPut]
         public ActionResult Put(TEntity entity)
         {
             if (_repo.GetByIdNoTracking(entity.Id) is null)
@@ -67,6 +86,7 @@ namespace GeoSensePlus.WebApi.Controllers.Base
             return NoContent();
         }
 
+        [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
             var target = _repo.Get(id);
