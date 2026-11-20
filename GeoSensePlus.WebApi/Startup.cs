@@ -53,7 +53,7 @@ namespace GeoSensePlus.WebApi
             services.AddMongoDb(new MongoDbSetting { DatabaseName = "GeoSensePlus" });
             services.AddInfluxDb(new InfluxDbSetting
             {
-                Token = "ky6JucdlHoiCsDta7BxaagInhk33L9D52sK63CzAYB3S5Ptvvxpqdmn133eq-bWQ31uhH06Kkk7mmwFyhFKfuQ=="
+                Token = "ky6JucdlHoiCsDta7BxaagInhk33L9D52sK63CzAYB3S5Ptvvxpqdmn133eq-bWQ31uhH06Kkk7mmwFyhFKfuQ=="      // _todo: move hardcoded token to secret
             });
             services.AddRepositories<ApplicationDbContext>();
             services.AddControllerUtil();

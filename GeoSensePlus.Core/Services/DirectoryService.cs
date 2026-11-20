@@ -144,6 +144,9 @@ public class DirectoryService : IDirectoryService
     /// <returns>Full path string or null if group not found</returns>
     public async Task<string> GetFullPathOfGroupAsync(int groupId)
     {
+        /**
+         * See comment in <see cref="GetAllChildGroupsFlatAsync(int, bool)"/>
+         */
         var sql = @"
             WITH RECURSIVE path_to_root AS (
                 SELECT id, name, parent_id FROM messaging.point_group WHERE id = {0}
@@ -181,11 +184,20 @@ public class DirectoryService : IDirectoryService
     /// <returns>List of all groups in subtree including root</returns>
     private async Task<List<PointGroup>> GetAllChildGroupsFlatAsync(int rootId, bool includePointValues = false)
     {
-        // NOTE 1: don't add ';' at the end of SQL queries in FromSqlRaw, otherwise when it's used with Include(),
-        // it will throw an exception
-        // NOTE 2: the SQL must return ALL columns mapped on the entity (i.e. BaseEntity's created_at/updated_at
-        // included). When EF Core composes over FromSqlRaw it projects every mapped column, and any missing column
-        // surfaces as a Postgres 42703 "column does not exist" error at query time. Hence SELECT * in both branches.
+        /**
+         * NOTE 1: Don't add ';' at the end of SQL queries in FromSqlRaw, otherwise when used with Include(),
+         * it will throw an exception.
+         * 
+         * NOTE 2: Reason of using "SELECT *" in the SQL statement:
+         * When EF Core composes over Set<PointGroup>().FromSqlRaw it projects every column of entity PointGroup,
+         * and any missing column surfaces as a Postgres 42703 "column does not exist" error at query time.
+         * 
+         * That is different from Database.SqlQueryRaw<string> in method <see cref="GetFullPathOfGroupAsync(int)"/>,
+         * which is a raw SQL query that returns a single column of type string, and EF Core does not project any
+         * columns of an entity.
+         * 
+         * _todo: CTE may need to have a maximum recursion depth limit to avoid infinite loops in case of circular references. Postgres has a default limit of 100, but it can be changed with "SET max_recursion_depth = N;".
+         */
         var sql = @"
             WITH RECURSIVE group_tree AS (
                 SELECT * FROM messaging.point_group WHERE id = {0}
