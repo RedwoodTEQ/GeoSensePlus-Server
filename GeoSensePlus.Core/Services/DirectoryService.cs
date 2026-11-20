@@ -181,17 +181,20 @@ public class DirectoryService : IDirectoryService
     /// <returns>List of all groups in subtree including root</returns>
     private async Task<List<PointGroup>> GetAllChildGroupsFlatAsync(int rootId, bool includePointValues = false)
     {
-        // NOTE: don't add ';' at the end of SQL queries in FromSqlRaw, otherwise when it's used with Include(),
+        // NOTE 1: don't add ';' at the end of SQL queries in FromSqlRaw, otherwise when it's used with Include(),
         // it will throw an exception
+        // NOTE 2: the SQL must return ALL columns mapped on the entity (i.e. BaseEntity's created_at/updated_at
+        // included). When EF Core composes over FromSqlRaw it projects every mapped column, and any missing column
+        // surfaces as a Postgres 42703 "column does not exist" error at query time. Hence SELECT * in both branches.
         var sql = @"
             WITH RECURSIVE group_tree AS (
-                SELECT id, name, parent_id, is_deleted, description FROM messaging.point_group WHERE id = {0}
+                SELECT * FROM messaging.point_group WHERE id = {0}
                 UNION ALL
-                SELECT g.id, g.name, g.parent_id, g.is_deleted, g.description
+                SELECT g.*
                 FROM messaging.point_group g
                 INNER JOIN group_tree gt ON g.parent_id = gt.id
             )
-            SELECT g.* FROM group_tree g
+            SELECT * FROM group_tree
         ";
 
         var groupQuery = _context.Set<PointGroup>().FromSqlRaw(sql, rootId);

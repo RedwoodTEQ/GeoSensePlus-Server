@@ -184,6 +184,46 @@ public class DirectoryServiceTests
         Assert.Equal($"{rootName}/Child/Leaf", path);
     }
 
+    /// <summary>
+    /// Regression test for GetAllChildGroupsFlatAsync: the recursive CTE passed to FromSqlRaw must return
+    /// ALL columns mapped on PointGroup, otherwise EF Core's composed projection fails with Postgres 42703
+    /// (e.g. "column g.created_at does not exist"). Exercises the Include/ThenInclude path as well.
+    /// </summary>
+    [Fact]
+    public async Task GetNestedTreeAsync_ReturnsSubtreeWithPointsAndChannels()
+    {
+        // Arrange
+        int rootId;
+        string rootName = $"Root_{Guid.NewGuid().ToString("N")[..6]}";
+        using (var arrangeContext = CreateTestContext())
+        {
+            var root = new PointGroup { Name = rootName };
+            var child = new PointGroup { Name = "Child", Parent = root };
+            var point = new DataPoint { Name = "Leaf", Parent = child };
+            var channel = new DataChannel { DataPoint = point };
+            arrangeContext.AddRange(root, child, point, channel);
+            await arrangeContext.SaveChangesAsync();
+            rootId = root.Id;
+        }
+
+        // Act
+        List<PointGroup> tree;
+        using (var actContext = CreateTestContext())
+        {
+            var service = CreateService(actContext);
+            tree = await service.GetNestedTreeAsync(rootId);
+        }
+
+        // Assert
+        var rootNode = Assert.Single(tree);
+        Assert.Equal(rootId, rootNode.Id);
+        var childNode = Assert.Single(rootNode.Children);
+        Assert.Equal("Child", childNode.Name);
+        var leafPoint = Assert.Single(childNode.DataPoints);
+        Assert.Equal("Leaf", leafPoint.Name);
+        _ = Assert.Single(leafPoint.DataChannels);
+    }
+
     [Fact]
     public async Task FindPointByPathAsync_ReturnsCorrectPoint()
     {
