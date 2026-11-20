@@ -16,7 +16,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi;
 using NetCoreUtils.Database;
 using NetCoreUtils.Database.InfluxDb;
 using NetCoreUtils.Database.MongoDb;
@@ -62,10 +61,7 @@ namespace GeoSensePlus.WebApi
 
             services.AddTransient<DirectoryPathTransformer>();
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeoSensePlus.WebApi", Version = "v1" });
-            });
+            services.AddOpenApi();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,8 +70,7 @@ namespace GeoSensePlus.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GeoSensePlus.WebApi v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/openapi/v1.json", "GeoSensePlus.WebApi v1"));
             }
 
             app.UseHttpsRedirection();
@@ -88,6 +83,11 @@ namespace GeoSensePlus.WebApi
             {
                 endpoints.MapDynamicControllerRoute<DirectoryPathTransformer>("dir/{**path}");
                 endpoints.MapControllers();
+
+                if (env.IsDevelopment())
+                {
+                    endpoints.MapOpenApi();
+                }
             });
         }
     }
