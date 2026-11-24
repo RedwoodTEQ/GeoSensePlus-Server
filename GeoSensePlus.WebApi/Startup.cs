@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi;
 using NetCoreUtils.Database;
 using NetCoreUtils.Database.InfluxDb;
 using NetCoreUtils.Database.MongoDb;
@@ -61,7 +62,12 @@ namespace GeoSensePlus.WebApi
 
             services.AddTransient<DirectoryPathTransformer>();
 
-            services.AddOpenApi();
+            /**
+             * Reason of setting OpenApiVersion to 3.0:
+             * 1. OpenAPI 3.1 and 3.2's union types (e.g. "type": ["integer", "string"]) break Swagger UI's validation for IDs
+             * 2. The latest version of openapi-generator-cli (core v7.27.0, npm wrapper v2.43.0) can only support up to OpenAPI 3.1
+             */
+            services.AddOpenApi(options => options.OpenApiVersion = OpenApiSpecVersion.OpenApi3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
