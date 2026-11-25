@@ -1,4 +1,5 @@
 ﻿using DnsClient.Internal;
+using System;
 using GeoSensePlus.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,7 @@ public record MovePointsRequest(int[] Ids, int NewGroupId);
 /// <summary>
 /// State directory service controller, which is actually an UNS implementation.
 /// </summary>
+[Obsolete("Replaced by PointGroupsController and DataPointsController")]
 [ApiController]
 [Route("api/[controller]")]
 public class DirectoryController : ControllerBase // _todo: rename to PointsController or UNSController
@@ -41,6 +43,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
     }
     #endregion
 
+    /// <summary>Moved to <see cref="PointGroupsController.AddGroup"/></summary>
     [HttpPost("group")]
     public async Task<IActionResult> AddGroup([FromBody] AddGroupRequest request)
     {
@@ -48,6 +51,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
         return Ok(group);
     }
 
+    /// <summary>Moved to <see cref="PointGroupsController.RemoveGroup"/></summary>
     [HttpDelete("group/{id}")]
     public async Task<IActionResult> RemoveGroup(int id, [FromQuery] bool deleteWithChildren = false, [FromQuery] bool cascade = false)
     {
@@ -55,6 +59,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
         return result ? Ok() : NotFound();
     }
 
+    /// <summary>Moved to <see cref="PointGroupsController.MoveGroup"/></summary>
     [HttpPut("group/{id}/move")]
     public async Task<IActionResult> MoveGroup(int id, [FromBody] MoveGroupRequest request)
     {
@@ -62,6 +67,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
         return success ? Ok() : NotFound();
     }
 
+    /// <summary>Moved to <see cref="PointGroupsController.GetGroupPath"/></summary>
     [HttpGet("group/{id}/path")]
     public async Task<IActionResult> GetGroupPath(int id)
     {
@@ -69,6 +75,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
         return path == null ? NotFound() : Ok(path);
     }
 
+    /// <summary>Moved to <see cref="PointGroupsController.GetSubtree"/></summary>
     [HttpGet("group/{id}/subtree")]
     public async Task<IActionResult> GetSubtree(int id)
     {
@@ -76,6 +83,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
         return Ok(nodes);
     }
 
+    /// <summary>Moved to <see cref="DataPointsController.AddPoints"/></summary>
     [HttpPost("points")]
     public async Task<IActionResult> AddPoints([FromBody] AddPointsRequest request)
     {
@@ -83,6 +91,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
         return Ok(result);
     }
 
+    /// <summary>Moved to <see cref="DataPointsController.RemovePoints"/></summary>
     [HttpDelete("points")]
     public async Task<IActionResult> RemovePoints([FromBody] int[] ids)
     {
@@ -90,6 +99,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
         return result ? Ok() : NotFound();
     }
 
+    /// <summary>Moved to <see cref="DataPointsController.MovePoints"/></summary>
     [HttpPut("points/move")]
     public async Task<IActionResult> MovePoints([FromBody] MovePointsRequest request)
     {
@@ -97,6 +107,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
         return result ? Ok() : NotFound();
     }
 
+    /// <summary>Moved to <see cref="DataPointsController.GetPointPath"/></summary>
     [HttpGet("point/{id}/path")]
     public async Task<IActionResult> GetPointPath(int id)
     {
