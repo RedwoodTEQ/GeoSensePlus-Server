@@ -5,7 +5,27 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeoSensePlus.Data.DatabaseModels;
 
-public class BaseEntity<T>
+/// <summary>
+/// Non-generic contract implemented by all <see cref="BaseEntity{T}"/>
+/// entities, so the DbContext can apply timestamp auditing regardless of the
+/// entity's key type.
+/// 
+/// <see cref="CreatedAt"/> is populated on insert and <see cref="UpdatedAt"/>
+/// refreshed on update by <see cref="DbContexts.ApplicationDbContext.SaveChanges(bool)"/>
+/// (all sync/async overloads route through it).
+///
+/// All values are UTC: written from <c>DateTimeOffset.UtcNow</c> and stored as
+/// PostgreSQL <c>timestamptz</c>, which normalizes to a UTC instant and reads
+/// back with a +00:00 offset. Converting to local time is the consumer's
+/// responsibility.
+/// </summary>
+public interface IBaseEntity
+{
+    DateTimeOffset CreatedAt { get; set; }
+    DateTimeOffset UpdatedAt { get; set; }
+}
+
+public class BaseEntity<T> : IBaseEntity
 {
     [Column("id")]
     public T Id { get; set; }

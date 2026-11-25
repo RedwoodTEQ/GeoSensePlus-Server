@@ -1,4 +1,5 @@
-﻿using GeoSensePlus.Data.DatabaseModels.AlarmEvent;
+﻿using GeoSensePlus.Data.DatabaseModels;
+using GeoSensePlus.Data.DatabaseModels.AlarmEvent;
 using GeoSensePlus.Data.DatabaseModels.Location;
 using GeoSensePlus.Data.DatabaseModels.Map;
 using GeoSensePlus.Data.DatabaseModels.Messaging;
@@ -7,8 +8,11 @@ using GeoSensePlus.Data.DatabaseModels.Tracking;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.IO;
 using System.Reflection.Emit;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GeoSensePlus.Data.DbContexts
 {
@@ -89,6 +93,42 @@ namespace GeoSensePlus.Data.DbContexts
              * Note: all IEntityTypeConfiguration<> classes' constructors must be parameterless.
              */
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            this.PopulateTimestamps();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            this.PopulateTimestamps();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        /// <summary>
+        /// Populate <see cref="IBaseEntity.CreatedAt"/> when an entity is added,
+        /// and refresh <see cref="IBaseEntity.UpdatedAt"/> when it is modified.
+        /// </summary>
+        private void PopulateTimestamps()
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+
+            foreach (var entry in this.ChangeTracker.Entries<IBaseEntity>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.CreatedAt = now;
+                        entry.Entity.UpdatedAt = now;
+                        break;
+
+                    case EntityState.Modified:
+                        entry.Entity.UpdatedAt = now;
+                        break;
+                }
+            }
         }
     }
 }
