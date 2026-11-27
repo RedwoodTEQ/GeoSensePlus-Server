@@ -17,7 +17,7 @@ public interface IDirectoryService
     Task<DataPoint> FindPointByPathAsync(string path);
     Task<string> GetFullPathOfGroupAsync(int groupId);
     Task<string> GetFullPathOfPointAsync(int pointId);
-    Task<List<PointGroup>> GetNestedTreeAsync(int rootId);
+    Task<List<PointGroup>> GetNestedTreeAsync(int? rootId = null);
     Task<bool> MoveGroupAsync(int groupId, int? newParentId);
     Task<bool> MovePointsAsync(IEnumerable<int> pointIds, int targetGroupId);
     Task<bool> RemoveGroupAsync(int id, bool deleteWithChildren = false, bool cascade = false);
@@ -178,11 +178,11 @@ public class DirectoryService : IDirectoryService
     }
 
     /// <summary>
-    /// Gets all groups in a subtree (flat list) starting from rootId
+    /// Gets all groups in a subtree (flat list) starting from rootId, or all groups when rootId is null
     /// </summary>
-    /// <param name="rootId">ID of root group</param>
+    /// <param name="rootId">ID of root group, or null to load all groups</param>
     /// <returns>List of all groups in subtree including root</returns>
-    private async Task<List<PointGroup>> GetAllChildGroupsFlatAsync(int rootId, bool includePointValues = false)
+    private async Task<List<PointGroup>> GetAllChildGroupsFlatAsync(int? rootId, bool includePointValues = false)
     {
         /**
          * NOTE 1: Don't add ';' at the end of SQL queries in FromSqlRaw, otherwise when used with Include(),
@@ -209,7 +209,13 @@ public class DirectoryService : IDirectoryService
             SELECT * FROM group_tree
         ";
 
-        var groupQuery = _context.Set<PointGroup>().FromSqlRaw(sql, rootId);
+        /**
+         * NOTE 3: When rootId is null (load all groups), the recursive CTE is unnecessary - a plain
+         * Set<PointGroup>() query is used instead, since the tree is assembled in memory anyway.
+         */
+        var groupQuery = rootId.HasValue
+            ? _context.Set<PointGroup>().FromSqlRaw(sql, rootId.Value)
+            : _context.Set<PointGroup>();
         List<PointGroup> groups;
         if (includePointValues)
         {
@@ -226,11 +232,11 @@ public class DirectoryService : IDirectoryService
     }
 
     /// <summary>
-    /// Gets a nested tree structure starting from rootId
+    /// Gets a nested tree structure starting from rootId, or all trees (forest) when rootId is null
     /// </summary>
-    /// <param name="rootId">ID of root group</param>
+    /// <param name="rootId">ID of root group, or null to return all root groups</param>
     /// <returns>List of root groups with Children populated</returns>
-    public async Task<List<PointGroup>> GetNestedTreeAsync(int rootId)
+    public async Task<List<PointGroup>> GetNestedTreeAsync(int? rootId = null)
     {
         var flat = await GetAllChildGroupsFlatAsync(rootId, true);
         var dict = flat.ToDictionary(g => g.Id);

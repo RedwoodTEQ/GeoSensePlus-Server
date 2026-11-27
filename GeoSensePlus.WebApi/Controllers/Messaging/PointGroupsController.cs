@@ -55,4 +55,12 @@ public class PointGroupsController : ControllerBase
         var nodes = await _service.GetNestedTreeAsync(id);
         return Ok(nodes);
     }
+
+    [HttpGet("")]
+    public async Task<IActionResult> GetAllTrees()
+    {
+        var nodes = await _service.GetNestedTreeAsync();
+        return Ok(nodes);
+    }
+
 }
