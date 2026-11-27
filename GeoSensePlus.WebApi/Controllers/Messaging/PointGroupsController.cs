@@ -1,6 +1,7 @@
 using GeoSensePlus.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace GeoSensePlus.WebApi.Controllers.Messaging;
@@ -49,6 +50,7 @@ public class PointGroupsController : ControllerBase
         return path == null ? NotFound() : Ok(path);
     }
 
+    [Obsolete("Use GetGroupTree instead, API: GET api/point-groups/{id?}")]
     [HttpGet("{id}/subtree")]
     public async Task<IActionResult> GetSubtree(int id)
     {
@@ -56,11 +58,14 @@ public class PointGroupsController : ControllerBase
         return Ok(nodes);
     }
 
-    [HttpGet("")]
-    public async Task<IActionResult> GetAllTrees()
+    /// <summary>
+    /// Gets the nested tree starting from the group <paramref name="id"/>,
+    /// or all trees (forest) when <paramref name="id"/> is omitted.
+    /// </summary>
+    [HttpGet("{id?}")]
+    public async Task<IActionResult> GetGroupTree(int? id)
     {
-        var nodes = await _service.GetNestedTreeAsync();
+        var nodes = await _service.GetNestedTreeAsync(id);
         return Ok(nodes);
     }
-
 }

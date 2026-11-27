@@ -75,7 +75,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
         return path == null ? NotFound() : Ok(path);
     }
 
-    /// <summary>Moved to <see cref="PointGroupsController.GetSubtree"/></summary>
+    /// <summary>Moved to <see cref="PointGroupsController.GetTree"/></summary>
     [HttpGet("group/{id}/subtree")]
     public async Task<IActionResult> GetSubtree(int id)
     {
