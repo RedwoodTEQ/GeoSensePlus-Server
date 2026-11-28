@@ -13,10 +13,10 @@ namespace GeoSensePlus.WebApi.Controllers.Messaging;
 [Route("api/point-groups")]
 public class PointGroupsController : ControllerBase
 {
-    private readonly IDirectoryService _service;
+    private readonly IPointGroupService _service;
     ILogger<PointGroupsController> _logger;
 
-    public PointGroupsController(ILogger<PointGroupsController> logger, IDirectoryService service)
+    public PointGroupsController(ILogger<PointGroupsController> logger, IPointGroupService service)
     {
         _logger = logger;
         _service = service;

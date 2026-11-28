@@ -9,27 +9,22 @@ using System.Threading.Tasks;
 
 namespace GeoSensePlus.Core.Services;
 
-public interface IDirectoryService
+public interface IPointGroupService
 {
     Task<PointGroup> AddGroupAsync(string name, int? parentId = null);
-    Task<List<DataPoint>> AddPointsAsync(IEnumerable<string> names, int parentGroupId);
     Task<PointGroup> FindGroupByPathAsync(string path);
-    Task<DataPoint> FindPointByPathAsync(string path);
     Task<string> GetFullPathOfGroupAsync(int groupId);
-    Task<string> GetFullPathOfPointAsync(int pointId);
     Task<List<PointGroup>> GetNestedTreeAsync(int? rootId = null);
     Task<bool> MoveGroupAsync(int groupId, int? newParentId);
-    Task<bool> MovePointsAsync(IEnumerable<int> pointIds, int targetGroupId);
     Task<bool> RemoveGroupAsync(int id, bool deleteWithChildren = false, bool cascade = false);
-    Task<bool> RemovePointsAsync(IEnumerable<int> pointIds);
 }
 
-public class DirectoryService : IDirectoryService
+public class PointGroupService : IPointGroupService
 {
     private readonly ApplicationDbContext _context;
-    private readonly ILogger<DirectoryService> _logger;
+    private readonly ILogger<PointGroupService> _logger;
 
-    public DirectoryService(ApplicationDbContext context, ILogger<DirectoryService> logger)
+    public PointGroupService(ApplicationDbContext context, ILogger<PointGroupService> logger)
     {
         _context = context;
         _logger = logger;
@@ -145,7 +140,7 @@ public class DirectoryService : IDirectoryService
     public async Task<string> GetFullPathOfGroupAsync(int groupId)
     {
         /**
-         * See comment in <see cref="GetAllChildGroupsFlatAsync(int, bool)"/>
+         * See comment in <see cref="GetAllChildGroupsFlatAsync(int?, bool)"/>
          */
         var sql = @"
             WITH RECURSIVE path_to_root AS (
@@ -164,18 +159,6 @@ public class DirectoryService : IDirectoryService
         names.Reverse();
         return string.Join('/', names);
     }
-    public async Task<string?> GetFullPathOfPointAsync(int pointId)
-    {
-        var point = await _context.Set<DataPoint>()
-            .Include(p => p.Parent)
-            .FirstOrDefaultAsync(p => p.Id == pointId);
-
-        if (point == null)
-            return null;
-
-        var groupPath = await GetFullPathOfGroupAsync(point.ParentId);
-        return groupPath == null ? null : $"{groupPath}/{point.Name}";
-    }
 
     /// <summary>
     /// Gets all groups in a subtree (flat list) starting from rootId, or all groups when rootId is null
@@ -187,15 +170,15 @@ public class DirectoryService : IDirectoryService
         /**
          * NOTE 1: Don't add ';' at the end of SQL queries in FromSqlRaw, otherwise when used with Include(),
          * it will throw an exception.
-         * 
+         *
          * NOTE 2: Reason of using "SELECT *" in the SQL statement:
          * When EF Core composes over Set<PointGroup>().FromSqlRaw it projects every column of entity PointGroup,
          * and any missing column surfaces as a Postgres 42703 "column does not exist" error at query time.
-         * 
+         *
          * That is different from Database.SqlQueryRaw<string> in method <see cref="GetFullPathOfGroupAsync(int)"/>,
          * which is a raw SQL query that returns a single column of type string, and EF Core does not project any
          * columns of an entity.
-         * 
+         *
          * _todo: CTE may need to have a maximum recursion depth limit to avoid infinite loops in case of circular references. Postgres has a default limit of 100, but it can be changed with "SET max_recursion_depth = N;".
          */
         var sql = @"
@@ -258,9 +241,6 @@ public class DirectoryService : IDirectoryService
     }
 
     /// <summary>
-    /// Find a group by full path (e.g. "Root/Child")
-    /// </summary>
-    /// <summary>
     /// Finds a group by its full path (e.g. "Root/Child/Grandchild")
     /// </summary>
     /// <param name="path">Full path to group</param>
@@ -288,130 +268,4 @@ public class DirectoryService : IDirectoryService
 
         return current;
     }
-
-    /// <summary>
-    /// Find a point by full path (e.g. "Root/Child/Point")
-    /// </summary>
-    /// <summary>
-    /// Finds a point by its full path (e.g. "Root/Child/PointName")
-    /// </summary>
-    /// <param name="path">Full path to point</param>
-    /// <returns>Found point or null</returns>
-    public async Task<DataPoint> FindPointByPathAsync(string path)
-    {
-        if (string.IsNullOrWhiteSpace(path))
-            return null;
-
-        var segments = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
-        if (segments.Length < 2)
-            return null;
-
-        var groupPath = string.Join('/', segments.Take(segments.Length - 1));
-        var pointName = segments.Last();
-
-        var group = await FindGroupByPathAsync(groupPath);
-        if (group == null)
-            return null;
-
-        var point = await _context.Set<DataPoint>()
-            .Include(p => p.Parent)
-            .FirstOrDefaultAsync(p => p.Name == pointName && p.ParentId == group.Id);
-
-        return point;
-    }
-
-    /// <summary>
-    /// Creates multiple points under a parent group
-    /// </summary>
-    /// <param name="names">Names of points to create</param>
-    /// <param name="parentGroupId">ID of parent group</param>
-    /// <returns>List of created points</returns>
-    /// <exception cref="ArgumentException">Thrown if parent group doesn't exist</exception>
-    public async Task<List<DataPoint>> AddPointsAsync(IEnumerable<string> names, int parentGroupId)
-    {
-        // Ensure parent group exists
-        if (!await _context.Set<PointGroup>().AnyAsync(g => g.Id == parentGroupId))
-            throw new ArgumentException("Parent group not found");
-
-        // Ensure names is not empty or all whitespace
-        var distinctNames = names.Distinct().ToList();
-        if (!distinctNames.Any())
-            return new List<DataPoint>();
-
-        // Get all existing points in one query
-        var existingNames = await _context.Set<DataPoint>()
-            .Where(p => p.ParentId == parentGroupId && distinctNames.Contains(p.Name))
-            .Select(p => p.Name)
-            .ToListAsync();
-
-        var duplicates = existingNames.ToHashSet();
-        var uniqueNames = distinctNames.Except(duplicates).ToList();
-
-        foreach (var duplicate in existingNames)
-        {
-            _logger.LogInformation("Skipping duplicate point name '{Name}' under group {GroupId}", duplicate, parentGroupId);
-        }
-
-        if (!uniqueNames.Any())
-            return new List<DataPoint>();
-
-        var points = uniqueNames.Select(n => new DataPoint { Name = n, ParentId = parentGroupId }).ToList();
-        _context.Set<DataPoint>().AddRange(points);
-        await _context.SaveChangesAsync();
-        return points;
-    }
-
-    /// <summary>
-    /// Removes multiple points by ID
-    /// </summary>
-    /// <param name="pointIds">IDs of points to remove</param>
-    /// <returns>True if any points were found and removed</returns>
-    public async Task<bool> RemovePointsAsync(IEnumerable<int> pointIds)
-    {
-        var points = await _context.Set<DataPoint>()
-            .Where(p => pointIds.Contains(p.Id))
-            .ToListAsync();
-
-        if (!points.Any()) return false;
-
-        _context.Set<DataPoint>().RemoveRange(points);
-        await _context.SaveChangesAsync();
-        return true;
-    }
-
-    /// <summary>
-    /// Moves multiple points to a new parent group
-    /// </summary>
-    /// <param name="pointIds">IDs of points to move</param>
-    /// <param name="targetGroupId">ID of new parent group</param>
-    /// <returns>True if any points were found and moved</returns>
-    /// <exception cref="ArgumentException">Thrown if target group doesn't exist</exception>
-    public async Task<bool> MovePointsAsync(IEnumerable<int> pointIds, int targetGroupId)
-    {
-        if (!await _context.Set<PointGroup>().AnyAsync(g => g.Id == targetGroupId))
-            throw new ArgumentException("Target group not found");
-
-        var points = await _context.Set<DataPoint>()
-            .Where(p => pointIds.Contains(p.Id))
-            .ToListAsync();
-
-        if (!points.Any()) return false;
-
-        foreach (var point in points)
-        {
-            point.ParentId = targetGroupId;
-        }
-
-        await _context.SaveChangesAsync();
-        return true;
-    }
-
-    /// <summary>
-    /// Gets the full path of a point (e.g. "Root/Child/PointName")
-    /// </summary>
-    /// <param name="pointId">ID of point</param>
-    /// <returns>Full path string or null if point not found</returns>
-    /// <summary>
-    /// Gets the full path of a point (e.g. "Root/Child/PointName")
-    /// </summary>
 }

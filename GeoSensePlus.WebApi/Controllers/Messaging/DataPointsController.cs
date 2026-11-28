@@ -12,10 +12,10 @@ namespace GeoSensePlus.WebApi.Controllers.Messaging;
 [Route("api/data-points")]
 public class DataPointsController : ControllerBase
 {
-    private readonly IDirectoryService _service;
+    private readonly IDataPointService _service;
     ILogger<DataPointsController> _logger;
 
-    public DataPointsController(ILogger<DataPointsController> logger, IDirectoryService service)
+    public DataPointsController(ILogger<DataPointsController> logger, IDataPointService service)
     {
         _logger = logger;
         _service = service;

@@ -20,12 +20,14 @@ public record MovePointsRequest(int[] Ids, int NewGroupId);
 [Route("api/[controller]")]
 public class DirectoryController : ControllerBase // _todo: rename to PointsController or UNSController
 {
-    private readonly IDirectoryService _service;
+    private readonly IPointGroupService _groupService;
+    private readonly IDataPointService _pointService;
     ILogger<DirectoryController> _logger;
-    public DirectoryController(ILogger<DirectoryController> logger, IDirectoryService service)
+    public DirectoryController(ILogger<DirectoryController> logger, IPointGroupService groupService, IDataPointService pointService)
     {
         _logger = logger;
-        _service = service;
+        _groupService = groupService;
+        _pointService = pointService;
     }
 
     #region test methods
@@ -47,7 +49,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
     [HttpPost("group")]
     public async Task<IActionResult> AddGroup([FromBody] AddGroupRequest request)
     {
-        var group = await _service.AddGroupAsync(request.Name, request.ParentId);
+        var group = await _groupService.AddGroupAsync(request.Name, request.ParentId);
         return Ok(group);
     }
 
@@ -55,7 +57,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
     [HttpDelete("group/{id}")]
     public async Task<IActionResult> RemoveGroup(int id, [FromQuery] bool deleteWithChildren = false, [FromQuery] bool cascade = false)
     {
-        var result = await _service.RemoveGroupAsync(id, deleteWithChildren, cascade);
+        var result = await _groupService.RemoveGroupAsync(id, deleteWithChildren, cascade);
         return result ? Ok() : NotFound();
     }
 
@@ -63,7 +65,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
     [HttpPut("group/{id}/move")]
     public async Task<IActionResult> MoveGroup(int id, [FromBody] MoveGroupRequest request)
     {
-        var success = await _service.MoveGroupAsync(id, request.NewParentId);
+        var success = await _groupService.MoveGroupAsync(id, request.NewParentId);
         return success ? Ok() : NotFound();
     }
 
@@ -71,7 +73,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
     [HttpGet("group/{id}/path")]
     public async Task<IActionResult> GetGroupPath(int id)
     {
-        var path = await _service.GetFullPathOfGroupAsync(id);
+        var path = await _groupService.GetFullPathOfGroupAsync(id);
         return path == null ? NotFound() : Ok(path);
     }
 
@@ -79,7 +81,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
     [HttpGet("group/{id}/subtree")]
     public async Task<IActionResult> GetSubtree(int id)
     {
-        var nodes = await _service.GetNestedTreeAsync(id);
+        var nodes = await _groupService.GetNestedTreeAsync(id);
         return Ok(nodes);
     }
 
@@ -87,7 +89,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
     [HttpPost("points")]
     public async Task<IActionResult> AddPoints([FromBody] AddPointsRequest request)
     {
-        var result = await _service.AddPointsAsync(request.Names, request.GroupId);
+        var result = await _pointService.AddPointsAsync(request.Names, request.GroupId);
         return Ok(result);
     }
 
@@ -95,7 +97,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
     [HttpDelete("points")]
     public async Task<IActionResult> RemovePoints([FromBody] int[] ids)
     {
-        var result = await _service.RemovePointsAsync(ids);
+        var result = await _pointService.RemovePointsAsync(ids);
         return result ? Ok() : NotFound();
     }
 
@@ -103,7 +105,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
     [HttpPut("points/move")]
     public async Task<IActionResult> MovePoints([FromBody] MovePointsRequest request)
     {
-        var result = await _service.MovePointsAsync(request.Ids, request.NewGroupId);
+        var result = await _pointService.MovePointsAsync(request.Ids, request.NewGroupId);
         return result ? Ok() : NotFound();
     }
 
@@ -111,7 +113,7 @@ public class DirectoryController : ControllerBase // _todo: rename to PointsCont
     [HttpGet("point/{id}/path")]
     public async Task<IActionResult> GetPointPath(int id)
     {
-        var path = await _service.GetFullPathOfPointAsync(id);
+        var path = await _pointService.GetFullPathOfPointAsync(id);
         return path == null ? NotFound() : Ok(path);
     }
 }
